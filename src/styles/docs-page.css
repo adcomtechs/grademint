@@ -1,0 +1,4 @@
+/* Documentation stylesheet entrypoint. */
+
+@import './main.css';
+@import './docs.css';

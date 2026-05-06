@@ -1,0 +1,112 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    name: Install, lint, format, build, test & coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # pnpm/action-setup reads the `packageManager` field in package.json
+      # to determine the exact pnpm version — no version pin needed here.
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      # Lint must pass with zero warnings — any console.* outside logger.js,
+      # any boundary violation, or any code-quality issue is a CI failure.
+      - name: Lint
+        run: pnpm lint:ci
+
+      # Formatting is enforced in CI so that developers cannot merge
+      # unformatted code. Run after lint so lint failures surface first.
+      - name: Format check
+        run: pnpm format:check
+
+      # Coverage runs the full test suite and enforces the thresholds declared
+      # in vitest.config.js. There is no separate "Test" step — running both
+      # would execute the suite twice. Coverage is the single source of truth
+      # for both test results and coverage metrics.
+      - name: Coverage
+        run: pnpm coverage
+
+      - name: Build
+        run: pnpm build
+
+      # Verify the build produced the expected HTML entry points.
+      # This catches Rollup misconfigurations that exit 0 but emit nothing.
+      - name: Smoke test build output
+        run: |
+          test -f dist/index.html || (echo "dist/index.html missing" && exit 1)
+          test -f dist/docs.html  || (echo "dist/docs.html missing"  && exit 1)
+
+      # Upload the dist/ directory so the exact artifact that passed CI can
+      # be inspected or downloaded without re-running the build. Useful for
+      # debugging deployment failures and auditing what was actually released.
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          # Retain for 14 days — long enough for post-deploy investigation
+          # without accumulating storage cost from every merged PR.
+          retention-days: 14
+
+# name: CI
+
+# on:
+#   push:
+#     branches: [main]
+#   pull_request:
+
+# jobs:
+#   verify:
+#     name: Install, lint, test, build, coverage
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
+
+#       - name: Setup pnpm
+#         uses: pnpm/action-setup@v4
+#         with:
+#           run_install: false
+
+#       - name: Setup Node
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: 24
+#           cache: pnpm
+
+#       - name: Install
+#         run: pnpm install --frozen-lockfile
+
+#       - name: Lint
+#         run: pnpm lint:ci
+
+#       - name: Test
+#         run: pnpm test
+
+#       - name: Build
+#         run: pnpm build
+
+#       - name: Coverage
+#         run: pnpm coverage

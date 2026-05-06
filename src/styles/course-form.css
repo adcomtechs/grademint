@@ -1,0 +1,728 @@
+/* ═══════════════════════════════════════════════════════════════
+   course-form.css — CourseForm Component Styles
+   ═══════════════════════════════════════════════════════════════
+   Supplements the shared app styles without overriding them.
+   All selectors are namespaced with .cf- (course-form) to prevent
+   naming collisions with other components.
+
+   STRUCTURE:
+   1.  Semester Card Footer (collapsible form container)
+   2.  Toggle Bar & Button
+   3.  Form Body (collapse/expand transition)
+   4.  Form Header (title + scale badge)
+   5.  Mode Selector (Score | Grade | Both tabs)
+   6.  Score Field + Live Bar
+   7.  Grade Card (live computed grade preview)
+   8.  Grade Picker (visual grid)
+   9.  Credit Unit Pills
+   10. Grade Threshold Reference
+   11. Submit Row
+   12. Visibility Utilities
+   13. Edit Modal Body
+   14. Responsive
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1. Semester Card Footer ─────────────────────────────────────── */
+
+/**
+ * The footer sits below the course table inside .semester-card.
+ * It contains the always-visible toggle bar and the collapsible form.
+ * border-top separates it visually from the table.
+ */
+.semester-card-footer {
+  border-top: 1px solid var(--color-border);
+}
+
+/* ── 2. Toggle Bar & Button ──────────────────────────────────────── */
+
+/**
+ * .cf-toggle-bar — the always-visible strip housing the open/close button.
+ * Padding aligns the button with the table content above it.
+ */
+.cf-toggle-bar {
+  padding: var(--space-3) var(--space-5);
+  display: flex;
+  align-items: center;
+}
+
+/**
+ * .cf-toggle-btn — the "Add Course" / "× Close" button.
+ * Uses the .btn--primary base from main.css; we only add the transition
+ * for the icon spin and the state-specific width.
+ */
+.cf-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.82rem;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.cf-toggle-btn.is-open {
+  /* When the form is open, the button shifts to a ghost style */
+  background: transparent;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  box-shadow: none;
+}
+
+.cf-toggle-icon {
+  font-size: 1.1em;
+  font-weight: 700;
+  line-height: 1;
+  /* The + / × icon does NOT rotate — it swaps text content instead */
+}
+
+/* ── 3. Form Body (collapse / expand transition) ─────────────────── */
+
+/**
+ * .cf-form-body wraps the actual form inputs.
+ * It uses max-height + overflow for the CSS transition, which lets us
+ * animate to a known large value without knowing the exact content height.
+ *
+ * WHY max-height instead of height?
+ * CSS can't transition to/from `height: auto`. max-height lets us
+ * animate from 0 → a safe upper bound (600px here — well above any real form).
+ * The visual result is an expansion animation without JavaScript measurement.
+ */
+.cf-form-body {
+  max-height: 0;
+  overflow: hidden;
+  transition:
+    max-height var(--duration-slow) var(--ease-out),
+    opacity var(--duration-normal) var(--ease-out);
+  opacity: 0;
+}
+
+.cf-form-body.is-open {
+  max-height: 820px;
+  /* safe upper bound; form content is ~600–700px */
+  opacity: 1;
+}
+
+/**
+ * .cf-form-inner provides the visible padding inside the animated container.
+ * Keeping padding outside the max-height container prevents the padding
+ * from being clipped during the collapse animation.
+ */
+.cf-form-inner {
+  padding: var(--space-5) var(--space-5) var(--space-6);
+  background: var(--color-surface-2);
+  border-top: 1px dashed var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* ── 4. Form Header ──────────────────────────────────────────────── */
+
+.cf-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.cf-form-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+/**
+ * .cf-scale-badge — small informational chip showing the active grading scale.
+ * Read-only; the scale is changed in Profile & Settings.
+ */
+.cf-scale-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-3);
+  background: rgba(201, 168, 76, 0.08);
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+}
+
+.cf-scale-badge-label {
+  color: var(--color-text-dim);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cf-scale-badge-value {
+  color: var(--color-gold);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+/* ── 5. Mode Selector ────────────────────────────────────────────── */
+
+/**
+ * .cf-mode-selector — the three-tab row: Score | Grade Only | Score + Grade.
+ * Uses the same pattern as the main semester tabs but smaller and contained
+ * within the form (not the full width of the page).
+ */
+.cf-mode-selector {
+  display: flex;
+  gap: var(--space-1);
+  background: var(--color-surface-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 3px;
+}
+
+/**
+ * .cf-mode-tab — individual mode button.
+ * At rest: transparent background, muted text.
+ * Active: gold background with dark text (matching .semester-tab.is-active).
+ */
+.cf-mode-tab {
+  flex: 1;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.cf-mode-tab:hover:not(.is-active) {
+  background: var(--color-surface-2);
+  color: var(--color-text);
+}
+
+.cf-mode-tab.is-active {
+  background: var(--color-gold);
+  color: #0c0f1a;
+  /* explicit dark text on gold background */
+}
+
+.cf-mode-tab:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+/* ── 6. Score Field + Live Bar ───────────────────────────────────── */
+
+/**
+ * .cf-score-section — a side-by-side layout: [input + bar] [grade card].
+ * The grade card is always visible to the right as a live display.
+ */
+.cf-score-section {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.cf-score-field {
+  flex: 1;
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.cf-score-input {
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+/**
+ * .cf-score-bar — the horizontal progress bar below the score input.
+ * The inner .cf-score-bar-fill animates its width via JS on each input event.
+ */
+.cf-score-bar {
+  height: 4px;
+  background: var(--color-surface-3);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-top: var(--space-1);
+}
+
+.cf-score-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-gold-dim), var(--color-gold-light));
+  border-radius: var(--radius-full);
+  transition: width var(--duration-fast) var(--ease-out);
+  width: 0%;
+}
+
+/* ── 7. Grade Card (live grade preview) ──────────────────────────── */
+
+/**
+ * .cf-grade-card — shows the letter grade and point value computed from the
+ * current score. Updates live on every keypress via JS.
+ * A coloured background (cf-grade-card--A/B/C…) indicates grade quality.
+ */
+.cf-grade-card {
+  min-width: 80px;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  transition:
+    background var(--duration-normal) var(--ease-out),
+    border-color var(--duration-normal) var(--ease-out);
+}
+
+.cf-grade-letter {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--color-text);
+  line-height: 1;
+}
+
+.cf-grade-pts {
+  font-size: 0.72rem;
+  color: var(--color-text-dim);
+  font-family: var(--font-mono);
+}
+
+/* Grade-specific card colours — mirror the grade-badge tints */
+.cf-grade-card--A {
+  background: rgba(246, 211, 101, 0.1);
+  border-color: rgba(246, 211, 101, 0.3);
+}
+
+.cf-grade-card--A .cf-grade-letter {
+  color: var(--color-first);
+}
+
+.cf-grade-card--B {
+  background: rgba(168, 230, 207, 0.08);
+  border-color: rgba(168, 230, 207, 0.2);
+}
+
+.cf-grade-card--B .cf-grade-letter {
+  color: var(--color-second-upper);
+}
+
+.cf-grade-card--C {
+  background: rgba(116, 185, 224, 0.08);
+  border-color: rgba(116, 185, 224, 0.2);
+}
+
+.cf-grade-card--C .cf-grade-letter {
+  color: var(--color-second-lower);
+}
+
+.cf-grade-card--D {
+  background: rgba(246, 173, 85, 0.08);
+  border-color: rgba(246, 173, 85, 0.2);
+}
+
+.cf-grade-card--D .cf-grade-letter {
+  color: var(--color-third);
+}
+
+.cf-grade-card--E {
+  background: rgba(160, 174, 192, 0.08);
+  border-color: rgba(160, 174, 192, 0.2);
+}
+
+.cf-grade-card--E .cf-grade-letter {
+  color: var(--color-pass);
+}
+
+.cf-grade-card--F {
+  background: rgba(245, 101, 101, 0.08);
+  border-color: rgba(245, 101, 101, 0.2);
+}
+
+.cf-grade-card--F .cf-grade-letter {
+  color: var(--color-danger);
+}
+
+/* ── 8. Grade Picker ─────────────────────────────────────────────── */
+
+.cf-grade-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.cf-grade-hint {
+  font-size: 0.75rem;
+  color: var(--color-text-dim);
+  line-height: 1.4;
+  font-style: italic;
+}
+
+/**
+ * .cf-grade-grid — the visual button grid of all grade letters.
+ * auto-fit keeps it responsive: on wide screens, all grades in a row;
+ * on narrow screens, they wrap automatically.
+ */
+.cf-grade-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/**
+ * .cf-grade-btn — a single grade button in the picker.
+ * Larger than a regular badge for easy touch targets (min 56px tall).
+ * Shows the letter and the point value stacked vertically.
+ */
+.cf-grade-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 56px;
+  min-height: 56px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--color-border);
+  background: var(--color-surface-3);
+  cursor: pointer;
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.cf-grade-btn:hover:not(.is-selected) {
+  border-color: var(--color-border-light);
+  background: var(--color-surface-2);
+  transform: translateY(-2px);
+}
+
+.cf-grade-btn.is-selected {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 2px rgba(201, 168, 76, 0.25);
+  transform: translateY(-2px);
+}
+
+/**
+ * .is-suggested — applied by score-sync in 'both' mode: the grade that would
+ * be computed from the typed score gets a subtle indicator so the student can
+ * confirm (or override) it. Does not override is-selected styling.
+ */
+.cf-grade-btn.is-suggested:not(.is-selected) {
+  border-color: var(--color-gold-dim);
+  background: rgba(201, 168, 76, 0.06);
+}
+
+.cf-grade-btn-letter {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--color-text);
+}
+
+.cf-grade-btn-pts {
+  font-size: 0.65rem;
+  color: var(--color-text-dim);
+  font-family: var(--font-mono);
+}
+
+/* Grade-specific button colours (border + letter tint) */
+.cf-grade-btn--A {
+  border-color: rgba(246, 211, 101, 0.2);
+}
+
+.cf-grade-btn--A .cf-grade-btn-letter {
+  color: var(--color-first);
+}
+
+.cf-grade-btn--A.is-selected {
+  background: rgba(246, 211, 101, 0.1);
+  border-color: var(--color-first);
+}
+
+.cf-grade-btn--B {
+  border-color: rgba(168, 230, 207, 0.2);
+}
+
+.cf-grade-btn--B .cf-grade-btn-letter {
+  color: var(--color-second-upper);
+}
+
+.cf-grade-btn--B.is-selected {
+  background: rgba(168, 230, 207, 0.1);
+  border-color: var(--color-second-upper);
+}
+
+.cf-grade-btn--C {
+  border-color: rgba(116, 185, 224, 0.2);
+}
+
+.cf-grade-btn--C .cf-grade-btn-letter {
+  color: var(--color-second-lower);
+}
+
+.cf-grade-btn--C.is-selected {
+  background: rgba(116, 185, 224, 0.1);
+  border-color: var(--color-second-lower);
+}
+
+.cf-grade-btn--D {
+  border-color: rgba(246, 173, 85, 0.2);
+}
+
+.cf-grade-btn--D .cf-grade-btn-letter {
+  color: var(--color-third);
+}
+
+.cf-grade-btn--D.is-selected {
+  background: rgba(246, 173, 85, 0.1);
+  border-color: var(--color-third);
+}
+
+.cf-grade-btn--E {
+  border-color: rgba(160, 174, 192, 0.2);
+}
+
+.cf-grade-btn--E .cf-grade-btn-letter {
+  color: var(--color-pass);
+}
+
+.cf-grade-btn--E.is-selected {
+  background: rgba(160, 174, 192, 0.1);
+  border-color: var(--color-pass);
+}
+
+.cf-grade-btn--F {
+  border-color: rgba(245, 101, 101, 0.2);
+}
+
+.cf-grade-btn--F .cf-grade-btn-letter {
+  color: var(--color-danger);
+}
+
+.cf-grade-btn--F.is-selected {
+  background: rgba(245, 101, 101, 0.1);
+  border-color: var(--color-danger);
+}
+
+/* ── 9. Credit Unit Pills ────────────────────────────────────────── */
+
+.cf-cu-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.cf-cu-pills {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+/**
+ * .cf-cu-radio — the actual <input type="radio"> is visually hidden but
+ * remains in the accessibility tree for keyboard navigation and screen readers.
+ * The visible <label> acts as the "pill" button.
+ */
+.cf-cu-radio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cf-cu-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 36px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--color-border);
+  background: var(--color-surface-3);
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+  user-select: none;
+}
+
+.cf-cu-pill:hover:not(.is-selected) {
+  border-color: var(--color-border-light);
+  color: var(--color-text);
+}
+
+.cf-cu-pill.is-selected {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  color: #0c0f1a;
+}
+
+/* Keyboard focus indicator on the hidden radio propagates to the label */
+.cf-cu-radio:focus-visible + .cf-cu-pill,
+.cf-cu-radio:focus + .cf-cu-pill {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+/* ── 10. Grade Threshold Reference ───────────────────────────────── */
+
+/**
+ * .cf-thresholds — the collapsible "Grade Reference" accordion at the
+ * bottom of the form. Shows score ranges and point values for each grade.
+ * Pure reference — no interactive inputs.
+ */
+.cf-thresholds {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.cf-thresholds-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-surface-3);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  border: none;
+  letter-spacing: 0.04em;
+  transition: background var(--duration-fast);
+}
+
+.cf-thresholds-toggle:hover {
+  background: var(--color-surface-2);
+  color: var(--color-text);
+}
+
+.cf-thresholds-icon {
+  font-size: 0.65rem;
+  transition: transform var(--duration-fast);
+}
+
+.cf-thresholds-body {
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  background: var(--color-surface);
+}
+
+.cf-threshold-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 0.82rem;
+}
+
+.cf-threshold-range {
+  font-family: var(--font-mono);
+  color: var(--color-text-muted);
+  flex: 1;
+}
+
+.cf-threshold-pts {
+  font-family: var(--font-mono);
+  color: var(--color-gold);
+  font-size: 0.8rem;
+}
+
+/* ── 11. Submit Row ──────────────────────────────────────────────── */
+
+.cf-submit-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cf-submit-btn {
+  min-width: 120px;
+}
+
+/* ── 12. Visibility Utilities ────────────────────────────────────── */
+
+/**
+ * .is-hidden — used by _updateModeVisibility() to show/hide sections.
+ * Uses visibility + max-height instead of display:none so transitions work.
+ */
+.cf-score-section.is-hidden,
+.cf-grade-section.is-hidden {
+  display: none;
+}
+
+/* ── 13. Edit Modal Body ─────────────────────────────────────────── */
+
+/**
+ * .cf-edit-body — the container inside the shared modal for course editing.
+ * Mirrors the .cf-form-inner layout so the edit form looks identical to the
+ * add form.
+ */
+.cf-edit-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.ecm-footer-actions {
+  display: flex;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+/* ── 14. Responsive ──────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .cf-score-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cf-grade-card {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: var(--space-3);
+    min-width: unset;
+    padding: var(--space-2) var(--space-4);
+  }
+
+  .cf-grade-letter {
+    font-size: 1.2rem;
+  }
+
+  .cf-grade-btn {
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  .cf-mode-tab {
+    font-size: 0.72rem;
+    padding: var(--space-2) var(--space-2);
+  }
+}

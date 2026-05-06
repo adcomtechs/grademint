@@ -1,0 +1,1389 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO -->
+    <title>GPA Pro — Docs & Grade Guide</title>
+    <meta
+      name="description"
+      content="Learn how GPA and CGPA are calculated, understand the Nigerian 5.0 grading scale, discover study strategies, and master the GPA Pro calculator."
+    />
+    <meta
+      name="keywords"
+      content="GPA guide, CGPA formula, Nigerian grading system, 5.0 scale, grade calculator guide, how to calculate GPA, university grades Nigeria"
+    />
+    <link rel="icon" href="/favicon.ico" type="image/ico" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="GPA Pro — Docs & Grade Guide" />
+    <meta
+      property="og:description"
+      content="Everything you need to know about GPA, CGPA, and academic performance."
+    />
+    <meta property="og:type" content="website" />
+
+    <!-- Theme -->
+    <meta name="theme-color" content="#0c0f1a" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; object-src 'none'; base-uri 'self'; form-action 'self'"
+    />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,400;0,600;0,700;1,400&family=DM+Mono:wght@400;500&family=Lato:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/src/styles/docs-page.css" />
+  </head>
+
+  <body>
+    <header class="app-header" id="app-header"></header>
+
+    <!-- ── Hero ─────────────────────────────────────────────────────── -->
+    <div class="docs-hero">
+      <div class="docs-hero-inner">
+        <p class="docs-hero-eyebrow">Knowledge Base · Grade Guide · How-To</p>
+        <h1 class="docs-hero-title">
+          Everything you need to know about<br />
+          <em>GPA, CGPA & Academic Performance</em>
+        </h1>
+        <p class="docs-hero-desc">
+          From the formula behind your CGPA to strategies for climbing from a 2.4 to a First Class —
+          this is your complete academic reference.
+        </p>
+
+        <!-- Search -->
+        <div class="docs-search-wrapper" role="search">
+          <span class="docs-search-icon" aria-hidden="true">🔍</span>
+          <input
+            type="search"
+            id="docs-search"
+            class="docs-search-input"
+            placeholder="Search articles — e.g. 'how CGPA is calculated'"
+            autocomplete="off"
+            aria-label="Search documentation"
+          />
+          <kbd class="docs-search-hint">↵</kbd>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Main Layout ────────────────────────────────────────────── -->
+    <div class="docs-layout">
+      <!-- ── Sidebar ─────────────────────────────────────────────── -->
+      <aside class="docs-sidebar" aria-label="Documentation navigation">
+        <nav id="docs-toc">
+          <div class="sidebar-section">
+            <h3 class="sidebar-section-title">Getting Started</h3>
+            <ul class="sidebar-nav">
+              <li><a class="sidebar-link is-active" href="#what-is-gpa">What Is GPA?</a></li>
+              <li><a class="sidebar-link" href="#what-is-cgpa">What Is CGPA?</a></li>
+              <li><a class="sidebar-link" href="#the-formula">The GPA Formula</a></li>
+              <li><a class="sidebar-link" href="#quality-points">Quality Points Explained</a></li>
+            </ul>
+          </div>
+
+          <div class="sidebar-section">
+            <h3 class="sidebar-section-title">Nigerian 5.0 Scale</h3>
+            <ul class="sidebar-nav">
+              <li><a class="sidebar-link" href="#grading-scale">The Grading Scale</a></li>
+              <li><a class="sidebar-link" href="#honor-classes">Honor Classifications</a></li>
+              <li><a class="sidebar-link" href="#pass-vs-fail">Pass, Fail & Carryovers</a></li>
+            </ul>
+          </div>
+
+          <div class="sidebar-section">
+            <h3 class="sidebar-section-title">Using GPA Pro</h3>
+            <ul class="sidebar-nav">
+              <li><a class="sidebar-link" href="#how-to-use">Quick Start Guide</a></li>
+              <li>
+                <a class="sidebar-link" href="#previous-record">Previous Institutional Record</a>
+              </li>
+              <li><a class="sidebar-link" href="#what-if-tool">The What-If Calculator</a></li>
+              <li><a class="sidebar-link" href="#transcript">Printing Your Transcript</a></li>
+            </ul>
+          </div>
+
+          <div class="sidebar-section">
+            <h3 class="sidebar-section-title">Strategy & Insight</h3>
+            <ul class="sidebar-nav">
+              <li><a class="sidebar-link" href="#raise-gpa">How to Raise Your GPA</a></li>
+              <li><a class="sidebar-link" href="#credit-units">Credit Units & Their Weight</a></li>
+              <li><a class="sidebar-link" href="#recovery">GPA Recovery Math</a></li>
+              <li><a class="sidebar-link" href="#first-class">The First Class Roadmap</a></li>
+            </ul>
+          </div>
+
+          <div class="sidebar-section">
+            <h3 class="sidebar-section-title">FAQ</h3>
+            <ul class="sidebar-nav">
+              <li><a class="sidebar-link" href="#faq">Common Questions</a></li>
+            </ul>
+          </div>
+        </nav>
+
+        <!-- Mini GPA widget in sidebar -->
+        <div class="sidebar-widget">
+          <p class="sidebar-widget-title">Quick GPA Check</p>
+          <p class="sidebar-widget-desc">Enter a score to see its grade and points.</p>
+          <input
+            type="number"
+            id="widget-score"
+            class="form-input"
+            min="0"
+            max="100"
+            placeholder="Score (0–100)"
+          />
+          <div id="widget-result" class="widget-result" aria-live="polite"></div>
+        </div>
+      </aside>
+
+      <!-- ── Article Content ──────────────────────────────────────── -->
+      <main class="docs-content" id="docs-main">
+        <!-- No-results message (hidden by default) -->
+        <div id="no-results" class="no-results" hidden>
+          <p class="no-results-icon">📭</p>
+          <p class="no-results-msg">No articles match "<span id="no-results-query"></span>"</p>
+          <button class="btn btn--ghost btn--sm" id="clear-search">Clear search</button>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════════
+           SECTION 1 — GETTING STARTED
+           ════════════════════════════════════════════════════════ -->
+
+        <article class="docs-article" id="what-is-gpa" data-tags="gpa basics introduction">
+          <header class="article-header">
+            <span class="article-category">Getting Started</span>
+            <h2 class="article-title">What Is GPA?</h2>
+            <p class="article-subtitle">
+              Grade Point Average — the single number that summarises your academic performance.
+            </p>
+          </header>
+
+          <div class="article-body">
+            <p>
+              Your <strong>Grade Point Average (GPA)</strong> is a weighted average that condenses
+              all your course grades into a single number. Rather than listing twenty individual
+              scores, universities use GPA to communicate academic standing quickly — to the
+              registrar, scholarship committees, and employers.
+            </p>
+
+            <div class="callout callout--info">
+              <span class="callout-icon">💡</span>
+              <div>
+                <strong>Key insight:</strong> GPA is <em>weighted</em>, not simple. A 3-unit course
+                contributes three times as much to your GPA as a 1-unit course. This is why your
+                score in MTH 201 (3 units) matters more than GST 101 (1 unit).
+              </div>
+            </div>
+
+            <p>
+              At Nigerian universities the GPA is calculated on a <strong>5.0 scale</strong>. Each
+              letter grade (A through F) maps to a grade point value, and those points are weighted
+              by credit units before being averaged.
+            </p>
+
+            <h3>Why GPA Matters</h3>
+            <ul class="article-list">
+              <li>
+                <strong>Scholarships</strong> — most merit awards have a minimum CGPA requirement
+                (typically 3.50+).
+              </li>
+              <li>
+                <strong>Postgraduate admission</strong> — M.Sc. and MBA programmes often require a
+                2nd Class Upper (≥ 3.50) or better.
+              </li>
+              <li>
+                <strong>Employment</strong> — many Nigerian graduate schemes filter applications by
+                CGPA (common cutoff: 3.00).
+              </li>
+              <li>
+                <strong>Departmental standing</strong> — academic probation is often triggered when
+                GPA drops below a threshold.
+              </li>
+              <li>
+                <strong>Honours degree class</strong> — your programme-exit classification (First
+                Class, 2nd Upper, etc.) is entirely GPA-derived.
+              </li>
+            </ul>
+          </div>
+        </article>
+
+        <hr class="article-divider" />
+
+        <!-- ─── CGPA ─────────────────────────────────────────────── -->
+        <article class="docs-article" id="what-is-cgpa" data-tags="cgpa cumulative basics">
+          <header class="article-header">
+            <span class="article-category">Getting Started</span>
+            <h2 class="article-title">What Is CGPA?</h2>
+            <p class="article-subtitle">
+              Cumulative GPA — the running average across every semester of your programme.
+            </p>
+          </header>
+
+          <div class="article-body">
+            <p>
+              While <strong>GPA</strong> measures performance within a single semester,
+              <strong>CGPA</strong> (Cumulative Grade Point Average) measures performance across
+              your entire academic career so far. Every course you have ever registered — passed or
+              failed — feeds into your CGPA.
+            </p>
+
+            <div class="callout callout--warning">
+              <span class="callout-icon">⚠️</span>
+              <div>
+                <strong>A failed course drags your CGPA for the rest of your programme.</strong>
+                Even if you pass the supplementary exam, the original F grade and its zero quality
+                points remain in the CGPA denominator at most Nigerian universities. Check your
+                institution's carry-over policy carefully.
+              </div>
+            </div>
+
+            <h3>GPA vs CGPA — side by side</h3>
+            <div class="comparison-table-wrapper">
+              <table class="comparison-table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>GPA</th>
+                    <th>CGPA</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Scope</td>
+                    <td>One semester</td>
+                    <td>All semesters to date</td>
+                  </tr>
+                  <tr>
+                    <td>Reset each semester?</td>
+                    <td>Yes — starts fresh</td>
+                    <td>No — carries forward</td>
+                  </tr>
+                  <tr>
+                    <td>Used for classification?</td>
+                    <td>No</td>
+                    <td>Yes (exit CGPA)</td>
+                  </tr>
+                  <tr>
+                    <td>Can it jump quickly?</td>
+                    <td>Yes</td>
+                    <td>Gradually — inertia increases each semester</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p>
+              Because CGPA accumulates over time,
+              <strong>early semesters carry disproportionate weight</strong>. A poor 100L
+              performance is much harder to recover from in 400L than the same poor performance in
+              300L — because by 300L you have more future credit units available to dilute it.
+            </p>
+          </div>
+        </article>
+
+        <hr class="article-divider" />
+
+        <!-- ─── Formula ──────────────────────────────────────────── -->
+        <article
+          class="docs-article"
+          id="the-formula"
+          data-tags="formula calculation math gpa cgpa"
+        >
+          <header class="article-header">
+            <span class="article-category">Getting Started</span>
+            <h2 class="article-title">The GPA Formula — Demystified</h2>
+            <p class="article-subtitle">The exact arithmetic behind every GPA calculation.</p>
+          </header>
+
+          <div class="article-body">
+            <p>
+              The GPA formula is a <strong>weighted arithmetic mean</strong>. It weights each
+              course's grade point by the number of credit units the course carries.
+            </p>
+
+            <!-- Formula display -->
+            <div class="formula-block">
+              <div class="formula-line">
+                <span class="formula-label">Semester GPA</span>
+                <span class="formula-eq">
+                  GPA =
+                  <span class="formula-frac">
+                    <span class="formula-num">Σ (Grade Point × Credit Units)</span>
+                    <span class="formula-den">Σ (Credit Units)</span>
+                  </span>
+                </span>
+              </div>
+              <div class="formula-line formula-line--cgpa">
+                <span class="formula-label">CGPA</span>
+                <span class="formula-eq">
+                  CGPA =
+                  <span class="formula-frac">
+                    <span class="formula-num">Σ (All Quality Points across all semesters)</span>
+                    <span class="formula-den">Σ (All Credit Units across all semesters)</span>
+                  </span>
+                </span>
+              </div>
+            </div>
+
+            <h3>Worked Example</h3>
+            <p>Suppose you registered these courses in your 100L First Semester:</p>
+
+            <div class="example-table-wrapper">
+              <table class="example-table">
+                <thead>
+                  <tr>
+                    <th>Course</th>
+                    <th>Score</th>
+                    <th>Grade</th>
+                    <th>Grade Point</th>
+                    <th>Credit Units</th>
+                    <th>Quality Points</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="mono">MTH 101</td>
+                    <td>78</td>
+                    <td><span class="grade-badge grade-badge--A">A</span></td>
+                    <td>5.0</td>
+                    <td>3</td>
+                    <td class="highlight-cell">15.0</td>
+                  </tr>
+                  <tr>
+                    <td class="mono">CSC 101</td>
+                    <td>63</td>
+                    <td><span class="grade-badge grade-badge--B">B</span></td>
+                    <td>4.0</td>
+                    <td>3</td>
+                    <td class="highlight-cell">12.0</td>
+                  </tr>
+                  <tr>
+                    <td class="mono">ENG 101</td>
+                    <td>55</td>
+                    <td><span class="grade-badge grade-badge--C">C</span></td>
+                    <td>3.0</td>
+                    <td>2</td>
+                    <td class="highlight-cell">6.0</td>
+                  </tr>
+                  <tr>
+                    <td class="mono">GST 101</td>
+                    <td>72</td>
+                    <td><span class="grade-badge grade-badge--A">A</span></td>
+                    <td>5.0</td>
+                    <td>1</td>
+                    <td class="highlight-cell">5.0</td>
+                  </tr>
+                  <tr>
+                    <td class="mono">PHY 101</td>
+                    <td>47</td>
+                    <td><span class="grade-badge grade-badge--D">D</span></td>
+                    <td>2.0</td>
+                    <td>3</td>
+                    <td class="highlight-cell">6.0</td>
+                  </tr>
+                  <tr class="example-table__total">
+                    <td colspan="4"><strong>Totals</strong></td>
+                    <td><strong>12</strong></td>
+                    <td><strong>44.0</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="formula-result">
+              <span>Semester GPA</span>
+              <span class="formula-result-eq">= 44.0 ÷ 12 = <strong>3.67</strong></span>
+            </div>
+
+            <div class="callout callout--success">
+              <span class="callout-icon">✓</span>
+              <div>
+                This is exactly what GPA Pro computes when you enter those five courses. Try it —
+                the result will match to two decimal places.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <hr class="article-divider" />
+
+        <!-- ─── Quality Points ────────────────────────────────────── -->
+        <article
+          class="docs-article"
+          id="quality-points"
+          data-tags="quality points formula weighted"
+        >
+          <header class="article-header">
+            <span class="article-category">Getting Started</span>
+            <h2 class="article-title">Quality Points Explained</h2>
+            <p class="article-subtitle">The fundamental unit of every GPA calculation.</p>
+          </header>
+
+          <div class="article-body">
+            <p>
+              A <strong>quality point</strong> is simply a course's grade point multiplied by its
+              credit units. It is the "contribution" of one course to your overall GPA.
+            </p>
+
+            <div class="callout callout--info">
+              <span class="callout-icon">📐</span>
+              <div>
+                <strong>Quality Points = Grade Point × Credit Units</strong><br />
+                A grade of B (4.0) in a 3-unit course contributes
+                <code>4.0 × 3 = 12.0</code> quality points. The same B in a 1-unit course
+                contributes only <code>4.0 × 1 = 4.0</code> quality points.
+              </div>
+            </div>
+
+            <p>
+              This is why high-unit courses are both an opportunity and a risk: an A in a 4-unit
+              course adds 20 quality points — more than two A grades in two 2-unit courses would add
+              separately.
+            </p>
+
+            <h3>Interactive Quality Point Table</h3>
+            <p>How many quality points does each grade earn across different credit unit values?</p>
+            <div class="qp-grid-wrapper">
+              <table class="qp-grid">
+                <thead>
+                  <tr>
+                    <th>Grade (GP)</th>
+                    <th>1 Unit</th>
+                    <th>2 Units</th>
+                    <th>3 Units</th>
+                    <th>4 Units</th>
+                    <th>6 Units</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="qp-row--A">
+                    <td><span class="grade-badge grade-badge--A">A</span> — 5.0</td>
+                    <td>5.0</td>
+                    <td>10.0</td>
+                    <td>15.0</td>
+                    <td>20.0</td>
+                    <td>30.0</td>
+                  </tr>
+                  <tr class="qp-row--B">
+                    <td><span class="grade-badge grade-badge--B">B</span> — 4.0</td>
+                    <td>4.0</td>
+                    <td>8.0</td>
+                    <td>12.0</td>
+                    <td>16.0</td>
+                    <td>24.0</td>
+                  </tr>
+                  <tr class="qp-row--C">
+                    <td><span class="grade-badge grade-badge--C">C</span> — 3.0</td>
+                    <td>3.0</td>
+                    <td>6.0</td>
+                    <td>9.0</td>
+                    <td>12.0</td>
+                    <td>18.0</td>
+                  </tr>
+                  <tr class="qp-row--D">
+                    <td><span class="grade-badge grade-badge--D">D</span> — 2.0</td>
+                    <td>2.0</td>
+                    <td>4.0</td>
+                    <td>6.0</td>
+                    <td>8.0</td>
+                    <td>12.0</td>
+                  </tr>
+                  <tr class="qp-row--E">
+                    <td><span class="grade-badge grade-badge--E">E</span> — 1.0</td>
+                    <td>1.0</td>
+                    <td>2.0</td>
+                    <td>3.0</td>
+                    <td>4.0</td>
+                    <td>6.0</td>
+                  </tr>
+                  <tr class="qp-row--F">
+                    <td><span class="grade-badge grade-badge--F">F</span> — 0.0</td>
+                    <td>0.0</td>
+                    <td>0.0</td>
+                    <td>0.0</td>
+                    <td>0.0</td>
+                    <td>0.0</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </article>
+
+        <hr class="article-divider" />
+
+        <!-- ════════════════════════════════════════════════════════
+           SECTION 2 — NIGERIAN 5.0 SCALE
+           ════════════════════════════════════════════════════════ -->
+
+        <article
+          class="docs-article"
+          id="grading-scale"
+          data-tags="grading scale 5.0 nigerian score"
+        >
+          <header class="article-header">
+            <span class="article-category">Nigerian 5.0 Scale</span>
+            <h2 class="article-title">The Nigerian 5.0 Grading Scale</h2>
+            <p class="article-subtitle">
+              Score ranges, letter grades, and grade points — all in one place.
+            </p>
+          </header>
+
+          <div class="article-body">
+            <p>
+              Nigerian federal universities (and most state and private universities) operate on a
+              <strong>5.0 grade point scale</strong>. The conversion from a percentage score to a
+              letter grade is fixed:
+            </p>
+
+            <div class="scale-cards">
+              <div class="scale-card scale-card--A">
+                <div class="scale-card-grade">A</div>
+                <div class="scale-card-range">70 – 100</div>
+                <div class="scale-card-point">5.0 points</div>
+                <div class="scale-card-label">Excellent</div>
+              </div>
+              <div class="scale-card scale-card--B">
+                <div class="scale-card-grade">B</div>
+                <div class="scale-card-range">60 – 69</div>
+                <div class="scale-card-point">4.0 points</div>
+                <div class="scale-card-label">Very Good</div>
+              </div>
+              <div class="scale-card scale-card--C">
+                <div class="scale-card-grade">C</div>
+                <div class="scale-card-range">50 – 59</div>
+                <div class="scale-card-point">3.0 points</div>
+                <div class="scale-card-label">Good</div>
+              </div>
+              <div class="scale-card scale-card--D">
+                <div class="scale-card-grade">D</div>
+                <div class="scale-card-range">45 – 49</div>
+                <div class="scale-card-point">2.0 points</div>
+                <div class="scale-card-label">Fair</div>
+              </div>
+              <div class="scale-card scale-card--E">
+                <div class="scale-card-grade">E</div>
+                <div class="scale-card-range">40 – 44</div>
+                <div class="scale-card-point">1.0 point</div>
+                <div class="scale-card-label">Pass</div>
+              </div>
+              <div class="scale-card scale-card--F">
+                <div class="scale-card-grade">F</div>
+                <div class="scale-card-range">0 – 39</div>
+                <div class="scale-card-point">0.0 points</div>
+                <div class="scale-card-label">Fail</div>
+              </div>
+            </div>
+
+            <div class="callout callout--warning">
+              <span class="callout-icon">⚠️</span>
+              <div>
+                <strong>Note on institutional variation:</strong> A small number of universities use
+                slightly different cutoffs (e.g., 75+ for A, 65–74 for B). Always verify your
+                institution's specific scale in your student handbook. GPA Pro uses the NUC standard
+                scale above.
+              </div>
+            </div>
+
+            <h3>Why the jump from E to D is the most important boundary</h3>
+            <p>
+              Notice that grades E (40–44) and D (45–49) are both passing grades but earn only 1.0
+              and 2.0 points respectively. The jump from an F to an E is worth 1 quality point per
+              credit unit. But the jump from E (1.0) to C (3.0) — just 6–10 more marks on your exam
+              — is worth <strong>2 extra quality points per unit</strong>. This is the most
+              cost-effective improvement a struggling student can make.
+            </p>
+          </div>
+        </article>
+
+        <hr class="article-divider" />
+
+        <!-- ─── Honor Classifications ─────────────────────────────── -->
+        <article
+          class="docs-article"
+          id="honor-classes"
+          data-tags="first class second class honor classification degree"
+        >
+          <header class="article-header">
+            <span class="article-category">Nigerian 5.0 Scale</span>
+            <h2 class="article-title">Honor Degree Classifications</h2>
+            <p class="article-subtitle">
+              What your exit CGPA means for the class of degree you receive.
+            </p>
+          </header>
+
+          <div class="article-body">
+            <p>
+              At the end of your programme, your final CGPA determines the
+              <strong>class of degree</strong> printed on your certificate and transcript. This is a
+              permanent classification that follows you throughout your career.
+            </p>
+
+            <div class="honor-cards">
+              <div class="honor-card honor-card--first">
+                <div class="honor-card-badge">🏅</div>
+                <div class="honor-card-info">
+                  <div class="honor-card-name">First Class Honours</div>
+                  <div class="honor-card-range">CGPA: 4.50 – 5.00</div>
+                  <p class="honor-card-desc">
+                    The highest degree classification. Typically required for direct PhD admission
+                    and most overseas funded postgraduate programmes. Fewer than 5% of graduates
+                    achieve this in most programmes.
+                  </p>
+                </div>
+              </div>
+              <div class="honor-card honor-card--second-upper">
+                <div class="honor-card-badge">🥇</div>
+                <div class="honor-card-info">
+                  <div class="honor-card-name">Second Class Honours (Upper)</div>
+                  <div class="honor-card-range">CGPA: 3.50 – 4.49</div>
+                  <p class="honor-card-desc">
+                    Widely regarded as the minimum for competitive employment, most scholarships,
+                    and postgraduate admissions. The most common target classification.
+                  </p>
+                </div>
+              </div>
+              <div class="honor-card honor-card--second-lower">
+                <div class="honor-card-badge">🥈</div>
+                <div class="honor-card-info">
+                  <div class="honor-card-name">Second Class Honours (Lower)</div>
+                  <div class="honor-card-range">CGPA: 2.40 – 3.49</div>
+                  <p class="honor-card-desc">
+                    A valid degree classification. Some employers and institutions accept this with
+                    strong other credentials. Most Nigerian NYSC placements do not discriminate
+                    between Upper and Lower 2nd Class.
+                  </p>
+                </div>
+              </div>
+              <div class="honor-card honor-card--third">
+                <div class="honor-card-badge">🥉</div>
+                <div class="honor-card-info">
+                  <div class="honor-card-name">Third Class Honours</div>
+                  <div class="honor-card-range">CGPA: 1.50 – 2.39</div>
+                  <p class="honor-card-desc">
+                    A degree is still conferred. Many graduate programmes and employers have minimum
+                    CGPA requirements that this class does not meet, but it opens pathways for
+                    professional certifications and experience-based careers.
+                  </p>
+                </div>
+              </div>
+              <div class="honor-card honor-card--pass">
+                <div class="honor-card-badge">📋</div>
+                <div class="honor-card-info">
+                  <div class="honor-card-name">Pass</div>
+                  <div class="honor-card-range">CGPA: 1.00 – 1.49</div>
+                  <p class="honor-card-desc">
+                    The student graduates but without an Honours classification. Policies vary —
+                    some universities issue an Ordinary degree in this range.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <hr class="article-divider" />
+
+        <!-- ─── Pass vs Fail ──────────────────────────────────────── -->
+        <article
+          class="docs-article"
+          id="pass-vs-fail"
+          data-tags="carryover fail supplementary repeat probation"
+        >
+          <header class="article-header">
+            <span class="article-category">Nigerian 5.0 Scale</span>
+            <h2 class="article-title">Pass, Fail & Carry-over Courses</h2>
+            <p class="article-subtitle">What an F actually means — and how it follows your CGPA.</p>
+          </header>
+
+          <div class="article-body">
+            <p>
+              In Nigeria's university system, an F (score below 40) means the course is
+              <strong>failed</strong> and must be repeated (carried over to the next session).
+              Crucially, <strong>the F grade is not erased</strong> when you retake the course —
+              both the original F and the new grade appear on your transcript and are used to
+              compute your CGPA.
+            </p>
+
+            <h3>Concrete impact of one F on your CGPA</h3>
+            <p>Suppose you score 0 quality points on a 3-unit course (F grade):</p>
+
+            <div class="impact-block">
+              <div class="impact-before">
+                <span class="impact-label">Without the F</span>
+                <span class="impact-value">3.80 CGPA</span>
+                <span class="impact-sub">60 CU, 228 QP</span>
+              </div>
+              <div class="impact-arrow">→</div>
+              <div class="impact-after">
+                <span class="impact-label">With one F (3 CU)</span>
+                <span class="impact-value impact-value--danger">3.62 CGPA</span>
+                <span class="impact-sub">63 CU, 228 QP (0 added)</span>
+              </div>
+            </div>
+
+            <p>
+              A single F in a 3-unit course dropped this student from a potential First Class
+              corridor into the upper range of a 2nd Class Upper. They would need to earn additional
+              quality points in future semesters just to recover ground.
+            </p>
+
+            <div class="callout callout--info">
+              <span class="callout-icon">📌</span>
+              <div>
+                <strong>Supplementary exams:</strong> Many universities allow students to sit a
+                supplementary exam for a failed course. The maximum score achievable on a
+                supplementary is often capped at 40–50 (grade E or D). Check your senate regulations
+                — passing a supplementary does not erase the original F in CGPA computation at most
+                institutions.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <hr class="article-divider" />
+
+        <!-- ════════════════════════════════════════════════════════
+           SECTION 3 — USING GPA PRO
+           ════════════════════════════════════════════════════════ -->
+
+        <article class="docs-article" id="how-to-use" data-tags="how to use app guide tutorial">
+          <header class="article-header">
+            <span class="article-category">Using GPA Pro</span>
+            <h2 class="article-title">Quick Start Guide</h2>
+            <p class="article-subtitle">
+              From zero to a fully tracked academic record in under two minutes.
+            </p>
+          </header>
+
+          <div class="article-body">
+            <ol class="steps-list">
+              <li class="step">
+                <span class="step-number">01</span>
+                <div class="step-content">
+                  <h4 class="step-title">Open the Dashboard</h4>
+                  <p>
+                    Navigate to <a href="/index.html">index.html</a>. The dashboard loads with empty
+                    rings (CGPA 0.00) and no semesters.
+                  </p>
+                </div>
+              </li>
+              <li class="step">
+                <span class="step-number">02</span>
+                <div class="step-content">
+                  <h4 class="step-title">Add your first semester</h4>
+                  <p>
+                    Click <strong>"+ Semester"</strong> in the header or
+                    <strong>"Add Semester"</strong> in the Academic Record section. Name it anything
+                    — "100L First Semester", "Year 1 Sem 1", etc.
+                  </p>
+                </div>
+              </li>
+              <li class="step">
+                <span class="step-number">03</span>
+                <div class="step-content">
+                  <h4 class="step-title">Add your courses</h4>
+                  <p>
+                    Click the semester tab, then fill in the inline form at the bottom: course code,
+                    title, score (0–100), and credit units. A live grade preview shows your grade as
+                    you type. Click <strong>Add</strong>.
+                  </p>
+                </div>
+              </li>
+              <li class="step">
+                <span class="step-number">04</span>
+                <div class="step-content">
+                  <h4 class="step-title">Watch your GPA calculate</h4>
+                  <p>
+                    The SVG rings and stats update instantly. Add more semesters to see your CGPA
+                    and the trend chart grow.
+                  </p>
+                </div>
+              </li>
+              <li class="step">
+                <span class="step-number">05</span>
+                <div class="step-content">
+                  <h4 class="step-title">Explore the Calculator page</h4>
+                  <p>
+                    Visit <a href="/calculator.html">calculator.html</a> for the What-If planner,
+                    student profile, and a print-ready transcript.
+                  </p>
+                </div>
+              </li>
+            </ol>
+
+            <div class="callout callout--success">
+              <span class="callout-icon">💾</span>
+              <div>
+                <strong>Your data is saved automatically.</strong> GPA Pro uses your browser's
+                IndexedDB storage — no account, no server, no login required. Data persists across
+                page reloads. Clearing your browser data will erase it, so use the Print → Save as
+                PDF feature to keep a permanent copy.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <hr class="article-divider" />
+
+        <!-- ─── Previous Record ───────────────────────────────────── -->
+        <article
+          class="docs-article"
+          id="previous-record"
+          data-tags="previous record transfer institutional cgpa"
+        >
+          <header class="article-header">
+            <span class="article-category">Using GPA Pro</span>
+            <h2 class="article-title">Previous Institutional Record</h2>
+            <p class="article-subtitle">
+              For transfers, deferrals, or students with prior credits to account for.
+            </p>
+          </header>
+
+          <div class="article-body">
+            <p>
+              If you transferred from another institution, deferred and returned, or have credits
+              from a pre-degree programme, the <strong>Previous Record</strong>
+              feature on the Calculator page lets you feed those prior credits into your CGPA
+              calculation.
+            </p>
+
+            <h3>What to enter</h3>
+            <ul class="article-list">
+              <li>
+                <strong>Previous Credit Units</strong> — the total number of credit units from the
+                prior institution or session
+              </li>
+              <li>
+                <strong>Previous Quality Points</strong> — total quality points earned (Previous
+                CGPA × Previous Credit Units)
+              </li>
+            </ul>
+
+            <div class="callout callout--info">
+              <span class="callout-icon">📐</span>
+              <div>
+                <strong>Example:</strong> You transferred with a CGPA of 3.80 over 45 credit
+                units.<br />
+                Enter: <em>Credit Units = 45</em>, <em>Quality Points = 3.80 × 45 = 171.0</em><br />
+                GPA Pro will then combine this with your current semester data for a unified CGPA.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <hr class="article-divider" />
+
+        <!-- ─── What-If ───────────────────────────────────────────── -->
+        <article
+          class="docs-article"
+          id="what-if-tool"
+          data-tags="what if calculator target gpa planner"
+        >
+          <header class="article-header">
+            <span class="article-category">Using GPA Pro</span>
+            <h2 class="article-title">The What-If Calculator</h2>
+            <p class="article-subtitle">
+              Find out exactly what GPA you need in future semesters to hit your target.
+            </p>
+          </header>
+
+          <div class="article-body">
+            <p>
+              The What-If calculator answers the question every student asks:
+              <em>"What GPA do I need to graduate with a First Class?"</em>
+            </p>
+
+            <h3>How it works</h3>
+            <p>
+              Enter your <strong>target CGPA</strong> and the number of
+              <strong>credit units you plan to take</strong> before graduation. The calculator
+              solves this equation:
+            </p>
+
+            <div class="formula-block formula-block--sm">
+              <code class="formula-code">
+                Required GPA = (Target CGPA × (Current CU + Planned CU) − Current Quality Points) ÷
+                Planned CU
+              </code>
+            </div>
+
+            <h3>Practical example</h3>
+            <p>
+              You currently have a 3.40 CGPA over 60 credit units. You want to graduate with a 3.50
+              (2nd Class Upper). You have 60 credit units remaining.
+            </p>
+            <div class="impact-block">
+              <div class="impact-before">
+                <span class="impact-label">Current CGPA</span>
+                <span class="impact-value">3.40</span>
+                <span class="impact-sub">60 CU earned</span>
+              </div>
+              <div class="impact-arrow">→</div>
+              <div class="impact-after impact-after--success">
+                <span class="impact-label">Required GPA (60 CU)</span>
+                <span class="impact-value impact-value--success">3.60</span>
+                <span class="impact-sub">Per remaining semester avg</span>
+              </div>
+            </div>
+            <p>
+              A 3.60 per semester average is ambitious but achievable. The tool will tell you if
+              your target is mathematically impossible given the remaining credit units (e.g. you'd
+              need a 6.2/5.0 — which is impossible).
+            </p>
+          </div>
+        </article>
+
+        <hr class="article-divider" />
+
+        <!-- ─── Transcript ─────────────────────────────────────────── -->
+        <article class="docs-article" id="transcript" data-tags="transcript print pdf export">
+          <header class="article-header">
+            <span class="article-category">Using GPA Pro</span>
+            <h2 class="article-title">Printing Your Transcript</h2>
+            <p class="article-subtitle">
+              Generate a clean, professional-looking academic record PDF.
+            </p>
+          </header>
+
+          <div class="article-body">
+            <p>The Calculator page includes a full transcript view. To save it as a PDF:</p>
+            <ol class="steps-list steps-list--compact">
+              <li class="step step--compact">
+                <span class="step-number">01</span>
+                <div class="step-content">
+                  Click <strong>"🖨 Print"</strong> in the top-right of the Calculator page.
+                </div>
+              </li>
+              <li class="step step--compact">
+                <span class="step-number">02</span>
+                <div class="step-content">
+                  In the print dialog, change the destination to <strong>"Save as PDF"</strong>.
+                </div>
+              </li>
+              <li class="step step--compact">
+                <span class="step-number">03</span>
+                <div class="step-content">
+                  Set paper size to <strong>A4</strong>, margins to <strong>Minimum</strong>.
+                </div>
+              </li>
+              <li class="step step--compact">
+                <span class="step-number">04</span>
+                <div class="step-content">
+                  Click <strong>Save</strong>. The sidebar, navigation, and buttons are
+                  automatically hidden — only the transcript document prints.
+                </div>
+              </li>
+            </ol>
+            <div class="callout callout--info">
+              <span class="callout-icon">💡</span>
+              <div>
+                Fill in your <strong>Student Profile</strong> (name and matric number) on the
+                Calculator page before printing — it appears in the transcript header.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <hr class="article-divider" />
+
+        <!-- ════════════════════════════════════════════════════════
+           SECTION 4 — STRATEGY & INSIGHT
+           ════════════════════════════════════════════════════════ -->
+
+        <article class="docs-article" id="raise-gpa" data-tags="improve raise gpa strategy tips">
+          <header class="article-header">
+            <span class="article-category">Strategy & Insight</span>
+            <h2 class="article-title">How to Raise Your GPA</h2>
+            <p class="article-subtitle">Evidence-based strategies, not generic advice.</p>
+          </header>
+
+          <div class="article-body">
+            <p>
+              Raising a CGPA is harder than people expect because of <strong>inertia</strong> — the
+              more credits you have accumulated, the harder each new semester can move the needle.
+              Here are strategies that actually work mathematically.
+            </p>
+
+            <h3>1. Attack the unit-heavy courses first</h3>
+            <p>
+              A 4-unit course is worth four times as much as a 1-unit course. Plot your remaining
+              courses by credit unit and focus revision energy on the heaviest ones. Raising a
+              4-unit course from a C (3.0 × 4 = 12 QP) to an A (5.0 × 4 = 20 QP) gains you 8 quality
+              points — the same as getting A instead of C in
+              <em>eight separate 1-unit courses</em>.
+            </p>
+
+            <h3>2. Prioritise the E→C boundary</h3>
+            <p>
+              Moving a score from 40 (E, 1.0 GP) to 50 (C, 3.0 GP) adds 2 quality points per credit
+              unit. Moving from a 60 (B, 4.0 GP) to 70 (A, 5.0 GP) adds only 1. If you're scoring in
+              the E/D range in multiple courses, fixing those has a larger payoff than polishing
+              already-passing grades.
+            </p>
+
+            <h3>3. Never fail a high-unit course</h3>
+            <p>
+              An F in a 3-unit course is equivalent to zero quality points across 3 units. If you
+              pass at E (1.0), you at least earn 3 quality points. The difference over a full
+              programme can be 20+ quality points — the equivalent of converting several B grades to
+              A grades.
+            </p>
+
+            <h3>4. Use the What-If calculator before each semester</h3>
+            <p>
+              Before registration, calculate the GPA you need next semester to stay on track for
+              your target classification. This gives you a concrete numerical goal rather than a
+              vague aspiration.
+            </p>
+
+            <div class="callout callout--warning">
+              <span class="callout-icon">⏰</span>
+              <div>
+                <strong>The earlier, the better.</strong> Raising your CGPA from 3.40 to 3.50
+                requires a 3.60 average over the remaining 60 units. The same increase over only 30
+                remaining units requires a 3.80. Time really does run out.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <hr class="article-divider" />
+
+        <!-- ─── Credit Units ───────────────────────────────────────── -->
+        <article class="docs-article" id="credit-units" data-tags="credit units weight course load">
+          <header class="article-header">
+            <span class="article-category">Strategy & Insight</span>
+            <h2 class="article-title">Credit Units & Their Weight</h2>
+            <p class="article-subtitle">
+              Not all courses are equal — here's how to think about your course load.
+            </p>
+          </header>
+
+          <div class="article-body">
+            <p>
+              Credit units (sometimes called "credit hours") represent the workload and weight of a
+              course. In Nigeria, 1 credit unit typically corresponds to 1 lecture hour per week for
+              a 15-week semester — plus practical, tutorial, or lab hours.
+            </p>
+
+            <h3>Typical credit unit assignments</h3>
+            <ul class="article-list">
+              <li><strong>1 unit</strong> — Use of Library (GST 101), PE, short electives</li>
+              <li>
+                <strong>2 units</strong> — Most general studies (GST) courses, some science
+                practicals
+              </li>
+              <li><strong>3 units</strong> — Standard core courses (MTH 201, CSC 301, etc.)</li>
+              <li>
+                <strong>4 units</strong> — Heavy core technical courses, some final-year courses
+              </li>
+              <li><strong>6 units</strong> — Final-year project (PROJ 401) at many institutions</li>
+            </ul>
+
+            <div class="callout callout--info">
+              <span class="callout-icon">🎯</span>
+              <div>
+                <strong>Final-year project strategy:</strong> If your project is 6 units, an A grade
+                earns you 30 quality points — more than any other single course in your programme.
+                Treat it accordingly.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <hr class="article-divider" />
+
+        <!-- ─── Recovery Math ─────────────────────────────────────── -->
+        <article
+          class="docs-article"
+          id="recovery"
+          data-tags="recovery gpa math calculation semesters"
+        >
+          <header class="article-header">
+            <span class="article-category">Strategy & Insight</span>
+            <h2 class="article-title">GPA Recovery Math</h2>
+            <p class="article-subtitle">
+              The exact numbers behind climbing from any CGPA to a target classification.
+            </p>
+          </header>
+
+          <div class="article-body">
+            <p>
+              How many semesters of perfect grades does it take to recover from a bad year? The
+              table below answers this for the most common recovery scenarios, assuming 15 credit
+              units per semester.
+            </p>
+
+            <div class="recovery-table-wrapper">
+              <table class="recovery-table">
+                <thead>
+                  <tr>
+                    <th>Current CGPA</th>
+                    <th>Current CU</th>
+                    <th>Target: 2nd Upper (3.50)</th>
+                    <th>Target: First Class (4.50)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="mono">2.40</td>
+                    <td>60</td>
+                    <td>
+                      Need 4.93/sem × 7 semesters
+                      <span class="recovery-verdict recovery-verdict--impossible">Impossible</span>
+                    </td>
+                    <td class="recovery-verdict recovery-verdict--impossible">Impossible</td>
+                  </tr>
+                  <tr>
+                    <td class="mono">2.80</td>
+                    <td>60</td>
+                    <td>
+                      Need ~4.20/sem over 60 CU
+                      <span class="recovery-verdict recovery-verdict--hard">Very hard</span>
+                    </td>
+                    <td class="recovery-verdict recovery-verdict--impossible">Impossible</td>
+                  </tr>
+                  <tr>
+                    <td class="mono">3.20</td>
+                    <td>60</td>
+                    <td>
+                      Need ~3.80/sem over 60 CU
+                      <span class="recovery-verdict recovery-verdict--hard">Challenging</span>
+                    </td>
+                    <td class="recovery-verdict recovery-verdict--impossible">Impossible</td>
+                  </tr>
+                  <tr>
+                    <td class="mono">3.40</td>
+                    <td>60</td>
+                    <td>
+                      Need ~3.60/sem over 60 CU
+                      <span class="recovery-verdict recovery-verdict--ok">Achievable</span>
+                    </td>
+                    <td class="recovery-verdict recovery-verdict--impossible">Impossible</td>
+                  </tr>
+                  <tr>
+                    <td class="mono">3.80</td>
+                    <td>60</td>
+                    <td class="recovery-verdict recovery-verdict--ok">Already there</td>
+                    <td>
+                      Need ~5.20/sem —
+                      <span class="recovery-verdict recovery-verdict--impossible">Impossible</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="mono">4.20</td>
+                    <td>60</td>
+                    <td class="recovery-verdict recovery-verdict--ok">Already there</td>
+                    <td>
+                      Need ~4.80/sem over 60 CU
+                      <span class="recovery-verdict recovery-verdict--hard">Very hard</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p>
+              Use the <a href="/calculator.html">What-If Calculator</a> to run this exact arithmetic
+              for your own situation with your real credit unit counts.
+            </p>
+          </div>
+        </article>
+
+        <hr class="article-divider" />
+
+        <!-- ─── First Class Roadmap ───────────────────────────────── -->
+        <article
+          class="docs-article"
+          id="first-class"
+          data-tags="first class roadmap 4.5 cgpa goal strategy"
+        >
+          <header class="article-header">
+            <span class="article-category">Strategy & Insight</span>
+            <h2 class="article-title">The First Class Roadmap</h2>
+            <p class="article-subtitle">
+              What it mathematically takes to graduate with a 4.50+ CGPA.
+            </p>
+          </header>
+
+          <div class="article-body">
+            <p>
+              First Class (≥ 4.50 CGPA) means that across your entire programme, your
+              <em>average</em> course performance must be between A and B+ — every semester, not
+              just a few good ones. Here is what that looks like numerically.
+            </p>
+
+            <h3>The minimum grade mix for First Class</h3>
+            <p>
+              To maintain a 4.50 CGPA, you need a weighted average grade point of at least 4.50 per
+              credit unit. That means in any semester with 15 credit units, you need at least 67.5
+              quality points. Some possible grade combinations:
+            </p>
+
+            <ul class="article-list">
+              <li>All 5 A grades (5.0 × 15 = 75 QP) — exceeds target ✓</li>
+              <li>10 units of A + 5 units of B: (50 + 20 = 70 QP) ÷ 15 = 4.67 ✓</li>
+              <li>9 units of A + 6 units of B: (45 + 24 = 69 QP) ÷ 15 = 4.60 ✓</li>
+              <li>6 units of A + 9 units of B: (30 + 36 = 66 QP) ÷ 15 = 4.40 ✗</li>
+            </ul>
+
+            <p>
+              In plain terms: you can afford some B grades, but
+              <strong
+                >even a single C in a 3-unit course requires compensating with A grades in at least
+                6 more credit units</strong
+              >
+              just to break even at 4.50 for that semester.
+            </p>
+
+            <div class="callout callout--info">
+              <span class="callout-icon">🏅</span>
+              <div>
+                First Class is not about perfection — it is about <strong>consistency</strong>. One
+                outstanding semester cannot save a programme of average ones. But a steady diet of A
+                and B grades in major courses, with no fails, gets most students there over 4–5
+                years.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <hr class="article-divider" />
+
+        <!-- ════════════════════════════════════════════════════════
+           SECTION 5 — FAQ
+           ════════════════════════════════════════════════════════ -->
+
+        <article class="docs-article" id="faq" data-tags="faq questions answers help">
+          <header class="article-header">
+            <span class="article-category">FAQ</span>
+            <h2 class="article-title">Frequently Asked Questions</h2>
+            <p class="article-subtitle">Quick answers to the most common questions.</p>
+          </header>
+
+          <div class="article-body">
+            <dl class="faq-list">
+              <div class="faq-item" data-open="false">
+                <dt class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                  <span>Does GPA Pro store my data online?</span>
+                  <span class="faq-chevron" aria-hidden="true">▶</span>
+                </dt>
+                <dd class="faq-answer">
+                  No. All data is stored exclusively in your browser's IndexedDB — a local database
+                  on your device. Nothing is sent to any server. Clearing your browser storage will
+                  erase your data, so use the Print → PDF feature to make a permanent copy.
+                </dd>
+              </div>
+
+              <div class="faq-item" data-open="false">
+                <dt class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                  <span>Can I use GPA Pro on mobile?</span>
+                  <span class="faq-chevron" aria-hidden="true">▶</span>
+                </dt>
+                <dd class="faq-answer">
+                  Yes. GPA Pro is fully responsive. The layout adapts to phone screens and works in
+                  any modern mobile browser (Chrome, Safari, Firefox). IndexedDB is supported across
+                  all modern browsers including mobile ones.
+                </dd>
+              </div>
+
+              <div class="faq-item" data-open="false">
+                <dt class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                  <span>My university uses a different grading scale — can I still use this?</span>
+                  <span class="faq-chevron" aria-hidden="true">▶</span>
+                </dt>
+                <dd class="faq-answer">
+                  GPA Pro currently uses the NUC standard Nigerian 5.0 scale (A: 70–100, B: 60–69,
+                  C: 50–59, D: 45–49, E: 40–44, F: 0–39). If your institution uses different
+                  cutoffs, the grades shown may not match — but you can still use the score field
+                  and the quality points calculation will be based on the grade point assigned by
+                  GPA Pro's scale. Custom scale support is planned for the premium tier.
+                </dd>
+              </div>
+
+              <div class="faq-item" data-open="false">
+                <dt class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                  <span>What does "Previous Institutional Record" mean?</span>
+                  <span class="faq-chevron" aria-hidden="true">▶</span>
+                </dt>
+                <dd class="faq-answer">
+                  It lets you include credits and quality points from a previous institution or
+                  session that are not already entered as semesters in the app. This is useful for
+                  transfer students or those who deferred and have an official CGPA from a prior
+                  session to account for. See the
+                  <a href="#previous-record">Previous Institutional Record</a> guide above.
+                </dd>
+              </div>
+
+              <div class="faq-item" data-open="false">
+                <dt class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                  <span>I passed my carry-over exam. Why does my CGPA still look low?</span>
+                  <span class="faq-chevron" aria-hidden="true">▶</span>
+                </dt>
+                <dd class="faq-answer">
+                  At most Nigerian universities, when you retake a carry-over course,
+                  <em>both</em> the original F grade and the new grade count in your CGPA. The F
+                  contributed 0 quality points to your numerator but added credit units to your
+                  denominator — pulling your average down permanently. You can model this in GPA Pro
+                  by entering the course twice (once with the original failing score and once with
+                  the retake score).
+                </dd>
+              </div>
+
+              <div class="faq-item" data-open="false">
+                <dt class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                  <span>How is the trend chart calculated?</span>
+                  <span class="faq-chevron" aria-hidden="true">▶</span>
+                </dt>
+                <dd class="faq-answer">
+                  The trend chart shows two lines: (1) your individual semester GPA for each
+                  semester (dashed blue line), and (2) your running CGPA as it accumulates (solid
+                  gold line). The CGPA line is recalculated after each semester by summing all
+                  quality points and all credit units up to that point.
+                </dd>
+              </div>
+
+              <div class="faq-item" data-open="false">
+                <dt class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                  <span>What's coming in the premium tier?</span>
+                  <span class="faq-chevron" aria-hidden="true">▶</span>
+                </dt>
+                <dd class="faq-answer">
+                  The premium tier will introduce structured programme tracking — you set your
+                  degree duration (3, 4, or 5 years) and GPA Pro auto-generates the level structure
+                  (100L through 500L). Each level will have its own GPA, and the system will compute
+                  your programme CGPA and final classification. Additional features include
+                  carry-over tracking, PDF export, and a target GPA projector that shows what you
+                  need in each remaining semester across your full programme.
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </article>
+
+        <!-- ── Back to top ───────────────────────────────────────── -->
+        <div class="back-to-top-wrapper">
+          <a href="#" class="btn btn--ghost btn--sm back-to-top" aria-label="Back to top">
+            ↑ Back to top
+          </a>
+          <a href="/index.html" class="btn btn--primary btn--sm"> Open GPA Pro → </a>
+        </div>
+      </main>
+    </div>
+
+    <!-- ── Toast container ───────────────────────────────────────── -->
+    <div class="toast-container" id="toast-container" role="status" aria-live="polite"></div>
+
+    <script type="module" src="/src/entries/docs.js"></script>
+  </body>
+</html>

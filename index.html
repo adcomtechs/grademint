@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GPA Pro — Advanced GPA & CGPA Calculator</title>
+    <meta
+      name="description"
+      content="Calculate your GPA and CGPA instantly with GPA Pro. Supports Nigerian 5.0 grading system, semester tracking, and real-time results."
+    />
+    <meta name="theme-color" content="#0c0f1a" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; object-src 'none'; base-uri 'self'; form-action 'self'"
+    />
+    <link rel="icon" href="/favicon.ico" type="image/ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,400;0,600;0,700;1,400&family=DM+Mono:wght@400;500&family=Lato:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/styles/app.css" />
+  </head>
+
+  <body>
+    <header class="app-header" id="app-header"></header>
+
+    <!-- ══ MAIN CONTENT ═════════════════════════════════════════════════════ -->
+    <main class="app-main" id="app-main">
+      <!-- ══════════════════════════════════════════════════════════════════
+             VIEW: DASHBOARD  (#dashboard)
+             Default view. Hidden by ViewRouter when Analytics is active.
+        ══════════════════════════════════════════════════════════════════ -->
+      <div id="dashboard-view">
+        <!-- ── HERO ZONE (always visible; hydrated by GPARings component) ── -->
+        <section class="hero-zone" id="dashboard-section" aria-label="Academic summary">
+          <!-- ── MAIN BODY ──────────────────────────────────────────────────────── -->
+          <div class="hero-body">
+            <!-- LEFT: Student identity -->
+            <div class="hero-identity">
+              <p class="identity-label">Academic Record</p>
+              <h1 class="identity-name" id="identity-name">Your Name</h1>
+              <div class="identity-fields">
+                <div class="identity-field">
+                  <span class="field-key d-val">Department</span>
+                  <span class="field-val" id="fv-dept">—</span>
+                </div>
+                <div class="identity-field">
+                  <span class="field-key">Level</span>
+                  <span class="field-val" id="fv-level">—</span>
+                </div>
+                <div class="identity-field">
+                  <span class="field-key">Scale</span>
+                  <span class="field-val" id="fv-scale">—</span>
+                </div>
+                <div class="identity-field">
+                  <span class="field-key">Session</span>
+                  <span class="field-val" id="fv-session">—</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- CENTER: CGPA ring SVG -->
+            <div class="hero-center">
+              <div class="cgpa-ring-wrap" id="cgpa-ring-wrap">
+                <svg class="cgpa-ring-svg" viewBox="0 0 200 200" aria-hidden="true">
+                  <circle class="ring-bg" cx="100" cy="100" r="84" />
+                  <!-- stroke-dashoffset starts at circumference (fully hidden fill) -->
+                  <circle
+                    class="ring-fill-cgpa"
+                    id="ring-fill-cgpa"
+                    cx="100"
+                    cy="100"
+                    r="84"
+                    stroke-dasharray="527.8"
+                    stroke-dashoffset="527.8"
+                    style="--circumference: 527.8; --target-offset: 527.8"
+                  />
+                </svg>
+                <div class="cgpa-ring-text" aria-live="polite">
+                  <span class="cgpa-value" id="cgpa-value">0.00</span>
+                  <!-- ① id added so GPARings can update "/ 5.00" → "/ 4.00" etc. -->
+                  <span class="cgpa-denom" id="cgpa-denom">/ 5.00</span>
+                </div>
+              </div>
+              <!-- ② id added — label text switches per mode -->
+              <p class="cgpa-ring-label" id="cgpa-label">Cumulative GPA</p>
+            </div>
+
+            <!-- RIGHT: Semester GPA ring + quick stats + GPA delta -->
+            <div class="hero-right">
+              <!-- Semester ring row -->
+              <div class="sem-ring-row">
+                <div class="sem-ring-wrap">
+                  <svg class="sem-ring-svg" viewBox="0 0 100 100" aria-hidden="true">
+                    <circle class="ring-bg" cx="50" cy="50" r="42" stroke-width="8" />
+                    <circle
+                      class="ring-fill-sem"
+                      id="ring-fill-sem"
+                      cx="50"
+                      cy="50"
+                      r="42"
+                      stroke-width="8"
+                      stroke-dasharray="263.9"
+                      stroke-dashoffset="263.9"
+                      style="--circumference: 263.9; --target-offset: 263.9"
+                    />
+                  </svg>
+                  <div class="sem-ring-text" aria-live="polite">
+                    <span class="sem-value" id="sem-value">0.00</span>
+                    <!-- ① id added for scale-aware denominator -->
+                    <span class="sem-denom" id="sem-denom">/ 5.00</span>
+                  </div>
+                </div>
+                <div class="sem-ring-meta">
+                  <!-- ② id added — "Semester GPA" ↔ "Programme GPA" -->
+                  <p class="sem-ring-label" id="sem-ring-label">Semester GPA</p>
+                  <p class="sem-ring-name" id="sem-ring-name">—</p>
+                </div>
+              </div>
+
+              <!-- Quick stats grid -->
+              <div class="hero-stats">
+                <div class="hstat">
+                  <span class="hstat-val" id="stat-sems">0</span>
+                  <!-- ③ id added — label changes per mode -->
+                  <span class="hstat-key" id="stat-sems-label">Semesters</span>
+                </div>
+                <div class="hstat">
+                  <span class="hstat-val" id="stat-cu">0</span>
+                  <span class="hstat-key" id="stat-cu-label">Credit Units</span>
+                </div>
+                <div class="hstat">
+                  <span class="hstat-val" id="stat-courses">0</span>
+                  <span class="hstat-key" id="stat-courses-label">Courses</span>
+                </div>
+              </div>
+
+              <!-- ④ GPA delta: "▲ +0.32 from 100L 1st Semester"
+                             Shown in semester mode only when a previous semester exists.
+                             hidden attribute removed by GPARings when there is data. -->
+              <div id="hero-delta" class="hero-delta" aria-live="polite" hidden></div>
+            </div>
+          </div>
+          <!-- /hero-body -->
+
+          <!-- ── SPARKLINE ROW ──────────────────────────────────────────────────────
+                     ⑤ Overview mode only — a mini bar chart showing all semester GPAs.
+                         • Each bar height = (gpa / maxGPA) × 100%, min-height 4px.
+                         • Bars coloured by tier: gold=First, green=2nd Upper, blue=2nd Lower…
+                         • The latest bar is outlined gold; the active (selected) bar is filled.
+                         • The first and last semester labels anchor the time axis.
+                         GPARings renders the bars as <div class="hero-spark-bar"> children
+                         of #hero-spark-bars; the track handles overflow.
+                ──────────────────────────────────────────────────────────────────────── -->
+          <div
+            class="hero-sparkline-row"
+            id="hero-sparkline-row"
+            hidden
+            aria-label="GPA history chart"
+          >
+            <span class="hero-spark-label" id="hero-spark-label">GPA History</span>
+            <div class="hero-spark-track">
+              <div
+                class="hero-spark-bars"
+                id="hero-spark-bars"
+                role="img"
+                aria-label="Semester GPA bars"
+              ></div>
+            </div>
+            <div class="hero-spark-axis" aria-hidden="true">
+              <span id="hero-spark-first"></span>
+              <span id="hero-spark-last"></span>
+            </div>
+          </div>
+
+          <!-- ── NEXT-TIER PROGRESS ────────────────────────────────────────────────
+                     ⑥ Both modes — shows how close the student is to the next honour tier.
+                         Layout: [thin bar track] [text: "0.35 more for First Class"]
+                         Hidden when: no data, or already at the top tier (First Class).
+                         The bar fill width = (cgpa − currentTierMin)/(nextTierMin − currentTierMin).
+                ──────────────────────────────────────────────────────────────────────── -->
+          <div
+            class="hero-tier-progress"
+            id="hero-tier-progress"
+            hidden
+            aria-label="Progress to next classification tier"
+          >
+            <div class="hero-tier-bar-track" role="presentation">
+              <div class="hero-tier-bar-fill" id="hero-tier-bar-fill"></div>
+            </div>
+            <p class="hero-tier-text" id="hero-tier-text" aria-live="polite"></p>
+          </div>
+
+          <!-- ── HERO FOOTER ────────────────────────────────────────────────────────
+                     Classification badge | trend | scope badge | record count
+                ──────────────────────────────────────────────────────────────────────── -->
+          <div class="hero-footer">
+            <!-- Written by GPARings: classification-badge span -->
+            <div id="hero-class-badge"></div>
+
+            <div class="hero-footer-right">
+              <!-- Trend direction indicator -->
+              <div id="hero-trend"></div>
+
+              <!-- ⑦ Scope badge: "∑ All Semesters" or "❑ This Semester" -->
+              <div id="hero-scope"></div>
+
+              <!-- Semester count / record label -->
+              <div class="record-meta" id="record-meta"></div>
+            </div>
+          </div>
+        </section>
+        <!-- /hero-zone / dashboard-section -->
+
+        <!-- ── SEMESTERS SECTION ──────────────────────────────────────── -->
+        <section id="semesters-section" hidden aria-label="Semester management">
+          <div class="desk" id="desk">
+            <!-- LEFT: Semester tabs + course table -->
+            <div class="desk-left">
+              <div class="panel-header">
+                <h2 class="panel-title">
+                  Academic Record
+                  <span id="record-count" aria-label="semester count"></span>
+                </h2>
+                <button class="btn btn--ghost btn--sm" id="btn-add-semester-2">
+                  ＋ Add Semester
+                </button>
+              </div>
+
+              <div
+                class="semester-tabs"
+                id="semester-tabs"
+                role="tablist"
+                aria-label="Semesters"
+              ></div>
+              <div id="semester-panel" role="tabpanel" aria-label="Semester courses"></div>
+            </div>
+
+            <!-- RIGHT: Academic Insights panel (populated by AcademicInsights.js) -->
+            <!--
+                      Previously: charts injected by _mountCharts() in dashboard.js.
+                      Now:        AcademicInsights component mounts here — Classification
+                                  Ladder, Goal Tracker, and Performance Highlights.
+                      Charts have moved to #analytics-view (see below).
+                    -->
+            <div class="desk-right" id="desk-right" aria-label="Academic insights"></div>
+          </div>
+          <!-- /desk -->
+        </section>
+        <!-- /semesters-section -->
+      </div>
+      <!-- /#dashboard-view -->
+
+      <!-- ══════════════════════════════════════════════════════════════════
+                     VIEW: ANALYTICS  (#analytics)
+                     Rendered by AnalyticsPanel.js; activated via ViewRouter.
+                ══════════════════════════════════════════════════════════════════ -->
+      <div id="analytics-view" hidden aria-label="Performance analytics">
+        <!--
+                      AnalyticsPanel.js renders its full structure here:
+                        - GPA Trend + Grade Distribution charts
+                        - Semester Breakdown table
+                        - Performance Metric cards
+                        - What-If calculator (quick version)
+                    -->
+      </div>
+      <!-- /#analytics-view -->
+
+      <!-- ══════════════════════════════════════════════════════════════════
+                     VIEW: TRANSCRIPT  (#transcript)
+                     Rendered by TranscriptView.js; print-ready academic record.
+                ══════════════════════════════════════════════════════════════════ -->
+      <div id="transcript-view" hidden aria-label="Academic transcript">
+        <!--
+                      TranscriptView (BaseComponent) renders the full styled transcript here:
+                        - Student header + summary bar
+                        - Per-semester course tables
+                        - Cumulative GPA + honor classification footer
+                        - Print / Save PDF button
+                    -->
+      </div>
+      <!-- /#transcript-view -->
+
+      <!-- ══════════════════════════════════════════════════════════════════
+                     VIEW: WHAT-IF CALCULATOR  (#whatif)
+                     Rendered by WhatIfView.js; dedicated academic planning tool.
+                ══════════════════════════════════════════════════════════════════ -->
+      <div id="whatif-view" hidden aria-label="What-If Calculator">
+        <!--
+                      WhatIfView (BaseComponent) renders five panels here:
+                        1. Current Standing   — CGPA ring, stats, next-tier progress bar
+                        2. Honour Ladder      — visual tier ladder with gap indicators
+                        3. Target Calculator  — preset buttons + slider + required GPA result
+                        4. Semester Simulator — add hypothetical semesters, canvas projection chart
+                        5. Sensitivity Table  — CGPA grid for GPA × CU combinations
+                    -->
+      </div>
+      <!-- /#whatif-view -->
+
+      <!-- 3. In <main> — add after #whatif-view div -->
+      <div id="profile-view" hidden aria-label="Profile & Settings">
+        <!--
+              ProfileView (BaseComponent) mounts here:
+                - StudentSection        — identity + scale selector
+                - PreviousRecordSection — transfer / carry-over credits
+                - DangerZoneSection     — full data reset (two-step)
+            -->
+      </div>
+    </main>
+    <!-- /app-main -->
+
+    <!-- ══ MODAL ════════════════════════════════════════════════════════════ -->
+    <div
+      class="modal-overlay"
+      id="modal-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-heading"
+    >
+      <div class="modal-box" id="modal-box" data-size="md">
+        <button class="modal-close" id="modal-close" aria-label="Close dialog">✕</button>
+        <div id="modal-content" class="modal-content"></div>
+      </div>
+    </div>
+
+    <!-- ══ TOAST CONTAINER ══════════════════════════════════════════════════ -->
+    <div
+      class="toast-container"
+      id="toast-container"
+      role="status"
+      aria-live="polite"
+      aria-atomic="false"
+    ></div>
+
+    <!-- ══ ENTRY POINT ══════════════════════════════════════════════════════ -->
+    <script type="module" src="/src/entries/dashboard.js"></script>
+  </body>
+</html>

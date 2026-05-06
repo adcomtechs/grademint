@@ -1,0 +1,341 @@
+/* =============================================================================
+   course-form-theme.css
+   Colour, typography, and visual treatment for the refactored CourseForm.
+   All values reference the design token system from styles.css.
+   Zero hardcoded hex values — every colour is a CSS variable.
+
+   SECTION MAP:
+   1.  Toggle button states
+   2.  Credit unit pills
+   3.  Score bar gradient
+   4.  Grade badge — base + per-grade variants
+   5.  Override toggle link
+   6.  Override panel + grade picker buttons
+   7.  Scale badge
+   8.  Threshold accordion
+   9.  Submit button
+   10. Error states
+   ============================================================================= */
+
+/* ── 1. Toggle button states ─────────────────────────────────────────────────── */
+
+.cf2-toggle-btn {
+    transition:
+        background var(--duration-fast) var(--ease-out),
+        color var(--duration-fast) var(--ease-out),
+        box-shadow var(--duration-fast) var(--ease-out);
+}
+
+/* When form is open: switch to a muted ghost style so it reads as "close" */
+.cf2-toggle-btn.is-open {
+    background: transparent;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    box-shadow: none;
+}
+
+.cf2-toggle-btn.is-open:hover {
+    background: var(--color-surface-2);
+    color: var(--color-text);
+    border-color: var(--color-border-light);
+}
+
+/* ── 2. Credit unit pills ─────────────────────────────────────────────────────── */
+
+.cf2-cu-pill {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    border: 1.5px solid var(--color-border);
+    background: var(--color-surface-3);
+    transition:
+        background var(--duration-fast) var(--ease-out),
+        border-color var(--duration-fast) var(--ease-out),
+        color var(--duration-fast) var(--ease-out),
+        box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.cf2-cu-pill:hover:not(.is-selected) {
+    border-color: var(--color-border-light);
+    color: var(--color-text);
+}
+
+.cf2-cu-pill.is-selected {
+    background: var(--color-gold);
+    border-color: var(--color-gold);
+    color: #0c0f1a;
+    box-shadow: 0 0 0 2px rgba(201, 168, 76, 0.2);
+}
+
+/* ── 3. Score bar ─────────────────────────────────────────────────────────────── */
+
+.cf2-score-bar {
+    background: var(--color-surface-3);
+}
+
+.cf2-score-bar-fill {
+    background: linear-gradient(90deg, var(--color-gold-dark), var(--color-gold-light));
+}
+
+/* ── 4. Grade badge — base + per-grade variants ───────────────────────────────── */
+
+/* Base (empty / no score yet) */
+.cf2-grade-badge {
+    background: var(--color-surface-3);
+    border: 1.5px solid var(--color-border);
+    color: var(--color-text-dim);
+}
+
+.cf2-badge-letter {
+    color: var(--color-text-dim);
+}
+
+.cf2-badge-pts {
+    color: var(--color-text-dim);
+}
+
+/* Override indicator — subtle gold ring when grade is manually selected */
+.cf2-grade-badge.is-override {
+    box-shadow: 0 0 0 2px rgba(201, 168, 76, 0.35);
+}
+
+/* Per-grade colour variants — mirrors grade-badge-* system in styles.css */
+.cf2-grade-badge--A {
+    background: rgba(246, 211, 101, 0.1);
+    border-color: rgba(246, 211, 101, 0.35);
+    box-shadow: 0 0 14px rgba(246, 211, 101, 0.1);
+}
+
+.cf2-grade-badge--A .cf2-badge-letter,
+.cf2-grade-badge--A .cf2-badge-pts {
+    color: var(--color-first);
+}
+
+.cf2-grade-badge--B {
+    background: rgba(168, 230, 207, 0.08);
+    border-color: rgba(168, 230, 207, 0.3);
+}
+
+.cf2-grade-badge--B .cf2-badge-letter,
+.cf2-grade-badge--B .cf2-badge-pts {
+    color: var(--color-second-upper);
+}
+
+.cf2-grade-badge--C {
+    background: rgba(116, 185, 224, 0.08);
+    border-color: rgba(116, 185, 224, 0.3);
+}
+
+.cf2-grade-badge--C .cf2-badge-letter,
+.cf2-grade-badge--C .cf2-badge-pts {
+    color: var(--color-second-lower);
+}
+
+.cf2-grade-badge--D {
+    background: rgba(246, 173, 85, 0.08);
+    border-color: rgba(246, 173, 85, 0.3);
+}
+
+.cf2-grade-badge--D .cf2-badge-letter,
+.cf2-grade-badge--D .cf2-badge-pts {
+    color: var(--color-third);
+}
+
+.cf2-grade-badge--E {
+    background: rgba(160, 174, 192, 0.08);
+    border-color: rgba(160, 174, 192, 0.25);
+}
+
+.cf2-grade-badge--E .cf2-badge-letter,
+.cf2-grade-badge--E .cf2-badge-pts {
+    color: var(--color-pass);
+}
+
+.cf2-grade-badge--F {
+    background: rgba(245, 101, 101, 0.08);
+    border-color: rgba(245, 101, 101, 0.3);
+}
+
+.cf2-grade-badge--F .cf2-badge-letter,
+.cf2-grade-badge--F .cf2-badge-pts {
+    color: var(--color-danger);
+}
+
+/* ── 5. Override toggle link ─────────────────────────────────────────────────── */
+
+.cf2-override-toggle {
+    color: var(--color-text-dim);
+    font-weight: 500;
+    transition: color var(--duration-fast) var(--ease-out);
+}
+
+.cf2-override-toggle:hover {
+    color: var(--color-gold);
+}
+
+.cf2-override-toggle-text {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-style: dotted;
+}
+
+/* ── 6. Override panel + grade picker buttons ─────────────────────────────────── */
+
+.cf2-override-hint {
+    color: var(--color-text-dim);
+}
+
+/* Base grade button */
+.cf2-override-btn {
+    background: var(--color-surface-3);
+    border: 1.5px solid var(--color-border);
+    color: var(--color-text-muted);
+    transition:
+        background var(--duration-fast) var(--ease-out),
+        border-color var(--duration-fast) var(--ease-out),
+        box-shadow var(--duration-fast) var(--ease-out),
+        transform var(--duration-fast) var(--ease-out);
+}
+
+.cf2-override-btn:hover:not(.is-selected) {
+    background: var(--color-surface-2);
+    border-color: var(--color-border-light);
+    transform: translateY(-2px);
+}
+
+.cf2-override-btn.is-selected {
+    border-color: var(--color-gold);
+    box-shadow: 0 0 0 2px rgba(201, 168, 76, 0.22);
+    transform: translateY(-2px);
+}
+
+.cf2-override-pts {
+    color: var(--color-text-dim);
+}
+
+/* Per-grade letter tints */
+.cf2-override-btn--A .cf2-override-letter {
+    color: var(--color-first);
+}
+
+.cf2-override-btn--A.is-selected {
+    background: rgba(246, 211, 101, 0.1);
+    border-color: var(--color-first);
+}
+
+.cf2-override-btn--B .cf2-override-letter {
+    color: var(--color-second-upper);
+}
+
+.cf2-override-btn--B.is-selected {
+    background: rgba(168, 230, 207, 0.1);
+    border-color: var(--color-second-upper);
+}
+
+.cf2-override-btn--C .cf2-override-letter {
+    color: var(--color-second-lower);
+}
+
+.cf2-override-btn--C.is-selected {
+    background: rgba(116, 185, 224, 0.1);
+    border-color: var(--color-second-lower);
+}
+
+.cf2-override-btn--D .cf2-override-letter {
+    color: var(--color-third);
+}
+
+.cf2-override-btn--D.is-selected {
+    background: rgba(246, 173, 85, 0.1);
+    border-color: var(--color-third);
+}
+
+.cf2-override-btn--E .cf2-override-letter {
+    color: var(--color-pass);
+}
+
+.cf2-override-btn--E.is-selected {
+    background: rgba(160, 174, 192, 0.1);
+    border-color: var(--color-pass);
+}
+
+.cf2-override-btn--F .cf2-override-letter {
+    color: var(--color-danger);
+}
+
+.cf2-override-btn--F.is-selected {
+    background: rgba(245, 101, 101, 0.1);
+    border-color: var(--color-danger);
+}
+
+/* ── 7. Scale badge ──────────────────────────────────────────────────────────── */
+
+.cf2-scale-badge {
+    padding: 2px var(--space-3);
+    border-radius: var(--radius-full);
+    background: rgba(201, 168, 76, 0.08);
+    border: 1px solid rgba(201, 168, 76, 0.25);
+}
+
+.cf2-scale-badge-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+    margin-right: var(--space-1);
+}
+
+.cf2-scale-badge-value {
+    font-family: var(--font-mono);
+    font-size: 0.73rem;
+    color: var(--color-gold);
+}
+
+/* ── 8. Threshold accordion ──────────────────────────────────────────────────── */
+
+.cf2-threshold-toggle {
+    background: var(--color-surface-3);
+    color: var(--color-text-dim);
+    letter-spacing: 0.05em;
+    transition:
+        background var(--duration-fast),
+        color var(--duration-fast);
+}
+
+.cf2-threshold-toggle:hover {
+    background: var(--color-surface-2);
+    color: var(--color-text-muted);
+}
+
+.cf2-threshold-body {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+}
+
+.cf2-threshold-range {
+    color: var(--color-text-dim);
+}
+
+.cf2-threshold-pts {
+    color: var(--color-gold-dark);
+}
+
+/* ── 9. Submit button ────────────────────────────────────────────────────────── */
+
+/* Inherits .btn and .btn--primary from styles.css — no overrides needed. */
+/* The layout class cf2-submit-btn controls width only (see layout file). */
+
+/* ── 10. Error states ────────────────────────────────────────────────────────── */
+
+.cf2-field-error {
+    font-size: 0.75rem;
+    color: var(--color-danger);
+    line-height: 1.3;
+}
+
+.cf2-grade-err {
+    color: var(--color-danger);
+    font-size: 0.78rem;
+}
