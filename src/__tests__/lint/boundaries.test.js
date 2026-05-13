@@ -100,20 +100,20 @@ describe('ESLint boundary configuration — structural integrity', () => {
     const module = await configPromise;
     const config = module.default;
 
-  const testOverride = config.find((block) => {
-    if (!Array.isArray(block.files)) return false;
+    const testOverride = config.find((block) => {
+      if (!Array.isArray(block.files)) return false;
 
-    const matchesTestPattern = block.files.some(
-      (pattern) =>
-        pattern.includes('__tests__') || pattern.includes('.test.') || pattern.includes('.spec.')
-    );
+      const matchesTestPattern = block.files.some(
+        (pattern) =>
+          pattern.includes('__tests__') || pattern.includes('.test.') || pattern.includes('.spec.')
+      );
 
-    const disablesBoundaries =
-      block.rules?.['boundaries/dependencies'] === 'off' &&
-      block.rules?.['boundaries/no-unknown'] === 'off';
+      const disablesBoundaries =
+        block.rules?.['boundaries/dependencies'] === 'off' &&
+        block.rules?.['boundaries/no-unknown'] === 'off';
 
-    return matchesTestPattern && disablesBoundaries;
-  });
+      return matchesTestPattern && disablesBoundaries;
+    });
     expect(testOverride).toBeDefined();
   });
 });

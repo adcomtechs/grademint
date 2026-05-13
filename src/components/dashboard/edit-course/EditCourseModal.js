@@ -31,9 +31,7 @@ import {
   CourseFormErrorDisplay,
   IdentitySection,
   ScoreSection,
-  ThresholdSection,
 } from '../course-form/index.js';
-import { getScale } from '@/utils/helpers.js';
 
 export class EditCourseModal {
   /**
@@ -49,7 +47,6 @@ export class EditCourseModal {
 
     this._identity = null;
     this._score = null;
-    this._threshold = null;
     this._errorDisplay = null;
     this._modal = null;
     this._ctrl = new AbortController();
@@ -63,7 +60,6 @@ export class EditCourseModal {
    */
   open() {
     const scaleId = this._state.scaleId;
-    const scale = getScale(scaleId);
     const snap = this._state.snapshot();
 
     // ── Section instances ────────────────────────────────────────────────────
@@ -94,12 +90,9 @@ export class EditCourseModal {
       onOverrideOpenChange: (v) => this._state.setOverrideOpen(v),
     });
 
-    this._threshold = new ThresholdSection({ scaleId });
-
     // ── Assemble DOM ─────────────────────────────────────────────────────────
     const identityEl = this._identity.build();
     const scoreEl = this._score.build();
-    const thresholdEl = this._threshold.build();
 
     // Save and cancel buttons
     const saveBtn = createElement(
@@ -113,18 +106,9 @@ export class EditCourseModal {
       'Cancel'
     );
 
-    // Scale info badge
-    const scaleBadge = createElement(
-      'div',
-      { className: 'ecm-scale-badge' },
-      createElement('span', { className: 'ecm-scale-label' }, 'Scale:'),
-      createElement('span', { className: 'ecm-scale-value' }, scale.label.split('(')[0].trim())
-    );
-
     const footer = createElement(
       'div',
       { className: 'ecm-footer' },
-    //   createElement('div', { className: 'ecm-footer-left' }, scaleBadge, thresholdEl),
       createElement('div', { className: 'ecm-footer-actions' }, cancelBtn, saveBtn)
     );
 
@@ -207,11 +191,9 @@ export class EditCourseModal {
   _destroy() {
     this._identity?.destroy();
     this._score?.destroy();
-    this._threshold?.destroy();
     this._ctrl.abort();
     this._identity = null;
     this._score = null;
-    this._threshold = null;
     this._errorDisplay = null;
     this._modal = null;
   }

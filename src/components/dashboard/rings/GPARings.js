@@ -126,16 +126,14 @@ export class GPARings extends BaseComponent {
     // ── Shared values (both overview and semester modes) ───────────────────
     const cgpa = GPACalculatorService.cgpaWithPreviousRecord(semesters, state.previousRecord);
     const trend = GPACalculatorService.trendDirection(semesters);
-  
+
     // Classification is only meaningful once at least one course has been
     // graded. A CGPA of 0.00 from empty semesters means "no data yet", not
     // academic failure — passing null suppresses the badge in FooterRenderer
     // and TierProgressRenderer until there is real evidence to classify.
     const hasGradedData = semesters.some((s) => s.courseCount > 0);
-    const honor = hasGradedData
-      ? GPACalculatorService.getHonorClassification(cgpa, scaleId)
-      : null;
-      
+    const honor = hasGradedData ? GPACalculatorService.getHonorClassification(cgpa, scaleId) : null;
+
     // ── Identity strip ─────────────────────────────────────────────────────
     renderIdentity(student, scale);
 

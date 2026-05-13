@@ -138,16 +138,16 @@ describe('withRetry — exhausts all attempts', () => {
     const error = new Error('persistent failure');
     const fn = vi.fn().mockRejectedValue(error);
 
-   const promise = withRetry(fn, {
-     maxAttempts: 3,
-     baseDelayMs: 50,
-     maxDelayMs: 200,
-     jitter: false,
-   });
+    const promise = withRetry(fn, {
+      maxAttempts: 3,
+      baseDelayMs: 50,
+      maxDelayMs: 200,
+      jitter: false,
+    });
 
-   const assertion = expect(promise).rejects.toThrow('persistent failure');
-   await drainTimers();
-   await assertion;
+    const assertion = expect(promise).rejects.toThrow('persistent failure');
+    await drainTimers();
+    await assertion;
   });
 
   it('throws the original error instance, not a wrapper', async () => {
@@ -155,16 +155,16 @@ describe('withRetry — exhausts all attempts', () => {
     const original = new CustomError('original');
     const fn = vi.fn().mockRejectedValue(original);
 
-   const promise = withRetry(fn, {
-     maxAttempts: 2,
-     baseDelayMs: 50,
-     maxDelayMs: 200,
-     jitter: false,
-   });
+    const promise = withRetry(fn, {
+      maxAttempts: 2,
+      baseDelayMs: 50,
+      maxDelayMs: 200,
+      jitter: false,
+    });
 
-   const assertion = expect(promise).rejects.toBe(original);
-   await drainTimers();
-   await assertion;
+    const assertion = expect(promise).rejects.toBe(original);
+    await drainTimers();
+    await assertion;
   });
 });
 

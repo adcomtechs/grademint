@@ -1,0 +1,1110 @@
+/* ═══════════════════════════════════════════════════════════════
+   DASHBOARD / WHAT-IF CALCULATOR
+   src/styles/dashboard/whatif.css
+
+   Mobile-first. Covers every class emitted by:
+     WhatIfView.js          — .wi-root, .wi-page-heading, .wi-two-col,
+                              .wi-empty, .wi-card, .wi-section-title
+     StandingPanel.js       — .wi-standing-row, .wi-ring-*, .wi-standing-*,
+                              .wi-next-tier, .wi-progress-*, .wi-already-top
+     LadderPanel.js         — .wi-ladder, .wi-rung, .wi-rung-*
+     TargetCalculatorPanel  — .wi-target-layout, .wi-presets, .wi-preset-*,
+                              .wi-calc-inputs, .wi-slider*, .wi-result-*,
+                              .wi-difficulty
+     SimulatorPanel.js      — .wi-sim-*, .wi-scenario-*, .wi-chart-card
+     SensitivityPanel.js    — .wi-sensitivity-*
+
+   Breakpoints used:
+     480px  — 2-col form grids, slider row, preset wrap
+     640px  — standing row goes side-by-side, two-col gap grows
+     768px  — two-col layout activates, sim layout side-by-side
+     1024px — max reading width cap on page heading
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ══════════════════════════════════════════════════════════════
+   PAGE ROOT
+   ══════════════════════════════════════════════════════════════ */
+
+.wi-root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .wi-root {
+    gap: var(--space-8);
+  }
+}
+
+/* ── Page heading ─────────────────────────────────────────────── */
+
+.wi-page-heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  /* Subtle left-border accent */
+  padding-left: var(--space-4);
+  border-left: 3px solid var(--color-gold-dark);
+}
+
+.wi-page-heading h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.wi-page-heading p {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+  max-width: 60ch;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SHARED CARD SHELL  (.wi-card)
+   Used by all five panels as the outermost wrapper.
+   ══════════════════════════════════════════════════════════════ */
+
+.wi-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  /* Subtle inset shadow for depth */
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+@media (min-width: 640px) {
+  .wi-card {
+    padding: var(--space-6);
+    gap: var(--space-6);
+  }
+}
+
+/* ── Section title inside every card ─────────────────────────── */
+
+.wi-section-title {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  /* Divider line below the title */
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ── Two-column layout (Ladder | Target Calculator) ───────────── */
+
+.wi-two-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .wi-two-col {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--space-6);
+  }
+
+  /* Ladder takes less width; Target Calculator takes more */
+  .wi-two-col > *:first-child {
+    flex: 0 0 auto;
+    width: min(320px, 40%);
+  }
+
+  .wi-two-col > *:last-child {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+/* ── Empty state ─────────────────────────────────────────────── */
+
+.wi-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--space-4);
+  padding: var(--space-16) var(--space-5);
+  background: var(--color-surface);
+  border: 1px dashed var(--color-border-light);
+  border-radius: var(--radius-lg);
+}
+
+.wi-empty-icon {
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  line-height: 1;
+  opacity: 0.5;
+}
+
+.wi-empty h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.wi-empty p {
+  font-size: var(--text-sm);
+  color: var(--color-text-dim);
+  max-width: 38ch;
+  line-height: 1.65;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   STANDING PANEL
+   ══════════════════════════════════════════════════════════════ */
+
+/* Row that holds ring + stats + next-tier — stacks on mobile */
+.wi-standing-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+@media (min-width: 640px) {
+  .wi-standing-row {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--space-6);
+  }
+}
+
+/* ── CGPA Ring ───────────────────────────────────────────────── */
+
+.wi-ring-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Fixed size so ring never reflows */
+  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
+  /* Center on mobile */
+  margin-inline: auto;
+}
+
+@media (min-width: 640px) {
+  .wi-ring-wrap {
+    margin-inline: 0;
+    width: 128px;
+    height: 128px;
+  }
+}
+
+.wi-ring-svg {
+  width: 100%;
+  height: 100%;
+  /* Start from 12-o-clock */
+  transform: rotate(-90deg);
+}
+
+.wi-ring-bg {
+  fill: none;
+  stroke: var(--color-surface-3);
+  stroke-width: 8;
+}
+
+.wi-ring-fill {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+  /* stroke colour + dasharray/dashoffset set inline by StandingPanel */
+  transition: stroke-dashoffset var(--duration-slow) var(--ease-out);
+}
+
+/* Text overlay centred inside the ring */
+.wi-ring-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  pointer-events: none;
+}
+
+.wi-ring-cgpa {
+  font-family: var(--font-mono);
+  font-size: var(--text-xl);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  /* colour set inline */
+}
+
+.wi-ring-denom {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-dim);
+  line-height: 1;
+}
+
+/* ── Stats column ────────────────────────────────────────────── */
+
+.wi-standing-stats {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.wi-standing-row-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface-2);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.wi-standing-key {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.wi-standing-val {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text);
+  text-align: right;
+}
+
+/* ── Next-tier progress block ────────────────────────────────── */
+
+.wi-next-tier {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  /* On desktop, fix width to align with the ring */
+  min-width: 0;
+}
+
+@media (min-width: 640px) {
+  .wi-next-tier {
+    width: 180px;
+    flex-shrink: 0;
+  }
+}
+
+.wi-next-tier-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.wi-next-tier-label {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+.wi-next-tier-name {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.3;
+}
+
+.wi-progress-track {
+  width: 100%;
+  height: 6px;
+  background: var(--color-surface-3);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.wi-progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  /* background colour set inline by StandingPanel */
+  transition: width var(--duration-slow) var(--ease-out);
+  min-width: 4px;
+}
+
+.wi-progress-gap {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+/* Already at the top tier */
+.wi-already-top {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-first);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: rgba(246, 208, 96, 0.06);
+  border: 1px solid rgba(246, 208, 96, 0.2);
+  border-radius: var(--radius-md);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LADDER PANEL
+   ══════════════════════════════════════════════════════════════ */
+
+.wi-ladder {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* Individual rung */
+.wi-rung {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  position: relative;
+  overflow: hidden;
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+/* Coloured left accent — colour comes from CSS class applied by JS */
+.wi-rung::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+}
+
+/* Current tier: gold-tinted highlight */
+.wi-rung.is-current {
+  background: rgba(201, 168, 76, 0.06);
+  border-color: var(--color-gold-dark);
+  box-shadow: 0 0 0 1px rgba(201, 168, 76, 0.15) inset;
+}
+
+/* Achieved (below current) */
+.wi-rung.is-achieved {
+  opacity: 0.6;
+}
+
+/* Badge (emoji) */
+.wi-rung-badge {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  line-height: 1;
+  /* Nudge down slightly for optical alignment */
+  margin-top: 1px;
+}
+
+/* Label + range block */
+.wi-rung-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.wi-rung-label {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wi-rung-range {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  letter-spacing: 0.02em;
+}
+
+/* Gap indicator — right-hand side of each rung */
+.wi-rung-gap {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+.wi-rung-gap.is-positive {
+  /* Still needs work to reach this tier */
+  background: rgba(246, 173, 85, 0.1);
+  color: var(--color-warning);
+  border: 1px solid rgba(246, 173, 85, 0.25);
+}
+
+.wi-rung-gap.is-achieved {
+  /* Already past this tier */
+  background: var(--color-success-faint);
+  color: var(--color-success);
+  border: 1px solid rgba(62, 207, 142, 0.2);
+}
+
+/* "You are here" pill */
+.wi-rung-marker {
+  flex-shrink: 0;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px var(--space-3);
+  border-radius: var(--radius-full);
+  background: rgba(201, 168, 76, 0.12);
+  color: var(--color-gold);
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TARGET CALCULATOR PANEL
+   ══════════════════════════════════════════════════════════════ */
+
+/* Master layout: presets → inputs → result — stacked on mobile */
+.wi-target-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* ── Preset tier buttons ──────────────────────────────────────── */
+
+.wi-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.wi-preset-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface-2);
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  touch-action: manipulation;
+  white-space: nowrap;
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.wi-preset-btn:hover {
+  background: var(--color-surface-3);
+  border-color: var(--color-border-light);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.wi-preset-btn.is-active {
+  background: rgba(201, 168, 76, 0.1);
+  border-color: var(--color-gold-dark);
+  color: var(--color-gold);
+  box-shadow: 0 0 0 1px rgba(201, 168, 76, 0.12) inset;
+}
+
+.wi-preset-badge {
+  font-size: 0.9rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* ── Inputs column ───────────────────────────────────────────── */
+
+.wi-calc-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ── Range slider + number input side-by-side ─────────────────── */
+
+.wi-slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.wi-slider-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* ── Custom range slider ─────────────────────────────────────── */
+
+.wi-slider {
+  flex: 1;
+  min-width: 0;
+  height: 4px;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-3);
+  outline: none;
+  cursor: pointer;
+  /* Remove default appearance */
+  -webkit-appearance: none;
+  appearance: none;
+  accent-color: var(--color-gold);
+  /* Touch area */
+  padding-block: var(--space-3);
+}
+
+.wi-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  border: 2px solid var(--color-surface);
+  box-shadow: 0 0 0 1px var(--color-gold-dark);
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.wi-slider::-webkit-slider-thumb:hover,
+.wi-slider:focus-visible::-webkit-slider-thumb {
+  transform: scale(1.2);
+}
+
+.wi-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  border: 2px solid var(--color-surface);
+  cursor: pointer;
+}
+
+/* Compact number input that sits beside the slider */
+.wi-slider-number {
+  width: 72px;
+  flex-shrink: 0;
+  min-height: 36px;
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
+  text-align: center;
+}
+
+/* ── Result box ──────────────────────────────────────────────── */
+
+.wi-result-box {
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  min-height: 88px;
+  transition:
+    background var(--duration-normal) var(--ease-out),
+    border-color var(--duration-normal) var(--ease-out);
+}
+
+/* State variants */
+.wi-result-box.state-idle {
+  border-style: dashed;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.wi-result-box.state-success {
+  background: rgba(62, 207, 142, 0.04);
+  border-color: rgba(62, 207, 142, 0.2);
+}
+
+.wi-result-box.state-warning {
+  background: rgba(246, 173, 85, 0.04);
+  border-color: rgba(246, 173, 85, 0.2);
+}
+
+.wi-result-box.state-error {
+  background: var(--color-danger-faint);
+  border-color: var(--color-danger-border);
+}
+
+.wi-result-box.state-already {
+  background: rgba(201, 168, 76, 0.04);
+  border-color: rgba(201, 168, 76, 0.2);
+}
+
+.wi-result-idle-text {
+  font-size: var(--text-xs);
+  color: var(--color-text-dim);
+  line-height: 1.6;
+  max-width: 42ch;
+}
+
+/* Header row inside result box: GPA value + difficulty chip */
+.wi-result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+/* The large GPA number */
+.wi-result-gpa {
+  font-family: var(--font-mono);
+  font-size: var(--text-3xl);
+  font-weight: 500;
+  color: var(--color-text);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.wi-result-gpa-label {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-top: var(--space-1);
+}
+
+/* Maths explanation paragraph */
+.wi-result-math {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  max-width: unset;
+}
+
+/* Honour label at the bottom */
+.wi-result-honour {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  padding: 3px var(--space-3);
+  border-radius: var(--radius-full);
+  background: rgba(201, 168, 76, 0.08);
+  color: var(--color-gold);
+  width: fit-content;
+}
+
+/* ── Difficulty chip ──────────────────────────────────────────── */
+
+.wi-difficulty {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+/* Difficulty class variants — applied by gpaDifficulty() */
+.wi-difficulty--easy {
+  background: var(--color-success-faint);
+  color: var(--color-success);
+  border-color: rgba(62, 207, 142, 0.2);
+}
+
+.wi-difficulty--moderate {
+  background: rgba(246, 173, 85, 0.08);
+  color: var(--color-warning);
+  border-color: rgba(246, 173, 85, 0.2);
+}
+
+.wi-difficulty--hard,
+.wi-difficulty--very-hard {
+  background: var(--color-danger-faint);
+  color: var(--color-danger);
+  border-color: var(--color-danger-border);
+}
+
+.wi-difficulty--impossible {
+  background: rgba(245, 101, 101, 0.15);
+  color: var(--color-danger);
+  border-color: rgba(245, 101, 101, 0.35);
+  text-decoration: line-through;
+  opacity: 0.85;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SIMULATOR PANEL
+   ══════════════════════════════════════════════════════════════ */
+
+/* Layout: form | list+chart — stacks on mobile, side-by-side from 768px */
+.wi-sim-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+@media (min-width: 768px) {
+  .wi-sim-layout {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--space-6);
+  }
+
+  .wi-sim-form {
+    flex: 0 0 auto;
+    width: min(300px, 44%);
+  }
+
+  .wi-sim-right {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+/* ── Add-scenario form ────────────────────────────────────────── */
+
+.wi-sim-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.wi-sim-form-title {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* ── Projected CGPA summary ──────────────────────────────────── */
+
+.wi-sim-projected {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  background: var(--color-surface-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  border-top: 2px solid var(--color-gold-dark);
+}
+
+.wi-sim-proj-val {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl);
+  font-weight: 500;
+  color: var(--color-text);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.wi-sim-proj-label {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.wi-sim-proj-honour {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-gold);
+  margin-top: var(--space-1);
+}
+
+.wi-sim-proj-delta {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-dim);
+}
+
+/* ── Right column: scenario list + chart ─────────────────────── */
+
+.wi-sim-right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ── Scenario list ───────────────────────────────────────────── */
+
+.wi-scenario-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.wi-scenario-empty {
+  font-size: var(--text-sm);
+  color: var(--color-text-dim);
+  text-align: center;
+  padding: var(--space-6) var(--space-4);
+  background: var(--color-surface-2);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  line-height: 1.6;
+}
+
+/* Individual scenario row */
+.wi-scenario-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.wi-scenario-item:hover {
+  border-color: var(--color-border-light);
+}
+
+/* Index number bubble */
+.wi-scenario-idx {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-surface-3);
+  border: 1px solid var(--color-border-light);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.wi-scenario-name {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* GPA tag — colour set inline */
+.wi-scenario-tag {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+.wi-scenario-cu {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+/* Remove button */
+.wi-scenario-remove {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-dim);
+  font-size: 1rem;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
+}
+
+.wi-scenario-remove:hover {
+  color: var(--color-danger);
+  background: var(--color-danger-faint);
+}
+
+/* ── Projection chart card ────────────────────────────────────── */
+
+.wi-chart-card {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.wi-chart-card h4 {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.wi-chart-card canvas {
+  width: 100% !important;
+  /* height is set via inline style by SimulatorPanel */
+  border-radius: var(--radius-sm);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SENSITIVITY PANEL
+   ══════════════════════════════════════════════════════════════ */
+
+/* Horizontal scroll container so the table never breaks on mobile */
+.wi-sensitivity-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  /* Negative margin + padding trick to allow scroll shadow */
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+}
+
+.wi-sensitivity-table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  /* Never shrink below content size */
+  width: max-content;
+  min-width: 100%;
+}
+
+.wi-sensitivity-table thead tr {
+  background: var(--color-surface-3);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.wi-sensitivity-table th {
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* First header cell left-aligned (row-GPA label column) */
+.wi-sensitivity-table th:first-child {
+  text-align: left;
+}
+
+.wi-sensitivity-table tbody tr {
+  border-bottom: 1px solid var(--color-border);
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.wi-sensitivity-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.wi-sensitivity-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.wi-sensitivity-table td {
+  padding: var(--space-2) var(--space-4);
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Row-label cell */
+.wi-sensitivity-table td:first-child {
+  text-align: left;
+  white-space: nowrap;
+  background: var(--color-surface-2);
+  /* Sticky so the GPA label stays visible when scrolling right */
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  border-right: 1px solid var(--color-border);
+}
+
+/* Projected CGPA cell chip — colour set inline by SensitivityPanel */
+.wi-sens-cell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
+}

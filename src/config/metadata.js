@@ -13,11 +13,11 @@ export const METADATA = Object.freeze({
   pages: Object.freeze({
     dashboard: Object.freeze({
       path: '/',
-      title: 'GPA Pro — Advanced GPA & CGPA Calculator',
+      title: 'GradeMint — Advanced GPA & CGPA Calculator',
     }),
     docs: Object.freeze({
       path: '/docs.html',
-      title: 'GPA Pro — Docs & Grade Guide',
+      title: 'GradeMint — Docs & Grade Guide',
     }),
   }),
 });

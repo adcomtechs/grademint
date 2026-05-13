@@ -64,11 +64,11 @@ import { getScale } from '../../../utils/helpers.js';
  */
 function _difficulty(requiredGPA, maxGPA) {
   const ratio = requiredGPA / maxGPA;
-  if (ratio <= 0.60) return { label: 'Achievable',  cls: 'gt-difficulty--easy' };
-  if (ratio <= 0.75) return { label: 'Moderate',    cls: 'gt-difficulty--moderate' };
+  if (ratio <= 0.6) return { label: 'Achievable', cls: 'gt-difficulty--easy' };
+  if (ratio <= 0.75) return { label: 'Moderate', cls: 'gt-difficulty--moderate' };
   if (ratio <= 0.88) return { label: 'Challenging', cls: 'gt-difficulty--hard' };
-  if (ratio <= 1.00) return { label: 'Very Hard',   cls: 'gt-difficulty--very-hard' };
-  return                     { label: 'Impossible', cls: 'gt-difficulty--impossible' };
+  if (ratio <= 1.0) return { label: 'Very Hard', cls: 'gt-difficulty--very-hard' };
+  return { label: 'Impossible', cls: 'gt-difficulty--impossible' };
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -83,9 +83,9 @@ export class GoalTracker extends BaseComponent {
 
     // Initialise ephemeral form state in the WeakMap
     this.setState({
-      targetCGPA:   '',
-      plannedCU:    '',
-      activePreset: null,  // min value of the currently active preset tier, or null
+      targetCGPA: '',
+      plannedCU: '',
+      activePreset: null, // min value of the currently active preset tier, or null
     });
   }
 
@@ -94,9 +94,9 @@ export class GoalTracker extends BaseComponent {
   afterMount() {
     const unsub = this.store.subscribe(({ state, prevState }) => {
       const changed =
-        JSON.stringify(state.semesters)      !== JSON.stringify(prevState?.semesters)     ||
-        JSON.stringify(state.previousRecord)  !== JSON.stringify(prevState?.previousRecord) ||
-        state.student?.scaleId               !== prevState?.student?.scaleId;
+        JSON.stringify(state.semesters) !== JSON.stringify(prevState?.semesters) ||
+        JSON.stringify(state.previousRecord) !== JSON.stringify(prevState?.previousRecord) ||
+        state.student?.scaleId !== prevState?.student?.scaleId;
 
       if (changed) this.render();
     });
@@ -107,14 +107,15 @@ export class GoalTracker extends BaseComponent {
   // ── Render ─────────────────────────────────────────────────────────────────
 
   render() {
-    const state     = this.store.getState();
+    const state = this.store.getState();
     const semesters = (state.semesters ?? []).map(Semester.fromJSON);
-    const scaleId   = state.student?.scaleId ?? DEFAULT_SCALE_ID;
-    const scale     = getScale(scaleId);
-    const cgpa      = GPACalculatorService.cgpaWithPreviousRecord(semesters, state.previousRecord);
-    const totalCU   = semesters.reduce((s, sem) => s + sem.totalCreditUnits, 0) +
-                      (state.previousRecord?.creditUnits ?? 0);
-    const honor     = GPACalculatorService.getHonorClassification(cgpa, scaleId);
+    const scaleId = state.student?.scaleId ?? DEFAULT_SCALE_ID;
+    const scale = getScale(scaleId);
+    const cgpa = GPACalculatorService.cgpaWithPreviousRecord(semesters, state.previousRecord);
+    const totalCU =
+      semesters.reduce((s, sem) => s + sem.totalCreditUnits, 0) +
+      (state.previousRecord?.creditUnits ?? 0);
+    const honor = GPACalculatorService.getHonorClassification(cgpa, scaleId);
 
     clearElement(this.container);
     this.container.append(this._buildCard(cgpa, totalCU, honor, scale, scaleId));
@@ -151,8 +152,13 @@ export class GoalTracker extends BaseComponent {
     // Trigger initial computation if form values already exist
     if (ls.targetCGPA && ls.plannedCU) {
       this._compute(
-        cgpa, totalCU, parseFloat(ls.targetCGPA), parseInt(ls.plannedCU, 10),
-        scaleId, scale, resultEl
+        cgpa,
+        totalCU,
+        parseFloat(ls.targetCGPA),
+        parseInt(ls.plannedCU, 10),
+        scaleId,
+        scale,
+        resultEl
       );
     }
 
@@ -210,7 +216,11 @@ export class GoalTracker extends BaseComponent {
         'aria-label': honor ? `Classification: ${honor.label}` : 'No classification yet',
       },
       createElement('span', { className: 'gt-context-val' }, honor ? honor.badge : '—'),
-      createElement('span', { className: 'gt-context-key' }, honor ? honor.label.split(' ')[0] : 'Class')
+      createElement(
+        'span',
+        { className: 'gt-context-key' },
+        honor ? honor.label.split(' ')[0] : 'Class'
+      )
     );
 
     return createElement(
@@ -233,7 +243,7 @@ export class GoalTracker extends BaseComponent {
    * @param {{ label: string, min: number, cssClass: string, badge: string }[]} tiers
    */
   _buildPresets(tiers) {
-    const ls      = this.localState;
+    const ls = this.localState;
     const wrapper = createElement(
       'div',
       { className: 'gt-presets', role: 'group', 'aria-label': 'Quick target presets' },
@@ -258,7 +268,7 @@ export class GoalTracker extends BaseComponent {
       this.addListener(btn, 'click', () => {
         // Persist preset selection into local state — survives re-renders
         this.setState({
-          targetCGPA:   String(tier.min.toFixed(2)),
+          targetCGPA: String(tier.min.toFixed(2)),
           activePreset: tier.min,
         });
       });
@@ -287,32 +297,32 @@ export class GoalTracker extends BaseComponent {
 
     // Target CGPA input
     const targetInput = createElement('input', {
-      id:          'gt-target-cgpa',
-      type:        'number',
-      className:   'form-input',
-      min:         '0',
-      max:         String(scale.maxGPA),
-      step:        '0.01',
+      id: 'gt-target-cgpa',
+      type: 'number',
+      className: 'form-input',
+      min: '0',
+      max: String(scale.maxGPA),
+      step: '0.01',
       placeholder: (scale.maxGPA * 0.9).toFixed(2),
-      value:       ls.targetCGPA ?? '',
+      value: ls.targetCGPA ?? '',
     });
 
     // Planned CU input
     const cuInput = createElement('input', {
-      id:          'gt-planned-cu',
-      type:        'number',
-      className:   'form-input',
-      min:         '1',
-      max:         '300',
-      step:        '1',
+      id: 'gt-planned-cu',
+      type: 'number',
+      className: 'form-input',
+      min: '1',
+      max: '300',
+      step: '1',
       placeholder: '30',
-      value:       ls.plannedCU ?? '',
+      value: ls.plannedCU ?? '',
     });
 
     // Result area
     const resultEl = createElement('div', {
-      className:  'gt-result',
-      role:       'status',
+      className: 'gt-result',
+      role: 'status',
       'aria-live': 'polite',
       'aria-atomic': 'true',
     });
@@ -320,7 +330,7 @@ export class GoalTracker extends BaseComponent {
 
     // Debounced compute — avoids recalculation on every single keypress
     const debouncedCompute = debounce(() => {
-      const target  = parseFloat(targetInput.value);
+      const target = parseFloat(targetInput.value);
       const planned = parseInt(cuInput.value, 10);
       // Save raw input into local state so it survives a store-triggered re-render
       this.setState({ targetCGPA: targetInput.value, plannedCU: cuInput.value });
@@ -328,7 +338,7 @@ export class GoalTracker extends BaseComponent {
     }, 320);
 
     this.addListener(targetInput, 'input', debouncedCompute);
-    this.addListener(cuInput,     'input', debouncedCompute);
+    this.addListener(cuInput, 'input', debouncedCompute);
 
     const inputsEl = createElement(
       'div',
@@ -336,7 +346,11 @@ export class GoalTracker extends BaseComponent {
       createElement(
         'div',
         { className: 'gt-field' },
-        createElement('label', { className: 'gt-field-label', for: 'gt-target-cgpa' }, 'Target CGPA'),
+        createElement(
+          'label',
+          { className: 'gt-field-label', for: 'gt-target-cgpa' },
+          'Target CGPA'
+        ),
         targetInput
       ),
       createElement(
@@ -385,14 +399,14 @@ export class GoalTracker extends BaseComponent {
     if (!result.achievable && result.requiredGPA > scale.maxGPA) {
       // Impossible — required GPA exceeds scale maximum
       this._renderResultCard(resultEl, {
-        variant:   'fail',
-        gpaLabel:  `${formatGPA(result.requiredGPA)} needed`,
-        gpaText:   formatGPA(result.requiredGPA),
+        variant: 'fail',
+        gpaLabel: `${formatGPA(result.requiredGPA)} needed`,
+        gpaText: formatGPA(result.requiredGPA),
         difficulty: _difficulty(result.requiredGPA, scale.maxGPA),
-        math:      `A GPA of <strong>${formatGPA(result.requiredGPA)}</strong> is required — above
+        math: `A GPA of <strong>${formatGPA(result.requiredGPA)}</strong> is required — above
                     the <strong>${scale.maxGPA.toFixed(2)}</strong> maximum. Lower your target or
                     earn more credit units before attempting this goal.`,
-        honor:     null,
+        honor: null,
         scaleId,
       });
       return;
@@ -400,12 +414,12 @@ export class GoalTracker extends BaseComponent {
 
     if (!result.achievable) {
       this._renderResultCard(resultEl, {
-        variant:   'fail',
-        gpaLabel:  'Not achievable',
-        gpaText:   '—',
+        variant: 'fail',
+        gpaLabel: 'Not achievable',
+        gpaText: '—',
         difficulty: { label: 'Impossible', cls: 'gt-difficulty--impossible' },
-        math:      result.message,
-        honor:     null,
+        math: result.message,
+        honor: null,
         scaleId,
       });
       return;
@@ -415,11 +429,11 @@ export class GoalTracker extends BaseComponent {
       // Already there or above
       const honor = GPACalculatorService.getHonorClassification(targetCGPA, scaleId);
       this._renderResultCard(resultEl, {
-        variant:   'already',
-        gpaLabel:  'Already achieved',
-        gpaText:   formatGPA(currentCGPA),
+        variant: 'already',
+        gpaLabel: 'Already achieved',
+        gpaText: formatGPA(currentCGPA),
         difficulty: { label: 'Achieved', cls: 'gt-difficulty--achieved' },
-        math:      `Your current CGPA of <strong>${formatGPA(currentCGPA)}</strong> already meets
+        math: `Your current CGPA of <strong>${formatGPA(currentCGPA)}</strong> already meets
                     or exceeds your target of <strong>${targetCGPA.toFixed(2)}</strong>. Keep it up!`,
         honor,
         scaleId,
@@ -428,11 +442,11 @@ export class GoalTracker extends BaseComponent {
     }
 
     // Normal achievable result
-    const diff  = _difficulty(result.requiredGPA, scale.maxGPA);
+    const diff = _difficulty(result.requiredGPA, scale.maxGPA);
     const honor = GPACalculatorService.getHonorClassification(targetCGPA, scaleId);
 
     const currentQP = currentCGPA * currentCU;
-    const targetQP  = targetCGPA  * (currentCU + plannedCU);
+    const targetQP = targetCGPA * (currentCU + plannedCU);
     const shortfall = targetQP - currentQP;
 
     const mathHtml =
@@ -441,11 +455,11 @@ export class GoalTracker extends BaseComponent {
       `Shortfall: <strong>${shortfall.toFixed(2)} QP ÷ ${plannedCU} CU = ${formatGPA(result.requiredGPA)} required</strong>.`;
 
     this._renderResultCard(resultEl, {
-      variant:   'ok',
-      gpaLabel:  'Required GPA',
-      gpaText:   formatGPA(result.requiredGPA),
+      variant: 'ok',
+      gpaLabel: 'Required GPA',
+      gpaText: formatGPA(result.requiredGPA),
       difficulty: diff,
-      math:      mathHtml,
+      math: mathHtml,
       honor,
       scaleId,
     });
@@ -492,7 +506,11 @@ export class GoalTracker extends BaseComponent {
       createElement('span', { className: 'gt-result-gpa-label' }, gpaLabel)
     );
 
-    const diffBadge = createElement('span', { className: `gt-difficulty ${difficulty.cls}` }, difficulty.label);
+    const diffBadge = createElement(
+      'span',
+      { className: `gt-difficulty ${difficulty.cls}` },
+      difficulty.label
+    );
 
     card.append(createElement('div', { className: 'gt-result-header' }, gpaGroup, diffBadge));
 

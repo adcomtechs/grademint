@@ -1,0 +1,499 @@
+/* ═══════════════════════════════════════════════════════════════
+   DASHBOARD / SEMESTER MODALS & EDIT COURSE MODAL
+   src/styles/dashboard/semester-modals.css
+
+   Covers every class emitted by:
+     openAddSemesterModal()   .form, .form-group, .field-error,
+                              .form-hint, .input--error
+     openRenameModal()        same as above
+     confirmDeleteSemester()  .confirm-message--danger (via confirmDialog)
+     confirmDeleteCourse()    same as above
+     EditCourseModal          .ecm-body, .ecm-footer,
+                              .ecm-footer-actions, .ecm-save-btn
+
+   Dependencies (already in cascade via app.css):
+     tokens.css   — all --color-*, --space-*, --radius-* vars
+     modal.css    — overlay, box, .modal-title, .modal-body, .modal-actions
+     forms.css    — .form-input, .form-label, .form-group, .form-hint,
+                    .score-section, .grade-preview, .course-form-errors
+     buttons.css  — .btn, .btn--primary, .btn--ghost
+
+   ARCHITECTURE NOTES:
+   ─────────────────────────────────────────────────────────────
+   The previous version had two conflicts that are resolved here:
+
+   1. Left-accent pseudo: .modal-body .form .form-group::before was
+      used for a gold left bar on focus-within, and
+      .ecm-body > *:nth-child(2)::before was used for section labels.
+      These collided when the ecm form sections were also inside
+      .modal-body. Fixed by: moving the section labels to ::after on
+      the section wrappers and keeping ::before free for the accent.
+
+   2. :has() selector for grid span rules: only supported in
+      Chromium 105+, Firefox 121+, Safari 15.4+. Replaced with an
+      explicit class-based targeting that JS already provides.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ══════════════════════════════════════════════════════════════
+   KEYFRAMES
+   ══════════════════════════════════════════════════════════════ */
+
+/* Field error message slides in from slightly above */
+@keyframes field-error-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   1. SIMPLE MODAL FORM WRAPPER  (.form)
+   Used by openAddSemesterModal() and openRenameModal().
+   The .modal-body wraps this — .modal-body already has padding
+   from modal.css so no extra horizontal margin is needed here.
+   ══════════════════════════════════════════════════════════════ */
+
+.modal-body .form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* ── Form group: label + input + error + hint stack ─────────── */
+
+.modal-body .form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  /* Relative so the focus-accent pseudo sits against the group */
+  position: relative;
+}
+
+/* Gold left-accent bar that appears when the input is focused.
+   Uses ::before on the group, not on the input, so it spans the
+   full height of the input field only (not the label).
+   The top offset is fixed at the label height (~20px) + gap (4px). */
+.modal-body .form .form-group::before {
+  content: '';
+  position: absolute;
+  /* Start below the label — 20px label + 4px gap + 2px safety */
+  top: 26px;
+  bottom: 0;
+  left: -1px;
+  width: 2px;
+  background: var(--color-gold);
+  border-radius: var(--radius-full);
+  opacity: 0;
+  transform: scaleY(0.5);
+  transform-origin: top;
+  transition:
+    opacity var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.modal-body .form .form-group:focus-within::before {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+/* Slightly larger input text in single-field sm modals — the input
+   is the primary interaction element; give it breathing room */
+.modal-body .form .form-input {
+  font-size: var(--text-md);
+  letter-spacing: 0.01em;
+}
+
+/* Hint text: italic + slightly faded for secondary role */
+.modal-body .form .form-hint {
+  font-style: italic;
+  color: var(--color-text-dim);
+  font-size: var(--text-xs);
+  line-height: 1.55;
+  opacity: 0.9;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   2. INLINE FIELD VALIDATION  (.field-error)
+   A <span> placed directly after the <input> by JS.
+   Animates in on first appearance; reserves no height when empty
+   so layout does not shift before an error occurs.
+   ══════════════════════════════════════════════════════════════ */
+
+.field-error {
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-danger);
+  line-height: 1.4;
+  animation: field-error-in var(--duration-fast) var(--ease-out) both;
+}
+
+/* When empty: zero height, no space consumption */
+.field-error:empty {
+  display: none;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   3. ERROR INPUT STATE  (.input--error)
+   Applied by JS after failed validation.
+   !important wins over :focus and :hover base styles intentionally
+   — the error state must remain visible while the user corrects.
+   ══════════════════════════════════════════════════════════════ */
+
+.input--error,
+.input--error:hover,
+.input--error:focus {
+  border-color: var(--color-danger) !important;
+  box-shadow: 0 0 0 3px rgba(245, 101, 101, 0.12) !important;
+  background: rgba(245, 101, 101, 0.03) !important;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   4. CONFIRM DELETE DIALOG  (.confirm-message--danger)
+   Produced by confirmDialog() in modal.js.
+   The base .confirm-message class is in modal.css.
+   These rules add a danger callout treatment so the destructive
+   intent is impossible to miss before the user clicks Confirm.
+   ══════════════════════════════════════════════════════════════ */
+
+.confirm-message--danger {
+  position: relative;
+  /* Left padding creates space for the warning icon */
+  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-10);
+  background: var(--color-danger-faint);
+  border: 1px solid var(--color-danger-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  /* Override the 54ch max-width from modal.css — use full container */
+  max-width: none;
+}
+
+/* Warning icon injected as a pseudo-element — no DOM change */
+.confirm-message--danger::before {
+  content: '⚠';
+  position: absolute;
+  left: var(--space-4);
+  top: var(--space-4);
+  font-size: var(--text-base);
+  line-height: 1;
+  color: var(--color-danger);
+  opacity: 0.8;
+}
+
+/* Quoted item name inside the message (e.g. "100L First Semester") */
+.confirm-message--danger strong,
+.confirm-message--danger em {
+  font-weight: 700;
+  font-style: normal;
+  color: var(--color-text);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   5. EDIT COURSE MODAL SHELL  (.ecm-*)
+   Produced by EditCourseModal. The modal opens at size:'lg'.
+   
+   DOM tree:
+   .modal-content
+   └─ .modal-title          (modal.css)
+   └─ .modal-body
+      └─ .ecm-body
+         ├─ [identityEl]    ← IdentitySection.build()
+         ├─ [scoreEl]       ← ScoreSection.build()
+         └─ .ecm-footer
+            └─ .ecm-footer-actions
+               ├─ .btn.btn--ghost
+               └─ .btn.btn--primary.ecm-save-btn
+
+   Section labels use data-section attributes via ::after so they
+   never conflict with the ::before accent used by form groups.
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Body ─────────────────────────────────────────────────────── */
+
+.ecm-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── Section chrome ───────────────────────────────────────────── */
+
+/* Both sections get a shared inner padding so their contents
+   align consistently regardless of their container width */
+.ecm-body > * {
+  padding-bottom: var(--space-5);
+}
+
+/* Divider + section label above the SECOND child (ScoreSection).
+   ::before is used for the visible top border line.
+   A data-driven label is set via the next rule below. */
+.ecm-body > *:not(:first-child) {
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--color-border);
+  margin-top: var(--space-1);
+}
+
+/* Section eyebrow labels — implemented via a dedicated label element
+   rendered by JS (class: .ecm-section-label) rather than ::before/::after
+   to avoid the pseudo-element collision with focus-accent bars */
+.ecm-section-label {
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+  margin-bottom: var(--space-4);
+}
+
+/* Fallback: if the JS sections don't emit .ecm-section-label,
+   use ::before on the section wrappers themselves.
+   This avoids conflicting with the focus-accent on .form-group::before
+   because these are on different DOM elements entirely. */
+.ecm-identity-section::before {
+  content: 'Course Details';
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+  margin-bottom: var(--space-4);
+}
+
+.ecm-score-section::before {
+  content: 'Grade & Score';
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+  margin-bottom: var(--space-4);
+}
+
+/* ── Field groups inside ecm-body ────────────────────────────── */
+
+.ecm-body .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-4);
+}
+
+.ecm-body .form-group:last-of-type {
+  margin-bottom: 0;
+}
+
+/* Grade preview — richer surface inside the lg modal */
+.ecm-body .grade-preview {
+  background: var(--color-surface-3);
+  border-color: var(--color-border-light);
+  font-size: var(--text-xl);
+  /* Taller than the base 44px — more presence in the modal context */
+  min-height: 52px;
+}
+
+/* Course code input — monospace feel */
+.ecm-body .form-input[id*='code'],
+.ecm-body .form-input[placeholder*='code'],
+.ecm-body .form-input[data-field='code'] {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Number inputs — monospace for numeric precision */
+.ecm-body input[type='number'].form-input {
+  font-family: var(--font-mono);
+  letter-spacing: 0.03em;
+}
+
+/* Select — slightly deeper background for distinction */
+.ecm-body .form-select {
+  background-color: var(--color-surface-3);
+}
+
+/* Error list inside ecm modal */
+.ecm-body .course-form-errors {
+  margin-top: var(--space-3);
+}
+
+/* ── Footer ───────────────────────────────────────────────────── */
+
+.ecm-footer {
+  margin-top: var(--space-2);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--color-border);
+}
+
+/* ── Footer action buttons ────────────────────────────────────── */
+
+/* Mobile: stacked full-width buttons for easy thumb reach */
+.ecm-footer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.ecm-footer-actions .btn {
+  width: 100%;
+  justify-content: center;
+  min-height: 48px;
+}
+
+/* 480px+: inline row, right-aligned */
+@media (min-width: 480px) {
+  .ecm-footer-actions {
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .ecm-footer-actions .btn {
+    width: auto;
+    flex: 0 0 auto;
+    min-height: 44px;
+  }
+}
+
+/* ── Save button refinement ───────────────────────────────────── */
+
+.ecm-save-btn {
+  letter-spacing: 0.07em;
+  /* Stable width prevents layout jump when loading state is added */
+  min-width: 140px;
+}
+
+.ecm-save-btn:hover {
+  box-shadow:
+    var(--shadow-gold),
+    0 0 0 1px var(--color-gold-dark);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   6. LG MODAL TITLE TREATMENT
+   The edit course modal uses size:'lg'. The title uses a slightly
+   smaller display size since course codes can be long (e.g.
+   "Edit — MTH 201"). A gold underline anchors the title visually.
+   ══════════════════════════════════════════════════════════════ */
+
+#modal-box[data-size='lg'] .modal-title {
+  font-size: clamp(1rem, 3vw, var(--text-xl));
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+@media (min-width: 640px) {
+  #modal-box[data-size='lg'] .modal-title {
+    font-size: var(--text-xl);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   7. RESPONSIVE IDENTITY SECTION GRID
+   On larger viewports, IdentitySection form fields go 2-column
+   so code/credits sit beside the title instead of below it.
+
+   Safe implementation: targets .ecm-identity-section directly
+   (class applied by IdentitySection.build() in JS) rather than
+   the fragile :nth-child + :has() combination.
+   ══════════════════════════════════════════════════════════════ */
+
+/* Mobile: single column (default) */
+
+/* 560px+: two-column grid for the identity fields */
+@media (min-width: 560px) {
+  .ecm-identity-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--space-5);
+    row-gap: 0;
+  }
+
+  /* Section label spans both columns */
+  .ecm-identity-section::before,
+  .ecm-identity-section .ecm-section-label {
+    grid-column: 1 / -1;
+  }
+
+  /* Course title (longer field) spans both columns */
+  .ecm-identity-section .form-group--title {
+    grid-column: 1 / -1;
+  }
+}
+
+/* 768px+: three columns: code | title | credit units */
+@media (min-width: 768px) {
+  .ecm-identity-section {
+    grid-template-columns: minmax(110px, 1fr) minmax(180px, 2fr) minmax(100px, 1fr);
+  }
+
+  /* Title stays full-width */
+  .ecm-identity-section .form-group--title {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   8. SM MODAL ENHANCEMENTS
+   The add-semester and rename-semester modals use size:'sm'.
+   Give them a subtle warm top-accent to match the hero zone's
+   gold header accent — reinforces design language continuity.
+   ══════════════════════════════════════════════════════════════ */
+
+#modal-box[data-size='sm'] .modal-title {
+  /* Slightly smaller — these are quick utility modals */
+  font-size: var(--text-lg);
+  padding-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   9. REDUCED MOTION
+   ══════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .field-error {
+    animation: none;
+  }
+
+  .modal-body .form .form-group::before {
+    transition: none;
+  }
+
+  .ecm-save-btn {
+    transition:
+      background var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   10. PRINT
+   Belt-and-suspenders: modals never print, but if they escape
+   the print overlay (e.g. forced by a browser extension), keep
+   the content readable on white paper.
+   ══════════════════════════════════════════════════════════════ */
+
+@media print {
+  .ecm-body,
+  .ecm-footer,
+  .field-error,
+  .confirm-message--danger {
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+}

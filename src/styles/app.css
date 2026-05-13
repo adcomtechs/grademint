@@ -1,14 +1,41 @@
-/* App stylesheet entrypoint.
-   Keep imports ordered from broad foundations to feature-specific overrides. */
+/* ═══════════════════════════════════════════════════════════════
+   app.css — Dashboard entry stylesheet
+   
+   Import order is intentional and cascade-aware:
+   1. Tokens      — custom properties, no output rules
+   2. Reset       — browser normalization baseline
+   3. Base        — typography scale, layout primitives
+   4. Components  — reusable UI building blocks
+   5. Dashboard   — feature-specific views (hero → views)
+   
+   This file is the only CSS entry for index.html.
+   Never import docs/ partials here — they belong to docs-page.css.
+   ═══════════════════════════════════════════════════════════════ */
 
-@import './main.css';
-@import './shared.css';
-/* @import './edit-course-modal.css'; */
-@import './course-form.css';
-@import './course-form-theme.css';
-@import './course-form-layout.css';
-@import './analytics-panel.css';
-@import './profile.css';
-@import './transcript.css';
-@import './whatif.css';
-@import './insights.css';
+/* ── 1. Tokens ───────────────────────────────────────────────── */
+@import './tokens.css';
+
+/* ── 2. Reset ────────────────────────────────────────────────── */
+@import './reset.css';
+
+/* ── 3. Base ─────────────────────────────────────────────────── */
+@import './base/typography.css';
+@import './base/layout.css';
+
+/* ── 4. Components ───────────────────────────────────────────── */
+@import './components/brand.css';
+@import './components/buttons.css';
+@import './components/header.css';
+@import './components/modal.css';
+@import './components/toast.css';
+@import './components/forms.css';
+@import './components/badges.css';
+@import './components/common.css';
+
+/* ── 5. Dashboard views ──────────────────────────────────────── */
+@import './dashboard/hero.css';
+@import './dashboard/semester-panel.css';
+@import './dashboard/semester-modals.css';
+@import './dashboard/insights.css';
+@import './dashboard/whatif.css';
+@import './dashboard/profile.css';

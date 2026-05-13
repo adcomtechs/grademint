@@ -78,9 +78,7 @@ export class ClassificationLadder extends BaseComponent {
     // section to render a neutral "pending" state rather than stamping the
     // student as Fail before they have submitted any work.
     const hasGradedData = semesters.some((s) => s.courseCount > 0);
-    const honor = hasGradedData
-      ? GPACalculatorService.getHonorClassification(cgpa, scaleId)
-      : null;
+    const honor = hasGradedData ? GPACalculatorService.getHonorClassification(cgpa, scaleId) : null;
 
     clearElement(this.container);
     this.container.append(this._buildCard(cgpa, honor, scale));
@@ -177,9 +175,8 @@ export class ClassificationLadder extends BaseComponent {
     // The findIndex will still run but currentIdx = -1 because honor being
     // null means we intentionally skip classification — isAchieved and
     // isCurrent will both be false for every band, leaving all fills at 0%.
-    const currentIdx = honor !== null
-      ? asc.findIndex((b) => cgpa >= b.min && cgpa < b.max + 0.0001)
-      : -1;
+    const currentIdx =
+      honor !== null ? asc.findIndex((b) => cgpa >= b.min && cgpa < b.max + 0.0001) : -1;
 
     // Display order is highest-first
     const bands = [...asc].reverse();
@@ -258,11 +255,7 @@ export class ClassificationLadder extends BaseComponent {
           '✓'
         );
       } else {
-        marker = createElement(
-          'span',
-          { className: 'ladder-dash', 'aria-hidden': 'true' },
-          '—'
-        );
+        marker = createElement('span', { className: 'ladder-dash', 'aria-hidden': 'true' }, '—');
       }
 
       row.append(meta, barTrack, marker);

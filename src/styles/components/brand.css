@@ -1,0 +1,84 @@
+/* ═══════════════════════════════════════════════════════════════
+   COMPONENTS / BRAND
+   Logo mark, wordmark, and brand link composition.
+   ═══════════════════════════════════════════════════════════════ */
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+  flex-shrink: 0;
+  /* Touch target compliance */
+  min-height: 44px;
+}
+
+.brand:hover {
+  text-decoration: none;
+}
+
+/* ── SVG mark ────────────────────────────────────────────────── */
+.brand-mark {
+  width: 1.9rem;
+  height: 1.9rem;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 10px var(--color-gold-glow));
+  transition: filter var(--duration-normal) var(--ease-out);
+}
+
+.brand:hover .brand-mark {
+  filter: drop-shadow(0 0 16px var(--color-gold-glow));
+}
+
+@media (min-width: 640px) {
+  .brand-mark {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+/* SVG path roles */
+.brand-mark-crest {
+  fill: rgba(201, 168, 76, 0.12);
+  stroke: var(--color-gold);
+  stroke-width: 2;
+}
+
+.brand-mark-cap {
+  fill: var(--color-gold);
+}
+
+.brand-mark-line {
+  fill: none;
+  stroke: var(--color-text);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── Wordmark ────────────────────────────────────────────────── */
+.brand-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 1rem + 0.5vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--color-text);
+  line-height: 1;
+  /* Prevent the name from wrapping */
+  white-space: nowrap;
+}
+
+.brand-name span {
+  color: var(--color-gold);
+}
+
+/* ── Compact variant (used in smaller header contexts) ───────── */
+.brand--compact .brand-name {
+  display: none;
+}
+
+@media (min-width: 400px) {
+  .brand--compact .brand-name {
+    display: block;
+  }
+}

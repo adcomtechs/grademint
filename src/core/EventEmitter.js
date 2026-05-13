@@ -34,7 +34,10 @@ export class EventEmitter {
    * Closure: `wrapper` closes over `listener` and `this` to self-remove.
    */
   once(event, listener) {
-    const wrapper = (...args) => { listener(...args); this.off(event, wrapper); };
+    const wrapper = (...args) => {
+      listener(...args);
+      this.off(event, wrapper);
+    };
     wrapper._original = listener;
     return this.on(event, wrapper);
   }
@@ -43,7 +46,10 @@ export class EventEmitter {
     const set = this[_listeners].get(event);
     if (!set) return this;
     for (const fn of set) {
-      if (fn === listener || fn._original === listener) { set.delete(fn); break; }
+      if (fn === listener || fn._original === listener) {
+        set.delete(fn);
+        break;
+      }
     }
     return this;
   }
@@ -52,9 +58,13 @@ export class EventEmitter {
   emit(event, ...args) {
     const set = this[_listeners].get(event);
     if (!set?.size) return this;
-    for (const fn of [...set]) {        // snapshot the Set
-      try { fn(...args); }
-      catch (err) { log.error(`Error in "${event}" listener`, err); }
+    for (const fn of [...set]) {
+      // snapshot the Set
+      try {
+        fn(...args);
+      } catch (err) {
+        log.error(`Error in "${event}" listener`, err);
+      }
     }
     return this;
   }
@@ -64,8 +74,12 @@ export class EventEmitter {
     return this;
   }
 
-  listenerCount(event) { return this[_listeners].get(event)?.size ?? 0; }
-  eventNames()        { return [...this[_listeners].keys()]; }
+  listenerCount(event) {
+    return this[_listeners].get(event)?.size ?? 0;
+  }
+  eventNames() {
+    return [...this[_listeners].keys()];
+  }
 }
 
 /**

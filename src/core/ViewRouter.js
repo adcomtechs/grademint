@@ -18,7 +18,7 @@
  * This module is ~60 lines and covers the exact use case.
  */
 
-import { createLogger } from "../utils/logger.js";
+import { createLogger } from '../utils/logger.js';
 
 const log = createLogger('ViewRouter');
 
