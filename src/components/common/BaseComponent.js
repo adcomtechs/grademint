@@ -40,18 +40,14 @@ export class BaseComponent {
    */
   constructor(container, store) {
     if (new.target === BaseComponent) {
-      throw new TypeError(
-        'BaseComponent is abstract. Extend it — do not instantiate it directly.'
-      );
+      throw new TypeError('BaseComponent is abstract. Extend it — do not instantiate it directly.');
     }
     if (!(container instanceof Element)) {
-      throw new TypeError(
-        `BaseComponent: container must be an Element, got ${typeof container}`
-      );
+      throw new TypeError(`BaseComponent: container must be an Element, got ${typeof container}`);
     }
 
     this.container = container;
-    this.store     = store;
+    this.store = store;
 
     _state.set(this, {});
 
@@ -237,9 +233,9 @@ export class BaseComponent {
     } catch (fallbackErr) {
       // The fallback itself failed — log and do nothing further.
       // The container may be in a broken state but the app keeps running.
-     log.error(`Fallback UI render failed in ${this.constructor.name}`, fallbackErr, {
-       component: this.constructor.name,
-     });
+      log.error(`Fallback UI render failed in ${this.constructor.name}`, fallbackErr, {
+        component: this.constructor.name,
+      });
     }
 
     // ── 3. Toast notification ────────────────────────────────────────────────
@@ -247,7 +243,7 @@ export class BaseComponent {
     try {
       showToast(
         `A UI section failed to render (${this.constructor.name}). ` +
-        `The rest of the application is unaffected.`,
+          `The rest of the application is unaffected.`,
         'error',
         6000
       );

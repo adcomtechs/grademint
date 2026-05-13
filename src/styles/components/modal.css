@@ -53,7 +53,6 @@
    FIX-8  closed overlay intercepts keyboard focus (visibility gap)
    ═══════════════════════════════════════════════════════════════ */
 
-
 /* ══════════════════════════════════════════════════════════════
    FIX-1  BODY SCROLL LOCK
    modal.js adds .modal-open on <body> when a modal opens and
@@ -67,11 +66,10 @@
    ══════════════════════════════════════════════════════════════ */
 
 body.modal-open {
-    overflow: hidden;
-    /* Prevent layout shift on scrollbar removal */
-    padding-right: var(--scrollbar-width, 0px);
+  overflow: hidden;
+  /* Prevent layout shift on scrollbar removal */
+  padding-right: var(--scrollbar-width, 0px);
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    1.  OVERLAY / BACKDROP
@@ -88,67 +86,66 @@ body.modal-open {
    ══════════════════════════════════════════════════════════════ */
 
 .modal-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: var(--z-modal);
-    /* 300 */
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  /* 300 */
 
-    /* Backdrop */
-    background: rgba(8, 11, 20, 0.82);
-    backdrop-filter: blur(10px) saturate(140%);
-    -webkit-backdrop-filter: blur(10px) saturate(140%);
+  /* Backdrop */
+  background: rgba(8, 11, 20, 0.82);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
 
-    /* Mobile: sheet anchored to the viewport floor */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  /* Mobile: sheet anchored to the viewport floor */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    /*
+  /*
     Horizontal padding creates the side margins that prevent the
     sheet from being edge-to-edge on mobile.
     Bottom padding = 0 — the sheet sits flush with the screen
     bottom edge. Safe-area inset is handled inside .modal-content.
   */
-    padding: var(--space-5);
+  padding: var(--space-5);
 
-    /* ── Hidden state (FIX-8) ──────────────────────────────────── */
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
+  /* ── Hidden state (FIX-8) ──────────────────────────────────── */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 
-    /*
+  /*
     Two-property transition:
     - opacity animates the fade
     - visibility is delayed so it hides AFTER the fade-out ends,
       keeping the overlay accessible during the exit animation.
     The delay is cleared on open (visibility becomes visible instantly).
   */
-    transition:
-        opacity var(--duration-normal) var(--ease-out),
-        visibility 0s linear var(--duration-normal);
+  transition:
+    opacity var(--duration-normal) var(--ease-out),
+    visibility 0s linear var(--duration-normal);
 
-    overscroll-behavior: contain;
+  overscroll-behavior: contain;
 }
 
 .modal-overlay.is-open {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    /* Remove the visibility delay — show instantly on open */
-    transition:
-        opacity var(--duration-normal) var(--ease-out),
-        visibility 0s linear 0s;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  /* Remove the visibility delay — show instantly on open */
+  transition:
+    opacity var(--duration-normal) var(--ease-out),
+    visibility 0s linear 0s;
 }
 
 /* Tablet+: vertically center the floating card */
 @media (min-width: 640px) {
-    .modal-overlay {
-        align-items: center;
-        /* Uniform padding on all sides — card floats in the center */
-        padding: var(--space-6);
-    }
+  .modal-overlay {
+    align-items: center;
+    /* Uniform padding on all sides — card floats in the center */
+    padding: var(--space-6);
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    2.  MODAL BOX
@@ -169,11 +166,11 @@ body.modal-open {
    ══════════════════════════════════════════════════════════════ */
 
 .modal-box {
-    position: relative;
-    width: 100%;
-    /* max-width: 100%; */
+  position: relative;
+  width: 100%;
+  /* max-width: 100%; */
 
-    /*
+  /*
     FIX-3 — content-adaptive height:
     Do NOT set height:auto explicitly (it is already the default).
     The flex column inside will size to its content.
@@ -183,57 +180,56 @@ body.modal-open {
     80dvh (not 88) leaves more visible page context on mobile,
     helping users understand the sheet is a layer above the page.
   */
-    max-height: 80dvh;
-    max-height: 80vh;
-    /* fallback */
+  max-height: 80dvh;
+  max-height: 80vh;
+  /* fallback */
 
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
 
-    /* Mobile: flat bottom, rounded top */
-    /* border-radius: var(--radius-xl) var(--radius-xl) 0 0; */
-    border-radius: var(--radius-xl);
-    box-shadow:
-        0 -4px 24px rgba(0, 0, 0, 0.5),
-        0 -1px 0 rgba(255, 255, 255, 0.04),
-        var(--shadow-xl);
+  /* Mobile: flat bottom, rounded top */
+  /* border-radius: var(--radius-xl) var(--radius-xl) 0 0; */
+  border-radius: var(--radius-xl);
+  box-shadow:
+    0 -4px 24px rgba(0, 0, 0, 0.5),
+    0 -1px 0 rgba(255, 255, 255, 0.04),
+    var(--shadow-xl);
 
-    /* Flex column: drag handle → scrollable content → (optional sticky footer) */
-    display: flex;
-    flex-direction: column;
-    /* Allow the box to shrink below its natural height on very short viewports */
-    min-height: 0;
+  /* Flex column: drag handle → scrollable content → (optional sticky footer) */
+  display: flex;
+  flex-direction: column;
+  /* Allow the box to shrink below its natural height on very short viewports */
+  min-height: 0;
 
-    /* Clip the drag handle and content within rounded corners */
-    overflow: hidden;
+  /* Clip the drag handle and content within rounded corners */
+  overflow: hidden;
 
-    /* Slide up from below */
-    /* transform: translateY(100%); */
-    transition: transform var(--duration-normal) var(--ease-out);
-    /* Centered entrance: subtle scale + slight lift.
+  /* Slide up from below */
+  /* transform: translateY(100%); */
+  transition: transform var(--duration-normal) var(--ease-out);
+  /* Centered entrance: subtle scale + slight lift.
            More appropriate than sliding from the bottom for a dialog. */
-    transform: scale(0.95) translateY(10px);
+  transform: scale(0.95) translateY(10px);
 
-    /* box-shadow: var(--shadow-xl); */
+  /* box-shadow: var(--shadow-xl); */
 
-    /* Cap width on mobile so the dialog never stretches to
+  /* Cap width on mobile so the dialog never stretches to
            an uncomfortable reading width on tablets held in portrait.
            The overlay's padding already provides the side margins. */
-    max-width: min(100%, 560px);
+  max-width: min(100%, 560px);
 
-    /*
+  /*
     will-change: transform promotes the box to its own compositor layer,
     ensuring the slide animation is handled by the GPU and doesn't
     cause jank when painting complex backgrounds or content below.
   */
-    will-change: transform;
+  will-change: transform;
 }
 
 .modal-overlay.is-open .modal-box {
-    /* transform: translateY(0); */
-    transform: scale(1) translateY(0);
+  /* transform: translateY(0); */
+  transform: scale(1) translateY(0);
 }
-
 
 /* ── FIX-5  Landscape phone: reduce max-height ───────────────── */
 /*
@@ -243,12 +239,11 @@ body.modal-open {
   sliver of page visible above it for spatial context.
 */
 @media (max-height: 480px) and (max-width: 767px) {
-    .modal-box {
-        max-height: 92dvh;
-        max-height: 92vh;
-    }
+  .modal-box {
+    max-height: 92dvh;
+    max-height: 92vh;
+  }
 }
-
 
 /* ── Drag handle (::before) ──────────────────────────────────── */
 /*
@@ -261,51 +256,49 @@ body.modal-open {
   users who want to swipe-dismiss the sheet.
 */
 .modal-box::before {
-    content: '';
-    display: block;
-    flex-shrink: 0;
+  content: '';
+  display: block;
+  flex-shrink: 0;
 
-    /* The pill itself */
-    width: 40px;
-    height: 4px;
-    background: var(--color-border-light);
-    border-radius: var(--radius-full);
+  /* The pill itself */
+  width: 40px;
+  height: 4px;
+  background: var(--color-border-light);
+  border-radius: var(--radius-full);
 
-    /* Centred, with breathing room above and below */
-    margin: var(--space-3) auto;
-    /* Total height of this zone: space-3 (top) + 4px + space-3 (bottom)
+  /* Centred, with breathing room above and below */
+  margin: var(--space-3) auto;
+  /* Total height of this zone: space-3 (top) + 4px + space-3 (bottom)
      ≈ 8-10px + 4px + 8-10px = 20-24px. The close button must clear this. */
 }
 
-
 /* ── Tablet+: floating card ──────────────────────────────────── */
 @media (min-width: 640px) {
-    .modal-box {
-        /* All four corners rounded — card floats in the viewport */
-        border-radius: var(--radius-xl);
-        /* Restore comfortable default for desktop card */
-        max-height: min(85dvh, 800px);
-        max-height: min(85vh, 800px);
-        /* fallback */
-        max-width: 520px;
-        /* overridden by [data-size] variants below */
+  .modal-box {
+    /* All four corners rounded — card floats in the viewport */
+    border-radius: var(--radius-xl);
+    /* Restore comfortable default for desktop card */
+    max-height: min(85dvh, 800px);
+    max-height: min(85vh, 800px);
+    /* fallback */
+    max-width: 520px;
+    /* overridden by [data-size] variants below */
 
-        /* Scale + translate entrance — more polished than translate-only */
-        transform: scale(0.95) translateY(16px);
-        box-shadow: var(--shadow-xl);
-        will-change: transform;
-    }
+    /* Scale + translate entrance — more polished than translate-only */
+    transform: scale(0.95) translateY(16px);
+    box-shadow: var(--shadow-xl);
+    will-change: transform;
+  }
 
-    .modal-overlay.is-open .modal-box {
-        transform: scale(1) translateY(0);
-    }
+  .modal-overlay.is-open .modal-box {
+    transform: scale(1) translateY(0);
+  }
 
-    /* No drag handle on tablet/desktop */
-    .modal-box::before {
-        display: none;
-    }
+  /* No drag handle on tablet/desktop */
+  .modal-box::before {
+    display: none;
+  }
 }
-
 
 /* ── Size variants — tablet+ only ───────────────────────────── */
 /*
@@ -315,23 +308,22 @@ body.modal-open {
   modals look unbalanced on a phone screen.
 */
 @media (min-width: 640px) {
-    .modal-box[data-size='sm'] {
-        max-width: 400px;
-    }
+  .modal-box[data-size='sm'] {
+    max-width: 400px;
+  }
 
-    .modal-box[data-size='md'] {
-        max-width: 540px;
-    }
+  .modal-box[data-size='md'] {
+    max-width: 540px;
+  }
 
-    .modal-box[data-size='lg'] {
-        max-width: 720px;
-    }
+  .modal-box[data-size='lg'] {
+    max-width: 720px;
+  }
 
-    .modal-box[data-size='xl'] {
-        max-width: 1000px;
-    }
+  .modal-box[data-size='xl'] {
+    max-width: 1000px;
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    3.  CLOSE BUTTON  #modal-close.modal-close
@@ -350,74 +342,73 @@ body.modal-open {
    ══════════════════════════════════════════════════════════════ */
 
 .modal-close {
-    /*
+  /*
     Absolute positioning within .modal-box.
     z-index: 2 ensures it paints above .modal-content's scroll shadow
     gradient (which uses z-index: 1).
   */
-    position: absolute;
-    z-index: 2;
-    /* right: var(--space-4); */
+  position: absolute;
+  z-index: 2;
+  /* right: var(--space-4); */
 
-    /*
+  /*
     FIX-2: Mobile top position clears the drag handle.
     Drag handle occupies ≈ var(--space-3) + 4px + var(--space-3) ≈ 20-24px.
     We set top to align the close button with the title text area.
     calc() makes the intent readable.
   */
-    /* top: calc(var(--space-3) * 2 + 4px + var(--space-1)); */
-    top: var(--space-4);
-    right: var(--space-4);
+  /* top: calc(var(--space-3) * 2 + 4px + var(--space-1)); */
+  top: var(--space-4);
+  right: var(--space-4);
 
-    /* Touch target: 44×44px minimum (WCAG 2.5.5) */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: var(--radius-full);
+  /* Touch target: 44×44px minimum (WCAG 2.5.5) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
 
-    background: var(--color-surface-2);
-    color: var(--color-text-muted);
-    font-size: 0.8rem;
-    font-weight: 700;
-    border: 1px solid var(--color-border);
-    cursor: pointer;
-    touch-action: manipulation;
+  background: var(--color-surface-2);
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  touch-action: manipulation;
 
-    transition:
-        background var(--duration-fast) var(--ease-out),
-        color var(--duration-fast) var(--ease-out),
-        border-color var(--duration-fast) var(--ease-out),
-        transform var(--duration-fast) var(--ease-out);
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
 }
 
 .modal-close:hover {
-    background: var(--color-surface-3);
-    color: var(--color-text);
-    border-color: var(--color-border-light);
-    transform: scale(1.05);
+  background: var(--color-surface-3);
+  color: var(--color-text);
+  border-color: var(--color-border-light);
+  transform: scale(1.05);
 }
 
 .modal-close:active {
-    transform: scale(0.95);
+  transform: scale(0.95);
 }
 
 .modal-close:focus-visible {
-    outline: 2px solid var(--color-gold);
-    outline-offset: 2px;
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
 }
 
 /* Tablet+: no drag handle, revert to standard top position */
 @media (min-width: 640px) {
-    .modal-close {
-        top: var(--space-5);
-        right: var(--space-5);
-        width: 30px;
-        height: 30px;
-    }
+  .modal-close {
+    top: var(--space-5);
+    right: var(--space-5);
+    width: 30px;
+    height: 30px;
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    4.  MODAL CONTENT  #modal-content.modal-content
@@ -444,29 +435,29 @@ body.modal-open {
    ══════════════════════════════════════════════════════════════ */
 
 .modal-content {
-    /*
+  /*
     flex: 1 1 auto allows the content area to grow to fill space but
     also SHRINK when content is small (FIX-3 support).
     Without the shrink basis, the content area would expand to the
     maximum possible height even when content is sparse.
   */
-    flex: 1 1 auto;
-    min-height: 0;
-    /* critical — allows flex child to shrink below content size */
+  flex: 1 1 auto;
+  min-height: 0;
+  /* critical — allows flex child to shrink below content size */
 
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 
-    /* Mobile-first padding */
-    /* padding: var(--space-4) var(--space-4); */
-    /* Bottom padding accounts for safe-area-inset + breathing room */
-    /* padding-bottom: calc(var(--space-6) + env(safe-area-inset-bottom, 0px)); */
-    /* Uniform padding — bottom no larger than top */
-    padding: var(--space-5);
-    padding-bottom: max(var(--space-5), env(safe-area-inset-bottom, var(--space-5)));
+  /* Mobile-first padding */
+  /* padding: var(--space-4) var(--space-4); */
+  /* Bottom padding accounts for safe-area-inset + breathing room */
+  /* padding-bottom: calc(var(--space-6) + env(safe-area-inset-bottom, 0px)); */
+  /* Uniform padding — bottom no larger than top */
+  padding: var(--space-5);
+  padding-bottom: max(var(--space-5), env(safe-area-inset-bottom, var(--space-5)));
 
-    /*
+  /*
     FIX-4 Scroll shadow:
     The background-attachment: local trick makes the gradient paint
     relative to the scrollable content, not the element box.
@@ -476,49 +467,45 @@ body.modal-open {
     Both are transparent when content doesn't overflow — the gradients
     only appear where background colour differs from the surface colour.
   */
-    background:
+  background:
         /* top fade — visible when scrolled down */
-        linear-gradient(var(--color-surface) 30%,
-            rgba(14, 20, 34, 0)) center top / 100% 24px no-repeat local,
+    linear-gradient(var(--color-surface) 30%, rgba(14, 20, 34, 0)) center top / 100% 24px no-repeat
+      local,
+    /* bottom shadow — visible when more content below */
+    linear-gradient(rgba(14, 20, 34, 0), rgba(8, 11, 20, 0.9) 70%) center bottom / 100% 40px
+      no-repeat local,
+    /* static base colour */ var(--color-surface);
 
-        /* bottom shadow — visible when more content below */
-        linear-gradient(rgba(14, 20, 34, 0),
-            rgba(8, 11, 20, 0.9) 70%) center bottom / 100% 40px no-repeat local,
+  background-attachment: local, local, scroll;
 
-        /* static base colour */
-        var(--color-surface);
-
-    background-attachment: local, local, scroll;
-
-    /* Relative positioning for any potential pseudo-element children */
-    position: relative;
+  /* Relative positioning for any potential pseudo-element children */
+  position: relative;
 }
 
 /* Very small screens: reduce horizontal padding */
 @media (max-width: 359px) {
-    .modal-content {
-        padding-left: var(--space-3);
-        padding-right: var(--space-3);
-    }
+  .modal-content {
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+  }
 }
 
 /* Landscape phone: compress vertical padding */
 @media (max-height: 480px) and (max-width: 767px) {
-    .modal-content {
-        padding-top: var(--space-3);
-        padding-bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
-    }
+  .modal-content {
+    padding-top: var(--space-3);
+    padding-bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+  }
 }
 
 /* Tablet+: increase padding for the floating card */
 @media (min-width: 640px) {
-    .modal-content {
-        padding: var(--space-6);
-        background: var(--color-surface);
-        /* remove scroll shadow on desktop — less needed */
-    }
+  .modal-content {
+    padding: var(--space-6);
+    background: var(--color-surface);
+    /* remove scroll shadow on desktop — less needed */
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    5.  MODAL TITLE  h2.modal-title
@@ -537,41 +524,40 @@ body.modal-open {
    ══════════════════════════════════════════════════════════════ */
 
 .modal-title {
-    font-family: var(--font-display);
-    font-size: clamp(1.1rem, 4vw, var(--text-xl));
-    font-weight: 600;
-    color: var(--color-text);
-    line-height: 1.25;
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 4vw, var(--text-xl));
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.25;
 
-    /* Vertical gap from drag handle area (mobile) / top padding (desktop) */
-    margin-top: 0;
-    margin-bottom: var(--space-4);
+  /* Vertical gap from drag handle area (mobile) / top padding (desktop) */
+  margin-top: 0;
+  margin-bottom: var(--space-4);
 
-    /*
+  /*
     FIX-6: right-pad enough to clear the close button (32px) plus
     its right margin (space-4 ≈ 12-14px) plus a 4px optical buffer.
     clamp() ensures this never crushes text on ultra-narrow screens.
   */
-    padding-right: clamp(44px, 15%, var(--space-10));
+  padding-right: clamp(44px, 15%, var(--space-10));
 }
 
 @media (min-width: 640px) {
-    .modal-title {
-        font-size: var(--text-xl);
-        margin-bottom: var(--space-5);
-        /* Desktop: close button is 30px wide + space-5 right margin */
-        padding-right: var(--space-10);
-    }
+  .modal-title {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-5);
+    /* Desktop: close button is 30px wide + space-5 right margin */
+    padding-right: var(--space-10);
+  }
 }
 
 /* Landscape phone: reduce title size to conserve vertical space */
 @media (max-height: 480px) and (max-width: 767px) {
-    .modal-title {
-        font-size: var(--text-md);
-        margin-bottom: var(--space-3);
-    }
+  .modal-title {
+    font-size: var(--text-md);
+    margin-bottom: var(--space-3);
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    6.  MODAL BODY  div.modal-body
@@ -583,13 +569,12 @@ body.modal-open {
    ══════════════════════════════════════════════════════════════ */
 
 .modal-body {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    /* Ensure the body itself doesn't shrink below its content */
-    flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  /* Ensure the body itself doesn't shrink below its content */
+  flex-shrink: 0;
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    7.  MODAL ACTIONS  div.modal-actions
@@ -615,98 +600,98 @@ body.modal-open {
    ══════════════════════════════════════════════════════════════ */
 
 .modal-actions {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
 
-    /* Separator from the content above */
-    padding-top: var(--space-4);
-    border-top: 1px solid var(--color-border);
-    margin-top: var(--space-3);
+  /* Separator from the content above */
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  margin-top: var(--space-3);
 
-    /*
+  /*
     FIX-7: sticky bottom — keeps Cancel/Confirm in view when
     content above it overflows the .modal-content scroll area.
     background + negative margins extend the bar to cover any
     content scrolling behind it.
   */
-    position: sticky;
-    bottom: 0;
-    background: var(--color-surface);
+  position: sticky;
+  bottom: 0;
+  background: var(--color-surface);
 
-    /*
+  /*
     Negative horizontal margins + matching padding pull the sticky
     bar edge-to-edge, visually separating it from the scroll area
     and preventing content from being visible behind it on scroll.
   */
-    margin-left: calc(var(--space-4) * -1);
-    margin-right: calc(var(--space-4) * -1);
-    margin-bottom: calc(var(--space-6) * -1);
-    padding-left: var(--space-4);
-    padding-right: var(--space-4);
-    padding-bottom: calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
+  margin-left: calc(var(--space-4) * -1);
+  margin-right: calc(var(--space-4) * -1);
+  margin-bottom: calc(var(--space-6) * -1);
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+  padding-bottom: calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
 
-    /* Subtle top shadow when the bar is stuck */
-    box-shadow: 0 -1px 0 var(--color-border);
+  /* Subtle top shadow when the bar is stuck */
+  box-shadow: 0 -1px 0 var(--color-border);
 }
 
 /* Full-width stacked buttons — mobile default */
 .modal-actions .btn {
-    width: 100%;
-    justify-content: center;
-    /* Bump min-height for easier thumb tap on mobile */
-    min-height: 44px;
+  width: 100%;
+  justify-content: center;
+  /* Bump min-height for easier thumb tap on mobile */
+  min-height: 44px;
 }
 
 /* From 480px: inline row, right-aligned, natural button widths */
 @media (min-width: 480px) {
-    .modal-actions {
-        flex-direction: row;
-        flex-wrap: nowrap;
-        justify-content: flex-end;
-        align-items: center;
-        gap: var(--space-3);
+  .modal-actions {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--space-3);
 
-        /* Reset the negative-margin bleed — not needed in row layout */
-        margin-left: 0;
-        margin-right: 0;
-        margin-bottom: 0;
-        padding-left: 0;
-        padding-right: 0;
-        padding-bottom: var(--space-4);
+    /* Reset the negative-margin bleed — not needed in row layout */
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: var(--space-4);
 
-        /* Still sticky, but the background can be transparent in row mode
+    /* Still sticky, but the background can be transparent in row mode
        since buttons don't stack and content behind is less of an issue */
-        background: var(--color-surface);
-    }
+    background: var(--color-surface);
+  }
 
-    .modal-actions .btn {
-        width: auto;
-        flex: 0 0 auto;
-        min-height: 40px;
-    }
+  .modal-actions .btn {
+    width: auto;
+    flex: 0 0 auto;
+    min-height: 40px;
+  }
 }
 
 /* Landscape phone: tighter action row */
 @media (max-height: 480px) and (max-width: 767px) {
-    .modal-actions {
-        padding-top: var(--space-3);
-        padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
-        margin-bottom: calc(var(--space-3) * -1);
-        gap: var(--space-2);
-    }
+  .modal-actions {
+    padding-top: var(--space-3);
+    padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
+    margin-bottom: calc(var(--space-3) * -1);
+    gap: var(--space-2);
+  }
 }
 
 /* Tablet+: adjust for increased modal-content padding */
 @media (min-width: 640px) {
-    .modal-actions {
-        margin-left: calc(var(--space-6) * -1);
-        margin-right: calc(var(--space-6) * -1);
-        margin-bottom: calc(var(--space-6) * -1);
-        padding-left: var(--space-6);
-        padding-right: var(--space-6);
-        padding-bottom: var(--space-6);
-    }
+  .modal-actions {
+    margin-left: calc(var(--space-6) * -1);
+    margin-right: calc(var(--space-6) * -1);
+    margin-bottom: calc(var(--space-6) * -1);
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+    padding-bottom: var(--space-6);
+  }
 }
 
 /* ── 6. Actions — fix negative-margin math against new padding ───
@@ -715,16 +700,15 @@ body.modal-open {
    and space-6 (tablet+) to match the updated .modal-content.
 ────────────────────────────────────────────────────────────────── */
 @media (max-width: 479px) {
-    .modal-actions {
-        margin-left: calc(var(--space-5) * -1);
-        margin-right: calc(var(--space-5) * -1);
-        margin-bottom: calc(var(--space-5) * -1);
-        padding-left: var(--space-5);
-        padding-right: var(--space-5);
-        padding-bottom: max(var(--space-5), env(safe-area-inset-bottom, var(--space-5)));
-    }
+  .modal-actions {
+    margin-left: calc(var(--space-5) * -1);
+    margin-right: calc(var(--space-5) * -1);
+    margin-bottom: calc(var(--space-5) * -1);
+    padding-left: var(--space-5);
+    padding-right: var(--space-5);
+    padding-bottom: max(var(--space-5), env(safe-area-inset-bottom, var(--space-5)));
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    8.  CONFIRM DIALOG CONTENT
@@ -733,16 +717,15 @@ body.modal-open {
    ══════════════════════════════════════════════════════════════ */
 
 .confirm-message {
-    font-size: var(--text-base);
-    color: var(--color-text-muted);
-    line-height: 1.7;
-    max-width: 50ch;
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  max-width: 50ch;
 }
 
 .confirm-message--danger {
-    color: var(--color-text);
+  color: var(--color-text);
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    9.  GENERIC FORM FIELDS INSIDE .modal-body
@@ -752,88 +735,88 @@ body.modal-open {
    ══════════════════════════════════════════════════════════════ */
 
 .modal-body .field-group {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
 }
 
 .modal-body .form-label {
-    display: block;
-    font-size: var(--text-xs);
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
 }
 
 .modal-body .form-input {
-    display: block;
-    width: 100%;
-    /* 48px on mobile for a generous touch target */
-    min-height: 48px;
-    padding: var(--space-3) var(--space-4);
-    background: var(--color-surface-2);
-    color: var(--color-text);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    font-size: var(--text-base);
-    font-family: var(--font-body);
-    line-height: 1.5;
-    transition:
-        border-color var(--duration-fast) var(--ease-out),
-        box-shadow var(--duration-fast) var(--ease-out),
-        background var(--duration-fast) var(--ease-out);
+  display: block;
+  width: 100%;
+  /* 48px on mobile for a generous touch target */
+  min-height: 48px;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--text-base);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
 }
 
 .modal-body .form-input::placeholder {
-    color: var(--color-text-dim);
+  color: var(--color-text-dim);
 }
 
 .modal-body .form-input:hover {
-    border-color: var(--color-border-light);
+  border-color: var(--color-border-light);
 }
 
 .modal-body .form-input:focus {
-    outline: none;
-    border-color: var(--color-gold);
-    box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.12);
-    background: var(--color-surface-3);
+  outline: none;
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.12);
+  background: var(--color-surface-3);
 }
 
 .modal-body .form-hint {
-    font-size: var(--text-xs);
-    color: var(--color-text-dim);
-    line-height: 1.55;
-    margin-top: var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--color-text-dim);
+  line-height: 1.55;
+  margin-top: var(--space-1);
 }
 
 /* Field-level error message */
 .modal-body .form-error {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-size: var(--text-xs);
-    color: var(--color-danger);
-    line-height: 1.4;
-    margin-top: var(--space-1);
-    min-height: 1.2em;
-    animation: modal-error-slide-in var(--duration-fast) var(--ease-out) both;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-danger);
+  line-height: 1.4;
+  margin-top: var(--space-1);
+  min-height: 1.2em;
+  animation: modal-error-slide-in var(--duration-fast) var(--ease-out) both;
 }
 
 .modal-body .form-error:empty {
-    display: none;
+  display: none;
 }
 
 @keyframes modal-error-slide-in {
-    from {
-        opacity: 0;
-        transform: translateY(-3px);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ── PATCH: flush bottom sheet on mobile ─────────────────────
@@ -844,18 +827,17 @@ body.modal-open {
    (iPhone X+) are still protected, and flush devices sit clean.
 ────────────────────────────────────────────────────────────── */
 @media (max-width: 639px) {
-    .modal-content {
-        padding-bottom: max(var(--space-3), env(safe-area-inset-bottom, var(--space-3)));
-    }
+  .modal-content {
+    padding-bottom: max(var(--space-3), env(safe-area-inset-bottom, var(--space-3)));
+  }
 }
 
 /* Reduce input height slightly on tablet+ */
 @media (min-width: 640px) {
-    .modal-body .form-input {
-        min-height: 44px;
-    }
+  .modal-body .form-input {
+    min-height: 44px;
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    10. REDUCED MOTION
@@ -865,29 +847,28 @@ body.modal-open {
    ══════════════════════════════════════════════════════════════ */
 
 @media (prefers-reduced-motion: reduce) {
-    .modal-overlay {
-        transition:
-            opacity 0ms,
-            visibility 0s linear var(--duration-normal);
-    }
+  .modal-overlay {
+    transition:
+      opacity 0ms,
+      visibility 0s linear var(--duration-normal);
+  }
 
-    .modal-overlay.is-open {
-        transition:
-            opacity 0ms,
-            visibility 0s linear 0s;
-    }
+  .modal-overlay.is-open {
+    transition:
+      opacity 0ms,
+      visibility 0s linear 0s;
+  }
 
-    .modal-box {
-        transform: none !important;
-        transition: none;
-        will-change: auto;
-    }
+  .modal-box {
+    transform: none !important;
+    transition: none;
+    will-change: auto;
+  }
 
-    .modal-close {
-        transition: none;
-    }
+  .modal-close {
+    transition: none;
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    11. PRINT
@@ -896,7 +877,7 @@ body.modal-open {
    ══════════════════════════════════════════════════════════════ */
 
 @media print {
-    .modal-overlay {
-        display: none !important;
-    }
+  .modal-overlay {
+    display: none !important;
+  }
 }

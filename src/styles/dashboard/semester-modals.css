@@ -40,15 +40,15 @@
 
 /* Field error message slides in from slightly above */
 @keyframes field-error-in {
-    from {
-        opacity: 0;
-        transform: translateY(-4px);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -59,19 +59,19 @@
    ══════════════════════════════════════════════════════════════ */
 
 .modal-body .form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
 }
 
 /* ── Form group: label + input + error + hint stack ─────────── */
 
 .modal-body .form .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    /* Relative so the focus-accent pseudo sits against the group */
-    position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  /* Relative so the focus-accent pseudo sits against the group */
+  position: relative;
 }
 
 /* Gold left-accent bar that appears when the input is focused.
@@ -79,42 +79,42 @@
    full height of the input field only (not the label).
    The top offset is fixed at the label height (~20px) + gap (4px). */
 .modal-body .form .form-group::before {
-    content: '';
-    position: absolute;
-    /* Start below the label — 20px label + 4px gap + 2px safety */
-    top: 26px;
-    bottom: 0;
-    left: -1px;
-    width: 2px;
-    background: var(--color-gold);
-    border-radius: var(--radius-full);
-    opacity: 0;
-    transform: scaleY(0.5);
-    transform-origin: top;
-    transition:
-        opacity var(--duration-fast) var(--ease-out),
-        transform var(--duration-fast) var(--ease-out);
+  content: '';
+  position: absolute;
+  /* Start below the label — 20px label + 4px gap + 2px safety */
+  top: 26px;
+  bottom: 0;
+  left: -1px;
+  width: 2px;
+  background: var(--color-gold);
+  border-radius: var(--radius-full);
+  opacity: 0;
+  transform: scaleY(0.5);
+  transform-origin: top;
+  transition:
+    opacity var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
 }
 
 .modal-body .form .form-group:focus-within::before {
-    opacity: 1;
-    transform: scaleY(1);
+  opacity: 1;
+  transform: scaleY(1);
 }
 
 /* Slightly larger input text in single-field sm modals — the input
    is the primary interaction element; give it breathing room */
 .modal-body .form .form-input {
-    font-size: var(--text-md);
-    letter-spacing: 0.01em;
+  font-size: var(--text-md);
+  letter-spacing: 0.01em;
 }
 
 /* Hint text: italic + slightly faded for secondary role */
 .modal-body .form .form-hint {
-    font-style: italic;
-    color: var(--color-text-dim);
-    font-size: var(--text-xs);
-    line-height: 1.55;
-    opacity: 0.9;
+  font-style: italic;
+  color: var(--color-text-dim);
+  font-size: var(--text-xs);
+  line-height: 1.55;
+  opacity: 0.9;
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -125,17 +125,17 @@
    ══════════════════════════════════════════════════════════════ */
 
 .field-error {
-    display: block;
-    font-size: var(--text-xs);
-    font-weight: 600;
-    color: var(--color-danger);
-    line-height: 1.4;
-    animation: field-error-in var(--duration-fast) var(--ease-out) both;
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-danger);
+  line-height: 1.4;
+  animation: field-error-in var(--duration-fast) var(--ease-out) both;
 }
 
 /* When empty: zero height, no space consumption */
 .field-error:empty {
-    display: none;
+  display: none;
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -148,9 +148,9 @@
 .input--error,
 .input--error:hover,
 .input--error:focus {
-    border-color: var(--color-danger) !important;
-    box-shadow: 0 0 0 3px rgba(245, 101, 101, 0.12) !important;
-    background: rgba(245, 101, 101, 0.03) !important;
+  border-color: var(--color-danger) !important;
+  box-shadow: 0 0 0 3px rgba(245, 101, 101, 0.12) !important;
+  background: rgba(245, 101, 101, 0.03) !important;
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -162,37 +162,37 @@
    ══════════════════════════════════════════════════════════════ */
 
 .confirm-message--danger {
-    position: relative;
-    /* Left padding creates space for the warning icon */
-    padding: var(--space-4) var(--space-4) var(--space-4) var(--space-10);
-    background: var(--color-danger-faint);
-    border: 1px solid var(--color-danger-border);
-    border-radius: var(--radius-md);
-    color: var(--color-text);
-    font-size: var(--text-sm);
-    line-height: 1.7;
-    /* Override the 54ch max-width from modal.css — use full container */
-    max-width: none;
+  position: relative;
+  /* Left padding creates space for the warning icon */
+  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-10);
+  background: var(--color-danger-faint);
+  border: 1px solid var(--color-danger-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  /* Override the 54ch max-width from modal.css — use full container */
+  max-width: none;
 }
 
 /* Warning icon injected as a pseudo-element — no DOM change */
 .confirm-message--danger::before {
-    content: '⚠';
-    position: absolute;
-    left: var(--space-4);
-    top: var(--space-4);
-    font-size: var(--text-base);
-    line-height: 1;
-    color: var(--color-danger);
-    opacity: 0.8;
+  content: '⚠';
+  position: absolute;
+  left: var(--space-4);
+  top: var(--space-4);
+  font-size: var(--text-base);
+  line-height: 1;
+  color: var(--color-danger);
+  opacity: 0.8;
 }
 
 /* Quoted item name inside the message (e.g. "100L First Semester") */
 .confirm-message--danger strong,
 .confirm-message--danger em {
-    font-weight: 700;
-    font-style: normal;
-    color: var(--color-text);
+  font-weight: 700;
+  font-style: normal;
+  color: var(--color-text);
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -218,39 +218,39 @@
 /* ── Body ─────────────────────────────────────────────────────── */
 
 .ecm-body {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
 /* ── Section chrome ───────────────────────────────────────────── */
 
 /* Both sections get a shared inner padding so their contents
    align consistently regardless of their container width */
-.ecm-body>* {
-    padding-bottom: var(--space-5);
+.ecm-body > * {
+  padding-bottom: var(--space-5);
 }
 
 /* Divider + section label above the SECOND child (ScoreSection).
    ::before is used for the visible top border line.
    A data-driven label is set via the next rule below. */
-.ecm-body>*:not(:first-child) {
-    padding-top: var(--space-5);
-    border-top: 1px solid var(--color-border);
-    margin-top: var(--space-1);
+.ecm-body > *:not(:first-child) {
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--color-border);
+  margin-top: var(--space-1);
 }
 
 /* Section eyebrow labels — implemented via a dedicated label element
    rendered by JS (class: .ecm-section-label) rather than ::before/::after
    to avoid the pseudo-element collision with focus-accent bars */
 .ecm-section-label {
-    display: block;
-    font-size: var(--text-xs);
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-text-dim);
-    margin-bottom: var(--space-4);
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+  margin-bottom: var(--space-4);
 }
 
 /* Fallback: if the JS sections don't emit .ecm-section-label,
@@ -258,123 +258,125 @@
    This avoids conflicting with the focus-accent on .form-group::before
    because these are on different DOM elements entirely. */
 .ecm-identity-section::before {
-    content: 'Course Details';
-    display: block;
-    font-size: var(--text-xs);
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-text-dim);
-    margin-bottom: var(--space-4);
+  content: 'Course Details';
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+  margin-bottom: var(--space-4);
 }
 
 .ecm-score-section::before {
-    content: 'Grade & Score';
-    display: block;
-    font-size: var(--text-xs);
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-text-dim);
-    margin-bottom: var(--space-4);
+  content: 'Grade & Score';
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+  margin-bottom: var(--space-4);
 }
 
 /* ── Field groups inside ecm-body ────────────────────────────── */
 
 .ecm-body .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    margin-bottom: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-4);
 }
 
 .ecm-body .form-group:last-of-type {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 /* Grade preview — richer surface inside the lg modal */
 .ecm-body .grade-preview {
-    background: var(--color-surface-3);
-    border-color: var(--color-border-light);
-    font-size: var(--text-xl);
-    /* Taller than the base 44px — more presence in the modal context */
-    min-height: 52px;
+  background: var(--color-surface-3);
+  border-color: var(--color-border-light);
+  font-size: var(--text-xl);
+  /* Taller than the base 44px — more presence in the modal context */
+  min-height: 52px;
 }
 
 /* Course code input — monospace feel */
 .ecm-body .form-input[id*='code'],
 .ecm-body .form-input[placeholder*='code'],
 .ecm-body .form-input[data-field='code'] {
-    font-family: var(--font-mono);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* Number inputs — monospace for numeric precision */
 .ecm-body input[type='number'].form-input {
-    font-family: var(--font-mono);
-    letter-spacing: 0.03em;
+  font-family: var(--font-mono);
+  letter-spacing: 0.03em;
 }
 
 /* Select — slightly deeper background for distinction */
 .ecm-body .form-select {
-    background-color: var(--color-surface-3);
+  background-color: var(--color-surface-3);
 }
 
 /* Error list inside ecm modal */
 .ecm-body .course-form-errors {
-    margin-top: var(--space-3);
+  margin-top: var(--space-3);
 }
 
 /* ── Footer ───────────────────────────────────────────────────── */
 
 .ecm-footer {
-    margin-top: var(--space-2);
-    padding-top: var(--space-5);
-    border-top: 1px solid var(--color-border);
+  margin-top: var(--space-2);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--color-border);
 }
 
 /* ── Footer action buttons ────────────────────────────────────── */
 
 /* Mobile: stacked full-width buttons for easy thumb reach */
 .ecm-footer-actions {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
 }
 
 .ecm-footer-actions .btn {
-    width: 100%;
-    justify-content: center;
-    min-height: 48px;
+  width: 100%;
+  justify-content: center;
+  min-height: 48px;
 }
 
 /* 480px+: inline row, right-aligned */
 @media (min-width: 480px) {
-    .ecm-footer-actions {
-        flex-direction: row;
-        justify-content: flex-end;
-        align-items: center;
-        gap: var(--space-3);
-    }
+  .ecm-footer-actions {
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--space-3);
+  }
 
-    .ecm-footer-actions .btn {
-        width: auto;
-        flex: 0 0 auto;
-        min-height: 44px;
-    }
+  .ecm-footer-actions .btn {
+    width: auto;
+    flex: 0 0 auto;
+    min-height: 44px;
+  }
 }
 
 /* ── Save button refinement ───────────────────────────────────── */
 
 .ecm-save-btn {
-    letter-spacing: 0.07em;
-    /* Stable width prevents layout jump when loading state is added */
-    min-width: 140px;
+  letter-spacing: 0.07em;
+  /* Stable width prevents layout jump when loading state is added */
+  min-width: 140px;
 }
 
 .ecm-save-btn:hover {
-    box-shadow: var(--shadow-gold), 0 0 0 1px var(--color-gold-dark);
+  box-shadow:
+    var(--shadow-gold),
+    0 0 0 1px var(--color-gold-dark);
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -385,16 +387,16 @@
    ══════════════════════════════════════════════════════════════ */
 
 #modal-box[data-size='lg'] .modal-title {
-    font-size: clamp(1rem, 3vw, var(--text-xl));
-    border-bottom: 1px solid var(--color-border);
-    padding-bottom: var(--space-3);
-    margin-bottom: var(--space-5);
+  font-size: clamp(1rem, 3vw, var(--text-xl));
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-3);
+  margin-bottom: var(--space-5);
 }
 
 @media (min-width: 640px) {
-    #modal-box[data-size='lg'] .modal-title {
-        font-size: var(--text-xl);
-    }
+  #modal-box[data-size='lg'] .modal-title {
+    font-size: var(--text-xl);
+  }
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -411,35 +413,35 @@
 
 /* 560px+: two-column grid for the identity fields */
 @media (min-width: 560px) {
-    .ecm-identity-section {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        column-gap: var(--space-5);
-        row-gap: 0;
-    }
+  .ecm-identity-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--space-5);
+    row-gap: 0;
+  }
 
-    /* Section label spans both columns */
-    .ecm-identity-section::before,
-    .ecm-identity-section .ecm-section-label {
-        grid-column: 1 / -1;
-    }
+  /* Section label spans both columns */
+  .ecm-identity-section::before,
+  .ecm-identity-section .ecm-section-label {
+    grid-column: 1 / -1;
+  }
 
-    /* Course title (longer field) spans both columns */
-    .ecm-identity-section .form-group--title {
-        grid-column: 1 / -1;
-    }
+  /* Course title (longer field) spans both columns */
+  .ecm-identity-section .form-group--title {
+    grid-column: 1 / -1;
+  }
 }
 
 /* 768px+: three columns: code | title | credit units */
 @media (min-width: 768px) {
-    .ecm-identity-section {
-        grid-template-columns: minmax(110px, 1fr) minmax(180px, 2fr) minmax(100px, 1fr);
-    }
+  .ecm-identity-section {
+    grid-template-columns: minmax(110px, 1fr) minmax(180px, 2fr) minmax(100px, 1fr);
+  }
 
-    /* Title stays full-width */
-    .ecm-identity-section .form-group--title {
-        grid-column: 1 / -1;
-    }
+  /* Title stays full-width */
+  .ecm-identity-section .form-group--title {
+    grid-column: 1 / -1;
+  }
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -450,11 +452,11 @@
    ══════════════════════════════════════════════════════════════ */
 
 #modal-box[data-size='sm'] .modal-title {
-    /* Slightly smaller — these are quick utility modals */
-    font-size: var(--text-lg);
-    padding-bottom: var(--space-3);
-    margin-bottom: var(--space-4);
-    border-bottom: 1px solid var(--color-border);
+  /* Slightly smaller — these are quick utility modals */
+  font-size: var(--text-lg);
+  padding-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -462,19 +464,19 @@
    ══════════════════════════════════════════════════════════════ */
 
 @media (prefers-reduced-motion: reduce) {
-    .field-error {
-        animation: none;
-    }
+  .field-error {
+    animation: none;
+  }
 
-    .modal-body .form .form-group::before {
-        transition: none;
-    }
+  .modal-body .form .form-group::before {
+    transition: none;
+  }
 
-    .ecm-save-btn {
-        transition:
-            background var(--duration-fast) var(--ease-out),
-            color var(--duration-fast) var(--ease-out);
-    }
+  .ecm-save-btn {
+    transition:
+      background var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
+  }
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -485,14 +487,13 @@
    ══════════════════════════════════════════════════════════════ */
 
 @media print {
-
-    .ecm-body,
-    .ecm-footer,
-    .field-error,
-    .confirm-message--danger {
-        border: 1px solid #ccc !important;
-        box-shadow: none !important;
-        background: #fff !important;
-        color: #000 !important;
-    }
+  .ecm-body,
+  .ecm-footer,
+  .field-error,
+  .confirm-message--danger {
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
 }

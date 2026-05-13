@@ -28,146 +28,147 @@
 /* ── Container ───────────────────────────────────────────────── */
 /* #toast-container — static in index.html and docs.html */
 .toast-container {
-    position: fixed;
-    /* Mobile: top of viewport, just below the sticky header */
-    top: calc(var(--header-h) + var(--space-3));
-    left: var(--space-4);
-    right: var(--space-4);
-    z-index: var(--z-toast);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    /* Container itself never captures pointer events */
-    pointer-events: none;
-    align-items: stretch;
+  position: fixed;
+  /* Mobile: top of viewport, just below the sticky header */
+  top: calc(var(--header-h) + var(--space-3));
+  left: var(--space-4);
+  right: var(--space-4);
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  /* Container itself never captures pointer events */
+  pointer-events: none;
+  align-items: stretch;
 }
 
 @media (min-width: 640px) {
-    .toast-container {
-        /* Tablet+: bottom-right corner */
-        top: auto;
-        bottom: var(--space-6);
-        right: var(--space-5);
-        left: auto;
-        /* Clamp to a readable width, never wider than the viewport */
-        width: min(360px, calc(100vw - 2 * var(--space-5)));
-        align-items: flex-end;
-    }
+  .toast-container {
+    /* Tablet+: bottom-right corner */
+    top: auto;
+    bottom: var(--space-6);
+    right: var(--space-5);
+    left: auto;
+    /* Clamp to a readable width, never wider than the viewport */
+    width: min(360px, calc(100vw - 2 * var(--space-5)));
+    align-items: flex-end;
+  }
 }
 
 /* ── Individual toast ────────────────────────────────────────── */
 .toast {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-3);
-    padding: var(--space-3) var(--space-4);
-    /* Solid surface so content behind never bleeds through */
-    background: var(--color-surface-2);
-    border: 1px solid var(--color-border-light);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
-    /* Toasts can be dismissed — they need pointer events */
-    pointer-events: auto;
-    width: 100%;
-    /* ── Initial hidden state ─────────────────────────────────── */
-    /* Mobile: start above its final position */
-    opacity: 0;
-    transform: translateY(-10px) scale(0.97);
-    transition:
-        opacity var(--duration-normal) var(--ease-out),
-        transform var(--duration-normal) var(--ease-out);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  /* Solid surface so content behind never bleeds through */
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  /* Toasts can be dismissed — they need pointer events */
+  pointer-events: auto;
+  width: 100%;
+  /* ── Initial hidden state ─────────────────────────────────── */
+  /* Mobile: start above its final position */
+  opacity: 0;
+  transform: translateY(-10px) scale(0.97);
+  transition:
+    opacity var(--duration-normal) var(--ease-out),
+    transform var(--duration-normal) var(--ease-out);
 }
 
 /* Enter: .toast--visible is added by rAF in showToast() */
 .toast.toast--visible {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 /* Exit: .toast--hiding is added before removal */
 .toast.toast--hiding {
-    opacity: 0;
-    transform: scale(0.95);
-    transition:
-        opacity var(--duration-fast) var(--ease-in-out),
-        transform var(--duration-fast) var(--ease-in-out);
+  opacity: 0;
+  transform: scale(0.95);
+  transition:
+    opacity var(--duration-fast) var(--ease-in-out),
+    transform var(--duration-fast) var(--ease-in-out);
 }
 
 /* Tablet+: slide up instead of down */
 @media (min-width: 640px) {
-    .toast {
-        transform: translateY(10px) scale(0.97);
-    }
+  .toast {
+    transform: translateY(10px) scale(0.97);
+  }
 
-    .toast.toast--visible {
-        transform: translateY(0) scale(1);
-    }
+  .toast.toast--visible {
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* ── Icon ────────────────────────────────────────────────────── */
 /* div.toast-icon — contains a single character (✓ ✕ ! i) */
 .toast-icon {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* Fixed circle so all icon chars sit on the same baseline */
-    width: 22px;
-    height: 22px;
-    border-radius: var(--radius-full);
-    font-size: 0.72rem;
-    font-weight: 900;
-    line-height: 1;
-    /* Colour overridden per-variant below */
-    background: var(--color-surface-3);
-    color: var(--color-text-muted);
-    margin-top: 1px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Fixed circle so all icon chars sit on the same baseline */
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1;
+  /* Colour overridden per-variant below */
+  background: var(--color-surface-3);
+  color: var(--color-text-muted);
+  margin-top: 1px;
 }
 
 /* ── Message ─────────────────────────────────────────────────── */
 /* p.toast-message */
 .toast-message {
-    flex: 1;
-    min-width: 0;
-    font-size: var(--text-sm);
-    color: var(--color-text);
-    line-height: 1.5;
-    /* Prevent overly long messages from causing layout issues */
-    word-break: break-word;
-    max-width: unset;
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  line-height: 1.5;
+  /* Prevent overly long messages from causing layout issues */
+  word-break: break-word;
+  max-width: unset;
 }
 
 /* ── Dismiss button ──────────────────────────────────────────── */
 /* button.toast-dismiss */
 .toast-dismiss {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* Touch target */
-    min-width: 24px;
-    min-height: 24px;
-    border-radius: var(--radius-sm);
-    font-size: 0.72rem;
-    color: var(--color-text-dim);
-    background: transparent;
-    cursor: pointer;
-    touch-action: manipulation;
-    transition: color var(--duration-fast) var(--ease-out),
-        background var(--duration-fast) var(--ease-out);
-    /* Align to start so it doesn't stretch on tall toasts */
-    align-self: flex-start;
-    margin-top: 0;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Touch target */
+  min-width: 24px;
+  min-height: 24px;
+  border-radius: var(--radius-sm);
+  font-size: 0.72rem;
+  color: var(--color-text-dim);
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
+  /* Align to start so it doesn't stretch on tall toasts */
+  align-self: flex-start;
+  margin-top: 0;
 }
 
 .toast-dismiss:hover {
-    color: var(--color-text);
-    background: var(--color-surface-3);
+  color: var(--color-text);
+  background: var(--color-surface-3);
 }
 
 .toast-dismiss:focus-visible {
-    outline: 2px solid var(--color-gold);
-    outline-offset: 2px;
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -177,44 +178,44 @@
 
 /* Success ✓ */
 .toast--success {
-    border-color: rgba(62, 207, 142, 0.3);
-    background: rgba(62, 207, 142, 0.05);
+  border-color: rgba(62, 207, 142, 0.3);
+  background: rgba(62, 207, 142, 0.05);
 }
 
 .toast--success .toast-icon {
-    background: rgba(62, 207, 142, 0.15);
-    color: var(--color-success);
+  background: rgba(62, 207, 142, 0.15);
+  color: var(--color-success);
 }
 
 /* Error ✕ */
 .toast--error {
-    border-color: var(--color-danger-border);
-    background: var(--color-danger-faint);
+  border-color: var(--color-danger-border);
+  background: var(--color-danger-faint);
 }
 
 .toast--error .toast-icon {
-    background: var(--color-danger-subtle);
-    color: var(--color-danger);
+  background: var(--color-danger-subtle);
+  color: var(--color-danger);
 }
 
 /* Warning ! */
 .toast--warning {
-    border-color: rgba(246, 173, 85, 0.3);
-    background: rgba(246, 173, 85, 0.05);
+  border-color: rgba(246, 173, 85, 0.3);
+  background: rgba(246, 173, 85, 0.05);
 }
 
 .toast--warning .toast-icon {
-    background: rgba(246, 173, 85, 0.15);
-    color: var(--color-warning);
+  background: rgba(246, 173, 85, 0.15);
+  color: var(--color-warning);
 }
 
 /* Info i */
 .toast--info {
-    border-color: rgba(99, 179, 237, 0.3);
-    background: rgba(99, 179, 237, 0.05);
+  border-color: rgba(99, 179, 237, 0.3);
+  background: rgba(99, 179, 237, 0.05);
 }
 
 .toast--info .toast-icon {
-    background: rgba(99, 179, 237, 0.15);
-    color: var(--color-info);
+  background: rgba(99, 179, 237, 0.15);
+  color: var(--color-info);
 }

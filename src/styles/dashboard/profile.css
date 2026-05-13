@@ -22,7 +22,6 @@
    All layout breakpoints use min-width (mobile-first).
    ═══════════════════════════════════════════════════════════════ */
 
-
 /* ══════════════════════════════════════════════════════════════
    1. PAGE ROOT — .pv-root
    Single-column stack of section cards.
@@ -31,35 +30,34 @@
    ══════════════════════════════════════════════════════════════ */
 
 .pv-root {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
 
-    /* Prevent cards from ever becoming unreadably wide on ultra-wide
+  /* Prevent cards from ever becoming unreadably wide on ultra-wide
      screens. 760px is comfortable for profile forms. */
-    max-width: 760px;
+  max-width: 760px;
 
-    /* Center in the viewport on very wide displays */
-    margin-inline: auto;
+  /* Center in the viewport on very wide displays */
+  margin-inline: auto;
 
-    /* Allow the root to breathe inside app-main's padding */
-    padding-block: var(--space-3) var(--space-10);
+  /* Allow the root to breathe inside app-main's padding */
+  padding-block: var(--space-3) var(--space-10);
 }
 
 @media (min-width: 640px) {
-    .pv-root {
-        gap: var(--space-6);
-        padding-block: var(--space-5) var(--space-12);
-    }
+  .pv-root {
+    gap: var(--space-6);
+    padding-block: var(--space-5) var(--space-12);
+  }
 }
 
 @media (min-width: 1024px) {
-    .pv-root {
-        gap: var(--space-8);
-        padding-block: var(--space-8) var(--space-16);
-    }
+  .pv-root {
+    gap: var(--space-8);
+    padding-block: var(--space-8) var(--space-16);
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    2. PAGE HEADING — .pv-heading
@@ -68,60 +66,59 @@
    ══════════════════════════════════════════════════════════════ */
 
 .pv-heading {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
 
-    /* Subtle left accent — echoes the active nav-link indicator */
-    padding-left: var(--space-4);
-    border-left: 3px solid var(--color-gold);
+  /* Subtle left accent — echoes the active nav-link indicator */
+  padding-left: var(--space-4);
+  border-left: 3px solid var(--color-gold);
 
-    /* Animate in on first paint */
-    animation: pv-fade-down var(--duration-slow) var(--ease-out) both;
+  /* Animate in on first paint */
+  animation: pv-fade-down var(--duration-slow) var(--ease-out) both;
 }
 
 .pv-heading-title {
-    font-family: var(--font-display);
-    font-size: var(--text-2xl);
-    font-weight: 700;
-    color: var(--color-text);
-    line-height: 1.15;
-    letter-spacing: -0.01em;
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
 
-    /* Remove the emoji from the tab-stop flow on mobile to prevent
+  /* Remove the emoji from the tab-stop flow on mobile to prevent
      wrapping the icon onto its own line on narrow viewports */
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
 }
 
 .pv-heading-sub {
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-    line-height: 1.6;
-    max-width: 56ch;
-    /* Override reset.css max-width: 75ch for tighter measure here */
-    margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  max-width: 56ch;
+  /* Override reset.css max-width: 75ch for tighter measure here */
+  margin: 0;
 }
 
 @media (min-width: 640px) {
-    .pv-heading {
-        padding-left: var(--space-5);
-        gap: var(--space-3);
-    }
+  .pv-heading {
+    padding-left: var(--space-5);
+    gap: var(--space-3);
+  }
 
-    .pv-heading-title {
-        font-size: var(--text-3xl);
-    }
+  .pv-heading-title {
+    font-size: var(--text-3xl);
+  }
 }
 
 @media (min-width: 1024px) {
-    .pv-heading-title {
-        font-size: clamp(1.75rem, 2.5vw, 2.25rem);
-    }
+  .pv-heading-title {
+    font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    3. SECTION HOST — .pv-section-host
@@ -130,21 +127,20 @@
    ══════════════════════════════════════════════════════════════ */
 
 .pv-section-host {
-    animation: pv-fade-up var(--duration-slow) var(--ease-out) both;
+  animation: pv-fade-up var(--duration-slow) var(--ease-out) both;
 }
 
 .pv-section-host:nth-of-type(1) {
-    animation-delay: 60ms;
+  animation-delay: 60ms;
 }
 
 .pv-section-host:nth-of-type(2) {
-    animation-delay: 120ms;
+  animation-delay: 120ms;
 }
 
 .pv-section-host:nth-of-type(3) {
-    animation-delay: 180ms;
+  animation-delay: 180ms;
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    4. CARD SYSTEM
@@ -163,97 +159,100 @@
    ══════════════════════════════════════════════════════════════ */
 
 .pv-card {
-    position: relative;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
+  position: relative;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
 
-    /* Mobile: comfortable internal padding */
-    padding: var(--space-5);
+  /* Mobile: comfortable internal padding */
+  padding: var(--space-5);
 
-    /* Isolate the card's own stacking context for the accent pseudo */
-    overflow: hidden;
+  /* Isolate the card's own stacking context for the accent pseudo */
+  overflow: hidden;
 
-    /* Depth elevation over the page background */
-    box-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.3),
-        0 4px 16px rgba(0, 0, 0, 0.25);
+  /* Depth elevation over the page background */
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 4px 16px rgba(0, 0, 0, 0.25);
 
-    transition:
-        border-color var(--duration-normal) var(--ease-out),
-        box-shadow var(--duration-normal) var(--ease-out);
+  transition:
+    border-color var(--duration-normal) var(--ease-out),
+    box-shadow var(--duration-normal) var(--ease-out);
 }
 
 /* Gold hairline accent bar at the top of each card */
 .pv-card::before {
-    content: '';
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 2px;
-    background: linear-gradient(90deg,
-            transparent,
-            var(--color-gold-dark) 20%,
-            var(--color-gold) 50%,
-            var(--color-gold-dark) 80%,
-            transparent);
-    opacity: 0;
-    transition: opacity var(--duration-normal) var(--ease-out);
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-gold-dark) 20%,
+    var(--color-gold) 50%,
+    var(--color-gold-dark) 80%,
+    transparent
+  );
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-out);
 }
 
 .pv-card:focus-within::before,
 .pv-card:hover::before {
-    opacity: 1;
+  opacity: 1;
 }
 
 @media (min-width: 640px) {
-    .pv-card {
-        padding: var(--space-6);
-    }
+  .pv-card {
+    padding: var(--space-6);
+  }
 }
 
 @media (min-width: 1024px) {
-    .pv-card {
-        padding: var(--space-8);
-    }
+  .pv-card {
+    padding: var(--space-8);
+  }
 }
 
 /* ── Danger variant ───────────────────────────────────────────── */
 
 .pv-card--danger {
-    background: color-mix(in srgb, var(--color-surface) 92%, var(--color-danger) 8%);
-    border-color: var(--color-danger-border);
-    box-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.3),
-        0 4px 16px rgba(245, 101, 101, 0.08);
+  background: color-mix(in srgb, var(--color-surface) 92%, var(--color-danger) 8%);
+  border-color: var(--color-danger-border);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 4px 16px rgba(245, 101, 101, 0.08);
 }
 
 /* Replace gold accent with danger-red */
 .pv-card--danger::before {
-    background: linear-gradient(90deg,
-            transparent,
-            rgba(245, 101, 101, 0.5) 20%,
-            var(--color-danger) 50%,
-            rgba(245, 101, 101, 0.5) 80%,
-            transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(245, 101, 101, 0.5) 20%,
+    var(--color-danger) 50%,
+    rgba(245, 101, 101, 0.5) 80%,
+    transparent
+  );
 }
 
 /* Danger card accent is always visible — no interaction required */
 .pv-card--danger::before {
-    opacity: 0.7;
+  opacity: 0.7;
 }
 
 .pv-card--danger:focus-within::before,
 .pv-card--danger:hover::before {
-    opacity: 1;
+  opacity: 1;
 }
 
 .pv-card--danger:hover {
-    border-color: rgba(245, 101, 101, 0.5);
-    box-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.3),
-        0 8px 32px rgba(245, 101, 101, 0.12);
+  border-color: rgba(245, 101, 101, 0.5);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 8px 32px rgba(245, 101, 101, 0.12);
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    5. CARD TYPOGRAPHY
@@ -262,43 +261,42 @@
    ══════════════════════════════════════════════════════════════ */
 
 .pv-card-title {
-    font-family: var(--font-display);
-    font-size: var(--text-lg);
-    font-weight: 600;
-    color: var(--color-text);
-    line-height: 1.25;
-    letter-spacing: 0.01em;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.25;
+  letter-spacing: 0.01em;
 
-    /* Space between title and first form row */
-    margin-bottom: var(--space-5);
+  /* Space between title and first form row */
+  margin-bottom: var(--space-5);
 
-    /* Emoji + text alignment */
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
+  /* Emoji + text alignment */
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
 }
 
 @media (min-width: 640px) {
-    .pv-card-title {
-        font-size: var(--text-xl);
-        margin-bottom: var(--space-6);
-    }
+  .pv-card-title {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-6);
+  }
 }
 
 .pv-card-desc {
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-    line-height: 1.65;
-    max-width: 60ch;
-    margin-bottom: var(--space-5);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  max-width: 60ch;
+  margin-bottom: var(--space-5);
 }
 
 @media (min-width: 640px) {
-    .pv-card-desc {
-        margin-bottom: var(--space-6);
-    }
+  .pv-card-desc {
+    margin-bottom: var(--space-6);
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    6. FORM LAYOUT PRIMITIVES
@@ -320,72 +318,71 @@
 /* ── Single field group ──────────────────────────────────────── */
 
 .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
 }
 
 /* ── Two-column field pair ───────────────────────────────────── */
 
 .pv-form-row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
 }
 
 @media (min-width: 480px) {
-    .pv-form-row {
-        grid-template-columns: 1fr 1fr;
-        gap: var(--space-5);
-    }
+  .pv-form-row {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-5);
+  }
 }
 
 @media (min-width: 768px) {
-    .pv-form-row {
-        gap: var(--space-6);
-    }
+  .pv-form-row {
+    gap: var(--space-6);
+  }
 }
 
 /* ── Actions row ─────────────────────────────────────────────── */
 
 .pv-actions {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
 
-    /* Visual separation from the last field */
-    margin-top: var(--space-5);
-    padding-top: var(--space-5);
-    border-top: 1px solid var(--color-border);
+  /* Visual separation from the last field */
+  margin-top: var(--space-5);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--color-border);
 }
 
 /* Full-width buttons on mobile */
 .pv-actions .btn {
-    width: 100%;
-    justify-content: center;
+  width: 100%;
+  justify-content: center;
 }
 
 @media (min-width: 480px) {
-    .pv-actions {
-        flex-direction: row;
-        justify-content: flex-end;
-        align-items: center;
-        gap: var(--space-3);
-    }
+  .pv-actions {
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--space-3);
+  }
 
-    .pv-actions .btn {
-        width: auto;
-        flex: 0 0 auto;
-    }
+  .pv-actions .btn {
+    width: auto;
+    flex: 0 0 auto;
+  }
 }
 
 @media (min-width: 640px) {
-    .pv-actions {
-        margin-top: var(--space-6);
-        padding-top: var(--space-6);
-    }
+  .pv-actions {
+    margin-top: var(--space-6);
+    padding-top: var(--space-6);
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    7. FIELD VALIDATION STATES
@@ -399,29 +396,28 @@
    ══════════════════════════════════════════════════════════════ */
 
 .field-error {
-    display: block;
-    font-size: var(--text-xs);
-    color: var(--color-danger);
-    line-height: 1.4;
-    min-height: 1em;
-    /* reserve space so layout doesn't jump */
+  display: block;
+  font-size: var(--text-xs);
+  color: var(--color-danger);
+  line-height: 1.4;
+  min-height: 1em;
+  /* reserve space so layout doesn't jump */
 
-    /* Animate appearance */
-    animation: pv-error-in var(--duration-fast) var(--ease-out) both;
+  /* Animate appearance */
+  animation: pv-error-in var(--duration-fast) var(--ease-out) both;
 }
 
 .field-error:empty {
-    display: none;
+  display: none;
 }
 
 /* Input error ring — profile-scoped to avoid cascade conflicts */
 .pv-card .input--error,
 .pv-card .input--error:hover,
 .pv-card .input--error:focus {
-    border-color: var(--color-danger) !important;
-    box-shadow: 0 0 0 3px rgba(245, 101, 101, 0.12) !important;
+  border-color: var(--color-danger) !important;
+  box-shadow: 0 0 0 3px rgba(245, 101, 101, 0.12) !important;
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    8. DANGER ZONE LAYOUT
@@ -439,75 +435,74 @@
    ══════════════════════════════════════════════════════════════ */
 
 .pv-danger-header {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
 }
 
 @media (min-width: 480px) {
-    .pv-danger-header {
-        flex-direction: row;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: var(--space-6);
-    }
+  .pv-danger-header {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-6);
+  }
 }
 
 /* ── Title group ─────────────────────────────────────────────── */
 
 .pv-danger-title-group {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    flex: 1;
-    min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
+  min-width: 0;
 }
 
 .pv-danger-title {
-    font-family: var(--font-display);
-    font-size: var(--text-lg);
-    font-weight: 700;
-    color: var(--color-danger);
-    line-height: 1.25;
-    letter-spacing: 0.01em;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-danger);
+  line-height: 1.25;
+  letter-spacing: 0.01em;
 
-    /* Emoji + text alignment */
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
+  /* Emoji + text alignment */
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
 }
 
 @media (min-width: 640px) {
-    .pv-danger-title {
-        font-size: var(--text-xl);
-    }
+  .pv-danger-title {
+    font-size: var(--text-xl);
+  }
 }
 
 .pv-danger-desc {
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-    line-height: 1.65;
-    max-width: 56ch;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  max-width: 56ch;
 }
 
 /* ── Danger button override ───────────────────────────────────── */
 
 /* On mobile the reset button should fill full width for easy tap */
-.pv-danger-header>.btn--danger {
-    width: 100%;
-    justify-content: center;
-    flex-shrink: 0;
+.pv-danger-header > .btn--danger {
+  width: 100%;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 @media (min-width: 480px) {
-    .pv-danger-header>.btn--danger {
-        width: auto;
-        /* Align to the first line of the title text */
-        margin-top: 2px;
-        white-space: nowrap;
-    }
+  .pv-danger-header > .btn--danger {
+    width: auto;
+    /* Align to the first line of the title text */
+    margin-top: 2px;
+    white-space: nowrap;
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    9. CONFIRMATION MODAL BODY
@@ -519,85 +514,84 @@
 /* ── Outer wrapper ────────────────────────────────────────────── */
 
 .pv-confirm-body {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
 }
 
 /* ── Scope block — list of items that will be deleted ────────── */
 
 .pv-confirm-scope {
-    background: var(--color-surface-2);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: var(--space-4) var(--space-5);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
 }
 
 .pv-confirm-lead {
-    font-size: var(--text-sm);
-    font-weight: 700;
-    color: var(--color-text);
-    letter-spacing: 0.01em;
-    margin: 0;
-    max-width: unset;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: 0.01em;
+  margin: 0;
+  max-width: unset;
 }
 
 /* ── Deletion checklist ──────────────────────────────────────── */
 
 .pv-confirm-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .pv-confirm-list li {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-3);
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-    line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.5;
 }
 
 /* Red bullet dot for each deletion item */
 .pv-confirm-list li::before {
-    content: '';
-    display: inline-block;
-    flex-shrink: 0;
-    width: 6px;
-    height: 6px;
-    margin-top: 0.45em;
-    /* optical vertical alignment with cap-height */
-    border-radius: 50%;
-    background: var(--color-danger);
-    opacity: 0.7;
+  content: '';
+  display: inline-block;
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  margin-top: 0.45em;
+  /* optical vertical alignment with cap-height */
+  border-radius: 50%;
+  background: var(--color-danger);
+  opacity: 0.7;
 }
 
 /* ── Consequence warning ─────────────────────────────────────── */
 
 .pv-confirm-warning {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-3);
-    padding: var(--space-3) var(--space-4);
-    border-radius: var(--radius-md);
-    background: var(--color-danger-faint);
-    border: 1px solid var(--color-danger-border);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-danger-faint);
+  border: 1px solid var(--color-danger-border);
 
-    font-size: var(--text-sm);
-    font-weight: 700;
-    color: var(--color-danger);
-    line-height: 1.5;
-    max-width: unset;
-    margin: 0;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-danger);
+  line-height: 1.5;
+  max-width: unset;
+  margin: 0;
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    10. COMBINED CGPA HINT
@@ -612,25 +606,24 @@
 
 /* Target form-hint paragraphs inside profile cards specifically */
 .pv-card .form-hint {
-    font-size: var(--text-xs);
-    color: var(--color-text-dim);
-    line-height: 1.55;
-    margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-text-dim);
+  line-height: 1.55;
+  margin-top: var(--space-2);
 }
 
 /* Gold value inside the hint (rendered as <strong style="color:…">) */
 .pv-card .form-hint strong {
-    font-family: var(--font-mono);
-    font-size: 1em;
-    font-weight: 700;
-    letter-spacing: -0.01em;
+  font-family: var(--font-mono);
+  font-size: 1em;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 /* Scale-change advisory hint below the scale selector */
 .pv-card .form-group:has(#pv-scale) .form-hint {
-    max-width: 52ch;
+  max-width: 52ch;
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    11. INPUT CUSTOMIZATION — PROFILE SCOPE
@@ -642,20 +635,19 @@
    here are less dense than the course-add form in the semester panel */
 .pv-card .form-input,
 .pv-card .form-select {
-    background: var(--color-surface-3);
+  background: var(--color-surface-3);
 }
 
 .pv-card .form-input:focus,
 .pv-card .form-select:focus {
-    background: color-mix(in srgb, var(--color-surface-3) 85%, var(--color-gold) 4%);
+  background: color-mix(in srgb, var(--color-surface-3) 85%, var(--color-gold) 4%);
 }
 
 /* Increase label contrast inside profile cards for readability */
 .pv-card .form-label {
-    color: var(--color-text-muted);
-    letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  letter-spacing: 0.08em;
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    12. ENTRANCE ANIMATIONS
@@ -665,41 +657,40 @@
    ══════════════════════════════════════════════════════════════ */
 
 @keyframes pv-fade-down {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes pv-fade-up {
-    from {
-        opacity: 0;
-        transform: translateY(12px);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes pv-error-in {
-    from {
-        opacity: 0;
-        transform: translateY(-4px);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    13. REDUCED-MOTION OVERRIDE
@@ -708,20 +699,18 @@
    ══════════════════════════════════════════════════════════════ */
 
 @media (prefers-reduced-motion: reduce) {
+  .pv-heading,
+  .pv-section-host,
+  .field-error {
+    animation: none;
+  }
 
-    .pv-heading,
-    .pv-section-host,
-    .field-error {
-        animation: none;
-    }
-
-    .pv-card,
-    .pv-card::before,
-    .pv-card--danger::before {
-        transition: none;
-    }
+  .pv-card,
+  .pv-card::before,
+  .pv-card--danger::before {
+    transition: none;
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    14. PRINT
@@ -732,37 +721,37 @@
    ══════════════════════════════════════════════════════════════ */
 
 @media print {
-    .pv-root {
-        gap: 1.5rem;
-        padding-block: 0;
-    }
+  .pv-root {
+    gap: 1.5rem;
+    padding-block: 0;
+  }
 
-    .pv-heading {
-        border-left-color: #999;
-    }
+  .pv-heading {
+    border-left-color: #999;
+  }
 
-    .pv-card {
-        border: 1px solid #ccc;
-        box-shadow: none;
-        background: #fff;
-        color: #000;
-        break-inside: avoid;
-    }
+  .pv-card {
+    border: 1px solid #ccc;
+    box-shadow: none;
+    background: #fff;
+    color: #000;
+    break-inside: avoid;
+  }
 
-    .pv-card::before {
-        display: none;
-    }
+  .pv-card::before {
+    display: none;
+  }
 
-    /* Completely suppress the danger zone in print */
-    .pv-card--danger {
-        display: none !important;
-    }
+  /* Completely suppress the danger zone in print */
+  .pv-card--danger {
+    display: none !important;
+  }
 
-    .pv-actions {
-        display: none;
-    }
+  .pv-actions {
+    display: none;
+  }
 
-    .form-hint {
-        color: #555;
-    }
+  .form-hint {
+    color: #555;
+  }
 }

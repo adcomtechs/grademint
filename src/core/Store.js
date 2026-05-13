@@ -12,18 +12,20 @@
  */
 
 import { EventEmitter } from './EventEmitter.js';
-import { EVENTS }       from '../utils/constants.js';
+import { EVENTS } from '../utils/constants.js';
 import { createLogger } from '../utils/logger.js';
 
 const log = createLogger('Store');
 
 export function createStore(initialState, reducer) {
   // ── Private state (closure variable) ──────────────────────────────
-  let state    = structuredClone(initialState);
-  const bus    = new EventEmitter();
+  let state = structuredClone(initialState);
+  const bus = new EventEmitter();
 
   /** Returns a deep-cloned snapshot — callers cannot mutate internal state */
-  function getState() { return structuredClone(state); }
+  function getState() {
+    return structuredClone(state);
+  }
 
   /**
    * Dispatch an action through the reducer.

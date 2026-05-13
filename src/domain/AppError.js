@@ -8,8 +8,8 @@
 export class AppError extends Error {
   constructor(message, code = 'APP_ERROR') {
     super(message);
-    this.name      = this.constructor.name;
-    this.code      = code;
+    this.name = this.constructor.name;
+    this.code = code;
     this.timestamp = Date.now();
     if (Error.captureStackTrace) Error.captureStackTrace(this, this.constructor);
   }
@@ -26,12 +26,15 @@ export class ValidationError extends AppError {
 }
 
 export class StorageError extends AppError {
-  constructor(message) { super(message, 'STORAGE_ERROR'); }
+  constructor(message) {
+    super(message, 'STORAGE_ERROR');
+  }
 }
 
 export class NotFoundError extends AppError {
   constructor(resource, id) {
     super(`${resource} "${id}" not found.`, 'NOT_FOUND');
-    this.resource = resource; this.id = id;
+    this.resource = resource;
+    this.id = id;
   }
 }

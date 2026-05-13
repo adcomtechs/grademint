@@ -18,9 +18,9 @@ import { BaseComponent } from '@/components/common/BaseComponent.js';
 
 function makeStore(state = {}) {
   return {
-    getState:   () => state,
-    dispatch:   vi.fn(),
-    subscribe:  vi.fn(() => () => {}),
+    getState: () => state,
+    dispatch: vi.fn(),
+    subscribe: vi.fn(() => () => {}),
   };
 }
 
@@ -30,9 +30,11 @@ class TestComponent extends BaseComponent {
   constructor(container, store, renderImpl) {
     super(container, store);
     // Allow tests to inject any render implementation.
-    this._renderImpl = renderImpl ?? (() => {
-      container.innerHTML = '<p class="rendered">OK</p>';
-    });
+    this._renderImpl =
+      renderImpl ??
+      (() => {
+        container.innerHTML = '<p class="rendered">OK</p>';
+      });
   }
 
   render() {
@@ -47,7 +49,7 @@ let store;
 
 beforeEach(() => {
   container = document.createElement('div');
-  store     = makeStore();
+  store = makeStore();
   // Reset console.error mock between tests.
   vi.spyOn(console, 'error').mockImplementation(() => {});
 });
@@ -165,12 +167,10 @@ describe('BaseComponent — mount() resets error state', () => {
 
 describe('BaseComponent — constructor guards', () => {
   it('throws when instantiated directly', () => {
-    expect(() => new BaseComponent(document.createElement('div'), store))
-      .toThrow(TypeError);
+    expect(() => new BaseComponent(document.createElement('div'), store)).toThrow(TypeError);
   });
 
   it('throws when container is not an Element', () => {
-    expect(() => new TestComponent('#not-an-element', store))
-      .toThrow(TypeError);
+    expect(() => new TestComponent('#not-an-element', store)).toThrow(TypeError);
   });
 });

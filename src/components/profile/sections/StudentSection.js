@@ -21,12 +21,12 @@
  *   in early semesters may not yet know their department assignment.
  */
 
-import { BaseComponent }       from '@/components/common/BaseComponent.js';
+import { BaseComponent } from '@/components/common/BaseComponent.js';
 import { createElement, showToast } from '@/utils/dom.js';
 import { validateStudentName } from '@/utils/validators.js';
-import { DEFAULT_SCALE_ID }    from '@/utils/constants.js';
-import { getAvailableScales }  from '@/utils/helpers.js';
-import { watchState }          from '@/utils/selector.js';
+import { DEFAULT_SCALE_ID } from '@/utils/constants.js';
+import { getAvailableScales } from '@/utils/helpers.js';
+import { watchState } from '@/utils/selector.js';
 
 export class StudentSection extends BaseComponent {
   constructor(container, store) {
@@ -53,12 +53,12 @@ export class StudentSection extends BaseComponent {
   // ── Build ──────────────────────────────────────────────────────────────────
 
   _build(student) {
-    const nameInput    = _textInput('pv-name',    student.name     ?? '', 'e.g. Chukwuemeka Okafor', 60);
-    const deptInput    = _textInput('pv-dept',    student.dept     ?? '', 'e.g. Computer Science',   80);
-    const matricInput  = _textInput('pv-matric',  student.matricNo ?? '', 'e.g. 2021/12345');
-    const levelInput   = _textInput('pv-level',   student.level    ?? '', '300 Level',               30);
-    const sessionInput = _textInput('pv-session', student.session  ?? '', '2023/2024',               20);
-    const nameErr      = createElement('span', { className: 'field-error', id: 'pv-name-err' });
+    const nameInput = _textInput('pv-name', student.name ?? '', 'e.g. Chukwuemeka Okafor', 60);
+    const deptInput = _textInput('pv-dept', student.dept ?? '', 'e.g. Computer Science', 80);
+    const matricInput = _textInput('pv-matric', student.matricNo ?? '', 'e.g. 2021/12345');
+    const levelInput = _textInput('pv-level', student.level ?? '', '300 Level', 30);
+    const sessionInput = _textInput('pv-session', student.session ?? '', '2023/2024', 20);
+    const nameErr = createElement('span', { className: 'field-error', id: 'pv-name-err' });
 
     const scaleSelect = this._buildScaleSelect(student.scaleId ?? DEFAULT_SCALE_ID);
 
@@ -66,11 +66,12 @@ export class StudentSection extends BaseComponent {
       'button',
       {
         className: 'btn btn--primary btn--sm',
-        type:      'button',
-        onClick:   () => this._handleSave(
-          { nameInput, deptInput, matricInput, levelInput, sessionInput, scaleSelect },
-          nameErr
-        ),
+        type: 'button',
+        onClick: () =>
+          this._handleSave(
+            { nameInput, deptInput, matricInput, levelInput, sessionInput, scaleSelect },
+            nameErr
+          ),
       },
       'Save Profile'
     );
@@ -151,7 +152,7 @@ export class StudentSection extends BaseComponent {
    */
   _buildScaleSelect(activeScaleId) {
     const select = createElement('select', {
-      id:        'pv-scale',
+      id: 'pv-scale',
       className: 'form-input form-select',
     });
 
@@ -175,7 +176,7 @@ export class StudentSection extends BaseComponent {
     nameErr
   ) {
     const name = nameInput.value.trim();
-    const v    = validateStudentName(name);
+    const v = validateStudentName(name);
 
     if (!v.valid) {
       nameErr.textContent = v.message;
@@ -187,14 +188,14 @@ export class StudentSection extends BaseComponent {
     nameInput.classList.remove('input--error');
 
     this.store.dispatch({
-      type:    'SET_STUDENT',
+      type: 'SET_STUDENT',
       payload: {
         name,
-        dept:     deptInput.value.trim(),
-        level:    levelInput.value.trim(),
-        session:  sessionInput.value.trim(),
+        dept: deptInput.value.trim(),
+        level: levelInput.value.trim(),
+        session: sessionInput.value.trim(),
         matricNo: matricInput.value.trim(),
-        scaleId:  scaleSelect.value,
+        scaleId: scaleSelect.value,
       },
     });
 
@@ -214,8 +215,8 @@ export class StudentSection extends BaseComponent {
 function _textInput(id, value, placeholder, maxlength) {
   const el = createElement('input', {
     id,
-    className:   'form-input',
-    type:        'text',
+    className: 'form-input',
+    type: 'text',
     value,
     placeholder,
   });

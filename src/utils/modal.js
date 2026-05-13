@@ -38,7 +38,7 @@ const FOCUSABLE_SELECTOR = [
  *   onClose?: () => void,
  * }} [opts]
  * @returns {{ close: () => void }}
- */ 
+ */
 export function openModal(title, content, opts = {}) {
   const overlay = document.getElementById('modal-overlay');
   const box = document.getElementById('modal-box');

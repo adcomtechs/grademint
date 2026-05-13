@@ -23,97 +23,94 @@
    768px+: sidebar becomes a sticky left column.
    ═══════════════════════════════════════════════════════════════ */
 
-
 /* ══════════════════════════════════════════════════════════════
    1. SIDEBAR SHELL
    ══════════════════════════════════════════════════════════════ */
 
 .docs-sidebar {
-    /* Mobile: not shown — TOC is implicit via the article headers */
-    display: none;
+  /* Mobile: not shown — TOC is implicit via the article headers */
+  display: none;
 }
 
 @media (min-width: 768px) {
-    .docs-sidebar {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-6);
+  .docs-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
 
-        /* Stick to the top while the content scrolls past */
-        position: sticky;
-        top: calc(var(--header-h) + var(--space-5));
-        /* Max height: viewport minus header minus top offset minus padding */
-        max-height: calc(100dvh - var(--header-h) - var(--space-5) * 2);
-        overflow-y: auto;
-        overflow-x: hidden;
-        scrollbar-width: thin;
-        scrollbar-color: var(--color-border) transparent;
+    /* Stick to the top while the content scrolls past */
+    position: sticky;
+    top: calc(var(--header-h) + var(--space-5));
+    /* Max height: viewport minus header minus top offset minus padding */
+    max-height: calc(100dvh - var(--header-h) - var(--space-5) * 2);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
 
-        /* Right border separates sidebar from content */
-        padding-right: var(--space-5);
-        border-right: 1px solid var(--color-border);
+    /* Right border separates sidebar from content */
+    padding-right: var(--space-5);
+    border-right: 1px solid var(--color-border);
 
-        /* Align to the top of the grid */
-        align-self: start;
-    }
+    /* Align to the top of the grid */
+    align-self: start;
+  }
 
-    .docs-sidebar::-webkit-scrollbar {
-        width: 3px;
-    }
+  .docs-sidebar::-webkit-scrollbar {
+    width: 3px;
+  }
 
-    .docs-sidebar::-webkit-scrollbar-track {
-        background: transparent;
-    }
+  .docs-sidebar::-webkit-scrollbar-track {
+    background: transparent;
+  }
 
-    .docs-sidebar::-webkit-scrollbar-thumb {
-        background: var(--color-border);
-        border-radius: var(--radius-full);
-    }
+  .docs-sidebar::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: var(--radius-full);
+  }
 }
 
 @media (min-width: 1024px) {
-    .docs-sidebar {
-        padding-right: var(--space-6);
-        gap: var(--space-8);
-    }
+  .docs-sidebar {
+    padding-right: var(--space-6);
+    gap: var(--space-8);
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    2. TOC SECTION GROUPS
    ══════════════════════════════════════════════════════════════ */
 
 #docs-toc {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
 }
 
 .sidebar-section {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
 }
 
 /* Section group heading */
 .sidebar-section-title {
-    font-family: var(--font-body);
-    font-size: var(--text-xs);
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-text-dim);
-    padding: var(--space-1) var(--space-3);
-    margin-bottom: var(--space-1);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+  padding: var(--space-1) var(--space-3);
+  margin-bottom: var(--space-1);
 }
 
 /* Nav list — reset.css strips list-style */
 .sidebar-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    3. SIDEBAR LINKS
@@ -121,56 +118,55 @@
    ══════════════════════════════════════════════════════════════ */
 
 .sidebar-link {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    /* 36px min touch zone — comfortable for precise sidebar interaction */
-    min-height: 36px;
-    padding: var(--space-2) var(--space-3);
-    border-radius: var(--radius-md);
-    font-family: var(--font-body);
-    font-size: var(--text-sm);
-    font-weight: 400;
-    color: var(--color-text-muted);
-    text-decoration: none;
-    line-height: 1.35;
-    position: relative;
-    transition:
-        color var(--duration-fast) var(--ease-out),
-        background var(--duration-fast) var(--ease-out);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  /* 36px min touch zone — comfortable for precise sidebar interaction */
+  min-height: 36px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  line-height: 1.35;
+  position: relative;
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
 }
 
 .sidebar-link:hover {
-    color: var(--color-text);
-    background: var(--color-surface-2);
-    text-decoration: none;
+  color: var(--color-text);
+  background: var(--color-surface-2);
+  text-decoration: none;
 }
 
 .sidebar-link:focus-visible {
-    outline: 2px solid var(--color-gold);
-    outline-offset: 2px;
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
 }
 
 /* Active state — set by sidebarTracker.js via .is-active class */
 .sidebar-link.is-active {
-    color: var(--color-gold);
-    font-weight: 600;
-    background: rgba(201, 168, 76, 0.07);
+  color: var(--color-gold);
+  font-weight: 600;
+  background: rgba(201, 168, 76, 0.07);
 }
 
 /* Left accent bar on active link */
 .sidebar-link.is-active::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 2px;
-    height: 55%;
-    background: var(--color-gold);
-    border-radius: 0 var(--radius-full) var(--radius-full) 0;
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 55%;
+  background: var(--color-gold);
+  border-radius: 0 var(--radius-full) var(--radius-full) 0;
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    4. QUICK GPA WIDGET
@@ -178,107 +174,106 @@
    ══════════════════════════════════════════════════════════════ */
 
 .sidebar-widget {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-5);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-    /* Subtle gold top accent */
-    box-shadow:
-        inset 0 2px 0 rgba(201, 168, 76, 0.15),
-        var(--shadow-sm);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  /* Subtle gold top accent */
+  box-shadow:
+    inset 0 2px 0 rgba(201, 168, 76, 0.15),
+    var(--shadow-sm);
 }
 
 .sidebar-widget-title {
-    font-family: var(--font-display);
-    font-size: var(--text-md);
-    font-weight: 600;
-    color: var(--color-text);
-    line-height: 1.2;
-    /* Reset p max-width */
-    max-width: unset;
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.2;
+  /* Reset p max-width */
+  max-width: unset;
 }
 
 .sidebar-widget-desc {
-    font-size: var(--text-xs);
-    color: var(--color-text-muted);
-    line-height: 1.5;
-    max-width: unset;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  max-width: unset;
 }
 
 /* Reuse form-input styles — no forms.css import on docs page,
    so we define the widget input inline here */
 .sidebar-widget .form-input {
-    display: block;
-    width: 100%;
-    min-height: 44px;
-    padding: var(--space-3) var(--space-4);
-    background: var(--color-surface-2);
-    color: var(--color-text);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    font-size: var(--text-sm);
-    font-family: var(--font-body);
-    transition:
-        border-color var(--duration-fast) var(--ease-out),
-        box-shadow var(--duration-fast) var(--ease-out);
-    /* Remove spinner arrows */
-    -moz-appearance: textfield;
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-family: var(--font-body);
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+  /* Remove spinner arrows */
+  -moz-appearance: textfield;
 }
 
 .sidebar-widget .form-input::-webkit-inner-spin-button,
 .sidebar-widget .form-input::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .sidebar-widget .form-input::placeholder {
-    color: var(--color-text-dim);
+  color: var(--color-text-dim);
 }
 
 .sidebar-widget .form-input:hover {
-    border-color: var(--color-border-light);
+  border-color: var(--color-border-light);
 }
 
 .sidebar-widget .form-input:focus {
-    outline: none;
-    border-color: var(--color-gold);
-    box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.12);
+  outline: none;
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.12);
 }
-
 
 /* ── Widget result area ──────────────────────────────────────── */
 
 .widget-result {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    min-height: 0;
-    /* Smooth height transition as rows appear */
-    transition: min-height var(--duration-normal) var(--ease-out);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-height: 0;
+  /* Smooth height transition as rows appear */
+  transition: min-height var(--duration-normal) var(--ease-out);
 }
 
 /* Each label + value row rendered by gradeWidget.js */
 .widget-result-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-3);
-    padding: var(--space-2) var(--space-3);
-    background: var(--color-surface-2);
-    border-radius: var(--radius-md);
-    font-size: var(--text-xs);
-    color: var(--color-text-muted);
-    border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface-2);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
 }
 
 /* The value side — grade badge or number */
 .widget-result-value {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    font-weight: 700;
-    color: var(--color-text);
-    flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-text);
+  flex-shrink: 0;
 }

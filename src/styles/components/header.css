@@ -57,12 +57,10 @@
    --z-overlay : 200   modals (defined in tokens.css)
    ═══════════════════════════════════════════════════════════════ */
 
-
 /* ── Token: --z-drawer (not in shared tokens.css) ────────────── */
 :root {
-    --z-drawer: 150;
+  --z-drawer: 150;
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    1. APP-HEADER SHELL
@@ -76,80 +74,79 @@
    ══════════════════════════════════════════════════════════════ */
 
 .app-header {
-    position: sticky;
-    top: 0;
-    z-index: var(--z-sticky);
-    min-height: var(--header-h);
-    /* Solid fallback for browsers without backdrop-filter */
-    background: rgba(8, 11, 20, 0.96);
-    border-bottom: 1px solid var(--color-border);
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.03), var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  min-height: var(--header-h);
+  /* Solid fallback for browsers without backdrop-filter */
+  background: rgba(8, 11, 20, 0.96);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.03),
+    var(--shadow-sm);
 
-    /* MUST be none — see module comment above */
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+  /* MUST be none — see module comment above */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 
-    transition: border-color var(--duration-fast) var(--ease-out);
+  transition: border-color var(--duration-fast) var(--ease-out);
 }
 
 /* Glass blur via pseudo-element (safe — doesn't affect fixed children) */
 .app-header::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    backdrop-filter: blur(20px) saturate(160%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
-    background: rgba(8, 11, 20, 0.85);
-    z-index: -1;
-    border-radius: inherit;
+  content: '';
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  background: rgba(8, 11, 20, 0.85);
+  z-index: -1;
+  border-radius: inherit;
 }
 
 .app-header.is-menu-open {
-    border-color: var(--color-border-light);
+  border-color: var(--color-border-light);
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    2. HEADER INNER
    ══════════════════════════════════════════════════════════════ */
 
 .header-inner {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    max-width: var(--max-width);
-    margin-inline: auto;
-    padding-inline: var(--space-5);
-    min-height: var(--header-h);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--space-5);
+  min-height: var(--header-h);
 }
 
 @media (min-width: 640px) {
-    .header-inner {
-        padding-inline: var(--space-6);
-        gap: var(--space-4);
-    }
+  .header-inner {
+    padding-inline: var(--space-6);
+    gap: var(--space-4);
+  }
 }
 
 @media (min-width: 1024px) {
-    .header-inner {
-        padding-inline: var(--space-8);
-        gap: var(--space-5);
-    }
+  .header-inner {
+    padding-inline: var(--space-8);
+    gap: var(--space-5);
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    3. HEADER LEFT — brand slot
    ══════════════════════════════════════════════════════════════ */
 
 .header-left {
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-    min-width: 0;
-    gap: var(--space-5);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  min-width: 0;
+  gap: var(--space-5);
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    4. HAMBURGER TOGGLE
@@ -158,125 +155,123 @@
    ══════════════════════════════════════════════════════════════ */
 
 .header-menu-toggle {
-    /* Push to far right within the flex row */
-    margin-left: auto;
-    flex-shrink: 0;
+  /* Push to far right within the flex row */
+  margin-left: auto;
+  flex-shrink: 0;
 
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-2);
-    min-height: 44px;
-    min-width: 44px;
-    padding: var(--space-2) var(--space-3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  min-width: 44px;
+  padding: var(--space-2) var(--space-3);
 
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    color: var(--color-text-muted);
-    font-family: var(--font-body);
-    font-size: var(--text-xs);
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    cursor: pointer;
-    touch-action: manipulation;
-    user-select: none;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
 
-    /* Ensure the toggle is always above the scrim (149) and panel (150)
+  /* Ensure the toggle is always above the scrim (149) and panel (150)
      within the header's own stacking context. The toggle lives in the
      header bar (above the scrim's top: var(--header-h)) so it is not
      visually covered, but this z-index is a belt-and-suspenders guard. */
-    position: relative;
-    z-index: calc(var(--z-drawer) + 10);
+  position: relative;
+  z-index: calc(var(--z-drawer) + 10);
 
-    transition:
-        background var(--duration-fast) var(--ease-out),
-        border-color var(--duration-fast) var(--ease-out),
-        color var(--duration-fast) var(--ease-out),
-        box-shadow var(--duration-fast) var(--ease-out);
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
 }
 
 .header-menu-toggle:hover {
-    background: var(--color-surface-2);
-    border-color: var(--color-border-light);
-    color: var(--color-text);
+  background: var(--color-surface-2);
+  border-color: var(--color-border-light);
+  color: var(--color-text);
 }
 
 .header-menu-toggle:focus-visible {
-    outline: 2px solid var(--color-gold);
-    outline-offset: 2px;
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
 }
 
 .app-header.is-menu-open .header-menu-toggle {
-    background: var(--color-gold-faint);
-    border-color: var(--color-gold-dark);
-    color: var(--color-gold);
-    box-shadow: 0 0 0 1px var(--color-gold-dark);
+  background: var(--color-gold-faint);
+  border-color: var(--color-gold-dark);
+  color: var(--color-gold);
+  box-shadow: 0 0 0 1px var(--color-gold-dark);
 }
 
 /* "Menu" text — hidden on tiny phones */
 .header-menu-text {
-    display: none;
-    line-height: 1;
+  display: none;
+  line-height: 1;
 }
 
 @media (min-width: 400px) {
-    .header-menu-text {
-        display: inline;
-    }
+  .header-menu-text {
+    display: inline;
+  }
 }
 
 /* Hidden at desktop — full inline nav renders instead */
 @media (min-width: 1024px) {
-    .header-menu-toggle {
-        display: none;
-    }
+  .header-menu-toggle {
+    display: none;
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    5. HAMBURGER ICON BARS → × animation
    ══════════════════════════════════════════════════════════════ */
 
 .header-menu-icon {
-    display: inline-flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 4px;
-    width: 18px;
-    pointer-events: none;
-    flex-shrink: 0;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 18px;
+  pointer-events: none;
+  flex-shrink: 0;
 }
 
 .header-menu-icon span {
-    display: block;
-    width: 100%;
-    height: 2px;
-    background: currentColor;
-    border-radius: var(--radius-full);
-    transform-origin: center center;
-    transition:
-        transform var(--duration-normal) var(--ease-out),
-        opacity var(--duration-fast) var(--ease-out),
-        width var(--duration-fast) var(--ease-out);
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  border-radius: var(--radius-full);
+  transform-origin: center center;
+  transition:
+    transform var(--duration-normal) var(--ease-out),
+    opacity var(--duration-fast) var(--ease-out),
+    width var(--duration-fast) var(--ease-out);
 }
 
 .app-header.is-menu-open .header-menu-icon span:nth-child(1) {
-    transform: translateY(6px) rotate(45deg);
+  transform: translateY(6px) rotate(45deg);
 }
 
 .app-header.is-menu-open .header-menu-icon span:nth-child(2) {
-    opacity: 0;
-    transform: scaleX(0);
-    width: 0;
+  opacity: 0;
+  transform: scaleX(0);
+  width: 0;
 }
 
 .app-header.is-menu-open .header-menu-icon span:nth-child(3) {
-    transform: translateY(-6px) rotate(-45deg);
+  transform: translateY(-6px) rotate(-45deg);
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    6. BACKDROP SCRIM
@@ -304,40 +299,39 @@
    ══════════════════════════════════════════════════════════════ */
 
 .header-menu-scrim {
-    position: fixed;
-    /* Start BELOW the header bar so the toggle is never intercepted */
-    top: var(--header-h);
-    left: 0;
-    right: 0;
-    bottom: 0;
+  position: fixed;
+  /* Start BELOW the header bar so the toggle is never intercepted */
+  top: var(--header-h);
+  left: 0;
+  right: 0;
+  bottom: 0;
 
-    /* Below the panel (150) but above page content (~1) in the header's context */
-    z-index: calc(var(--z-drawer) - 1);
+  /* Below the panel (150) but above page content (~1) in the header's context */
+  z-index: calc(var(--z-drawer) - 1);
 
-    /* Dark translucent overlay — applied only in open state below
+  /* Dark translucent overlay — applied only in open state below
      to avoid compositor bleed-through from a hidden backdrop-filter */
-    background: rgba(8, 11, 20, 0.6);
+  background: rgba(8, 11, 20, 0.6);
 
-    /* Hidden state */
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
+  /* Hidden state */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 
-    transition:
-        opacity var(--duration-normal) var(--ease-out),
-        visibility 0s linear var(--duration-normal);
+  transition:
+    opacity var(--duration-normal) var(--ease-out),
+    visibility 0s linear var(--duration-normal);
 }
 
 .app-header.is-menu-open .header-menu-scrim {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    /* Delay removed on open — immediately interactive */
-    transition:
-        opacity var(--duration-normal) var(--ease-out),
-        visibility 0s linear 0s;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  /* Delay removed on open — immediately interactive */
+  transition:
+    opacity var(--duration-normal) var(--ease-out),
+    visibility 0s linear 0s;
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    7. MENU PANEL — MOBILE drawer (default, < 768px)
@@ -351,62 +345,60 @@
    ══════════════════════════════════════════════════════════════ */
 
 .header-menu-panel {
-    position: fixed;
-    /* Aligns with the bottom of the header bar */
-    top: var(--header-h);
-    right: 0;
-    bottom: 0;
+  position: fixed;
+  /* Aligns with the bottom of the header bar */
+  top: var(--header-h);
+  right: 0;
+  bottom: 0;
 
-    /* Comfortable drawer width — never too wide */
-    width: min(300px, 88vw);
+  /* Comfortable drawer width — never too wide */
+  width: min(300px, 88vw);
 
-    /* Above page content and scrim; below modals */
-    z-index: var(--z-drawer);
+  /* Above page content and scrim; below modals */
+  z-index: var(--z-drawer);
 
-    background: var(--color-surface);
-    border-left: 1px solid var(--color-border);
-    box-shadow: var(--shadow-xl);
+  background: var(--color-surface);
+  border-left: 1px solid var(--color-border);
+  box-shadow: var(--shadow-xl);
 
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 
-    /* iOS home-indicator safe area */
-    padding-bottom: env(safe-area-inset-bottom, 0px);
+  /* iOS home-indicator safe area */
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 
-    /* Off-canvas: slide right + hide from a11y tree */
-    transform: translateX(100%);
-    visibility: hidden;
+  /* Off-canvas: slide right + hide from a11y tree */
+  transform: translateX(100%);
+  visibility: hidden;
 
-    /* Own compositor layer for 60fps slide */
-    will-change: transform;
+  /* Own compositor layer for 60fps slide */
+  will-change: transform;
 
-    transition:
-        transform var(--duration-normal) var(--ease-out),
-        visibility 0s linear var(--duration-normal);
+  transition:
+    transform var(--duration-normal) var(--ease-out),
+    visibility 0s linear var(--duration-normal);
 }
 
 /* Open: slide in and make focusable */
 .app-header.is-menu-open .header-menu-panel {
-    transform: translateX(0);
-    visibility: visible;
-    transition:
-        transform var(--duration-normal) var(--ease-out),
-        visibility 0s linear 0s;
+  transform: translateX(0);
+  visibility: visible;
+  transition:
+    transform var(--duration-normal) var(--ease-out),
+    visibility 0s linear 0s;
 }
-
 
 /* ── Panel content wrapper ────────────────────────────────────── */
 
 .header-menu-content {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-5);
-    padding: var(--space-5);
-    /* Fill the drawer height */
-    min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-5);
+  /* Fill the drawer height */
+  min-height: 100%;
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    8. TABLET: DROPDOWN CARD (768px – 1023px)
@@ -415,50 +407,49 @@
    ══════════════════════════════════════════════════════════════ */
 
 @media (min-width: 768px) and (max-width: 1023px) {
-    .header-menu-panel {
-        /* Dropdown card positioning */
-        top: calc(var(--header-h) + var(--space-2));
-        right: var(--space-5);
-        bottom: auto;
-        width: 260px;
+  .header-menu-panel {
+    /* Dropdown card positioning */
+    top: calc(var(--header-h) + var(--space-2));
+    right: var(--space-5);
+    bottom: auto;
+    width: 260px;
 
-        border: 1px solid var(--color-border);
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-lg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
 
-        /* Dropdown animation: fade + slight upward shift */
-        transform: translateY(-10px);
-        opacity: 0;
-        visibility: hidden;
+    /* Dropdown animation: fade + slight upward shift */
+    transform: translateY(-10px);
+    opacity: 0;
+    visibility: hidden;
 
-        transition:
-            transform var(--duration-normal) var(--ease-out),
-            opacity var(--duration-fast) var(--ease-out),
-            visibility 0s linear var(--duration-fast);
-    }
+    transition:
+      transform var(--duration-normal) var(--ease-out),
+      opacity var(--duration-fast) var(--ease-out),
+      visibility 0s linear var(--duration-fast);
+  }
 
-    .app-header.is-menu-open .header-menu-panel {
-        transform: translateY(0);
-        opacity: 1;
-        visibility: visible;
-        transition:
-            transform var(--duration-normal) var(--ease-out),
-            opacity var(--duration-fast) var(--ease-out),
-            visibility 0s linear 0s;
-    }
+  .app-header.is-menu-open .header-menu-panel {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    transition:
+      transform var(--duration-normal) var(--ease-out),
+      opacity var(--duration-fast) var(--ease-out),
+      visibility 0s linear 0s;
+  }
 
-    .header-menu-content {
-        padding: var(--space-4);
-        gap: var(--space-3);
-        min-height: unset;
-    }
+  .header-menu-content {
+    padding: var(--space-4);
+    gap: var(--space-3);
+    min-height: unset;
+  }
 
-    /* Scrim at tablet: lighter overlay since the dropdown is smaller */
-    .header-menu-scrim {
-        background: rgba(8, 11, 20, 0.4);
-    }
+  /* Scrim at tablet: lighter overlay since the dropdown is smaller */
+  .header-menu-scrim {
+    background: rgba(8, 11, 20, 0.4);
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    9. DESKTOP: INLINE LAYOUT (≥ 1024px)
@@ -466,57 +457,56 @@
    ══════════════════════════════════════════════════════════════ */
 
 @media (min-width: 1024px) {
-    .header-menu-panel {
-        /* Return to normal flow */
-        position: static;
-        top: auto;
-        right: auto;
-        bottom: auto;
-        width: auto;
+  .header-menu-panel {
+    /* Return to normal flow */
+    position: static;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    width: auto;
 
-        /* Remove drawer visual chrome */
-        background: transparent;
-        border: none;
-        border-radius: 0;
-        box-shadow: none;
+    /* Remove drawer visual chrome */
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
 
-        /* Always visible */
-        transform: none;
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
+    /* Always visible */
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 
-        transition: none;
-        will-change: auto;
-        overflow: visible;
-        overscroll-behavior: auto;
-        padding-bottom: 0;
+    transition: none;
+    will-change: auto;
+    overflow: visible;
+    overscroll-behavior: auto;
+    padding-bottom: 0;
 
-        /* Fill remaining header width */
-        display: flex;
-        align-items: center;
-        flex: 1;
-        min-width: 0;
-        z-index: auto;
-    }
+    /* Fill remaining header width */
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    z-index: auto;
+  }
 
-    /* Scrim not needed at desktop */
-    .header-menu-scrim {
-        display: none;
-    }
+  /* Scrim not needed at desktop */
+  .header-menu-scrim {
+    display: none;
+  }
 
-    .header-menu-content {
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-end;
-        gap: var(--space-4);
-        padding: 0;
-        min-height: unset;
-        flex: 1;
-        min-width: 0;
-    }
+  .header-menu-content {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-4);
+    padding: 0;
+    min-height: unset;
+    flex: 1;
+    min-width: 0;
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    10. NAVIGATION LINKS
@@ -527,135 +517,133 @@
    ══════════════════════════════════════════════════════════════ */
 
 .header-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
 }
 
 /* Eyebrow section label — visible only in drawer / dropdown */
 .header-nav::before {
-    content: 'Navigation';
-    display: block;
-    font-family: var(--font-body);
-    font-size: var(--text-xs);
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-text-dim);
-    padding: var(--space-2) var(--space-3) var(--space-1);
-    pointer-events: none;
+  content: 'Navigation';
+  display: block;
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+  padding: var(--space-2) var(--space-3) var(--space-1);
+  pointer-events: none;
 }
 
 @media (min-width: 1024px) {
-    .header-nav {
-        flex-direction: row;
-        align-items: center;
-        width: auto;
-        gap: 2px;
-        flex-shrink: 1;
-        flex-wrap: nowrap;
-    }
+  .header-nav {
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+    gap: 2px;
+    flex-shrink: 1;
+    flex-wrap: nowrap;
+  }
 
-    .header-nav::before {
-        display: none;
-    }
+  .header-nav::before {
+    display: none;
+  }
 }
-
 
 /* ── Individual nav link ─────────────────────────────────────── */
 
 .nav-link {
-    display: flex;
-    align-items: center;
-    /* 44px minimum touch target */
-    min-height: 44px;
-    padding: var(--space-3);
-    border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  /* 44px minimum touch target */
+  min-height: 44px;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
 
-    font-family: var(--font-body);
-    font-size: var(--text-sm);
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-    white-space: nowrap;
-    text-decoration: none;
-    position: relative;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  text-decoration: none;
+  position: relative;
 
-    transition:
-        color var(--duration-fast) var(--ease-out),
-        background var(--duration-fast) var(--ease-out);
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
 }
 
 .nav-link:hover {
-    color: var(--color-text);
-    background: var(--color-surface-2);
-    text-decoration: none;
+  color: var(--color-text);
+  background: var(--color-surface-2);
+  text-decoration: none;
 }
 
 .nav-link:focus-visible {
-    outline: 2px solid var(--color-gold);
-    outline-offset: 2px;
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
 }
 
 /* Active / current page */
 .nav-link.is-active,
 .nav-link[aria-current='page'] {
-    color: var(--color-gold);
-    background: rgba(201, 168, 76, 0.08);
+  color: var(--color-gold);
+  background: rgba(201, 168, 76, 0.08);
 }
 
 /* Left-edge accent bar — mobile / tablet drawer */
 .nav-link.is-active::before,
 .nav-link[aria-current='page']::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3px;
-    height: 60%;
-    background: var(--color-gold);
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: var(--color-gold);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
 }
 
 /* Tablet dropdown: tighter rows */
 @media (min-width: 768px) and (max-width: 1023px) {
-    .nav-link {
-        min-height: 40px;
-        padding: var(--space-2) var(--space-3);
-        font-size: var(--text-xs);
-    }
+  .nav-link {
+    min-height: 40px;
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-xs);
+  }
 }
 
 /* Desktop: pill shape, underline instead of left bar */
 @media (min-width: 1024px) {
-    .nav-link {
-        min-height: unset;
-        padding: var(--space-2) var(--space-4);
-        border-radius: var(--radius-full);
-        font-size: var(--text-xs);
-        letter-spacing: 0.06em;
-    }
+  .nav-link {
+    min-height: unset;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-full);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+  }
 
-    .nav-link.is-active::before,
-    .nav-link[aria-current='page']::before {
-        width: 60%;
-        height: 2px;
-        left: 50%;
-        top: auto;
-        bottom: 2px;
-        transform: translateX(-50%);
-        border-radius: var(--radius-full);
-    }
+  .nav-link.is-active::before,
+  .nav-link[aria-current='page']::before {
+    width: 60%;
+    height: 2px;
+    left: 50%;
+    top: auto;
+    bottom: 2px;
+    transform: translateX(-50%);
+    border-radius: var(--radius-full);
+  }
 
-    .nav-link.is-active,
-    .nav-link[aria-current='page'] {
-        background: rgba(201, 168, 76, 0.1);
-    }
+  .nav-link.is-active,
+  .nav-link[aria-current='page'] {
+    background: rgba(201, 168, 76, 0.1);
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    11. HEADER ACTIONS (dashboard variant only)
@@ -666,99 +654,96 @@
    ══════════════════════════════════════════════════════════════ */
 
 .header-actions {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-    /* Visual separator from nav */
-    padding-top: var(--space-4);
-    border-top: 1px solid var(--color-border);
-    width: 100%;
-    flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  /* Visual separator from nav */
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  width: 100%;
+  flex-shrink: 0;
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
-    .header-actions {
-        padding-top: var(--space-3);
-        gap: var(--space-2);
-    }
+  .header-actions {
+    padding-top: var(--space-3);
+    gap: var(--space-2);
+  }
 }
 
 @media (min-width: 1024px) {
-    .header-actions {
-        flex-direction: row;
-        align-items: center;
-        gap: var(--space-3);
-        padding-top: 0;
-        border-top: none;
-        width: auto;
-        flex-shrink: 0;
-    }
+  .header-actions {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-3);
+    padding-top: 0;
+    border-top: none;
+    width: auto;
+    flex-shrink: 0;
+  }
 }
-
 
 /* ── Student name ────────────────────────────────────────────── */
 
 .header-context {
-    display: flex;
-    align-items: center;
-    min-width: 0;
+  display: flex;
+  align-items: center;
+  min-width: 0;
 }
 
 .header-student-name {
-    display: none;
-    font-size: var(--text-xs);
-    font-style: italic;
-    color: var(--color-text-muted);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 160px;
-    line-height: 1;
+  display: none;
+  font-size: var(--text-xs);
+  font-style: italic;
+  color: var(--color-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 160px;
+  line-height: 1;
 }
 
 .header-student-name:not(:empty) {
-    display: block;
+  display: block;
 }
 
 @media (max-width: 399px) {
-    .header-student-name {
-        display: none !important;
-    }
+  .header-student-name {
+    display: none !important;
+  }
 }
 
 @media (min-width: 1024px) {
-    .header-student-name {
-        max-width: 200px;
-    }
+  .header-student-name {
+    max-width: 200px;
+  }
 }
-
 
 /* ── Button groups ───────────────────────────────────────────── */
 
 .header-group {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    /* Mobile (drawer): full-width buttons for easy tapping */
-    width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  /* Mobile (drawer): full-width buttons for easy tapping */
+  width: 100%;
 }
 
 .header-group .btn {
-    flex: 1;
-    justify-content: center;
+  flex: 1;
+  justify-content: center;
 }
 
 @media (min-width: 1024px) {
-    .header-group {
-        width: auto;
-        flex-shrink: 0;
-    }
+  .header-group {
+    width: auto;
+    flex-shrink: 0;
+  }
 
-    .header-group .btn {
-        flex: none;
-    }
+  .header-group .btn {
+    flex: none;
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    12. BRAND overrides (header-specific)
@@ -767,68 +752,65 @@
    ══════════════════════════════════════════════════════════════ */
 
 .header-left .brand {
-    flex-shrink: 0;
+  flex-shrink: 0;
 }
 
 @media (max-width: 359px) {
-    .brand-name {
-        display: none;
-    }
+  .brand-name {
+    display: none;
+  }
 }
 
 @media (min-width: 360px) {
-    .brand-name {
-        display: block;
-    }
+  .brand-name {
+    display: block;
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    13. REDUCED MOTION
    ══════════════════════════════════════════════════════════════ */
 
 @media (prefers-reduced-motion: reduce) {
+  .header-menu-panel,
+  .header-menu-scrim,
+  .header-menu-icon span,
+  .header-menu-toggle,
+  .nav-link {
+    transition: none;
+    animation: none;
+  }
 
-    .header-menu-panel,
-    .header-menu-scrim,
-    .header-menu-icon span,
-    .header-menu-toggle,
-    .nav-link {
-        transition: none;
-        animation: none;
-    }
+  /* Keep visibility toggling even without animation */
+  .header-menu-panel {
+    transition: visibility 0s linear var(--duration-normal);
+  }
 
-    /* Keep visibility toggling even without animation */
-    .header-menu-panel {
-        transition: visibility 0s linear var(--duration-normal);
-    }
-
-    .app-header.is-menu-open .header-menu-panel {
-        transition: visibility 0s linear 0s;
-    }
+  .app-header.is-menu-open .header-menu-panel {
+    transition: visibility 0s linear 0s;
+  }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    14. PRINT
    ══════════════════════════════════════════════════════════════ */
 
 @media print {
-    .app-header {
-        position: static;
-        background: transparent;
-        border-bottom: 1px solid #ccc;
-        box-shadow: none;
-        backdrop-filter: none;
-    }
+  .app-header {
+    position: static;
+    background: transparent;
+    border-bottom: 1px solid #ccc;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
 
-    .header-menu-toggle,
-    .header-menu-panel,
-    .header-menu-scrim {
-        display: none !important;
-    }
+  .header-menu-toggle,
+  .header-menu-panel,
+  .header-menu-scrim {
+    display: none !important;
+  }
 
-    .header-inner {
-        padding-inline: 0;
-    }
+  .header-inner {
+    padding-inline: 0;
+  }
 }

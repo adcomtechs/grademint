@@ -56,8 +56,8 @@ export function gradeFromScore(score, scaleId = DEFAULT_SCALE_ID) {
   for (const entry of scale.grades) {
     if (n >= entry.minScore && n <= entry.maxScore) {
       return {
-        letter:   entry.letter,
-        points:   entry.points,
+        letter: entry.letter,
+        points: entry.points,
         cssClass: entry.cssClass,
       };
     }
