@@ -132,16 +132,15 @@ export class AcademicInsights extends BaseComponent {
 
     const ladder = new ClassificationLadder(ladderSlot, this.store);
     const goal = new GoalTracker(goalSlot, this.store);
-    // const highlights = new PerformanceHighlights(highlightSlot, this.store);
+    const highlights = new PerformanceHighlights(highlightSlot, this.store);
 
     // Mount all three — each calls its own render() + afterMount()
     ladder.mount();
     goal.mount();
-    // highlights.mount();
+    highlights.mount();
 
     // Track for cleanup
-    // this._subCards = [ladder, goal, highlights];
-    this._subCards = [ladder, goal];
+    this._subCards = [ladder, goal, highlights];
   }
 
   /**

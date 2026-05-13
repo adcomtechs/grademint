@@ -1,4 +1,39 @@
-/* Documentation stylesheet entrypoint. */
+/* ═══════════════════════════════════════════════════════════════
+   docs-page.css — Documentation entry stylesheet
+   
+   Import order:
+   1. Tokens      — shared design system foundation
+   2. Reset       — same browser normalization as the dashboard
+   3. Base        — typography and layout primitives
+   4. Components  — shared components (brand, buttons, header,
+                    toast, badges — no dashboard-specific forms)
+   5. Docs        — docs-specific layout, hero, sidebar, content
+   
+   This file is the only CSS entry for docs.html.
+   Never import dashboard/ partials here.
+   ═══════════════════════════════════════════════════════════════ */
 
-@import './main.css';
-@import './docs.css';
+/* ── 1. Tokens ───────────────────────────────────────────────── */
+@import './tokens.css';
+
+/* ── 2. Reset ────────────────────────────────────────────────── */
+@import './reset.css';
+
+/* ── 3. Base ─────────────────────────────────────────────────── */
+@import './base/typography.css';
+@import './base/layout.css';
+
+/* ── 4. Shared components ────────────────────────────────────── */
+@import './components/brand.css';
+@import './components/buttons.css';
+@import './components/header.css';
+@import './components/toast.css';
+@import './components/badges.css';
+/* forms.css is not imported — docs page has only one search input
+   styled within docs-hero.css directly */
+
+/* ── 5. Docs-specific ────────────────────────────────────────── */
+@import './docs/docs-layout.css';
+@import './docs/docs-hero.css';
+@import './docs/docs-sidebar.css';
+@import './docs/docs-content.css';

@@ -22,7 +22,7 @@ import { SemesterManager, openAddSemesterModal } from '../components/dashboard/S
 import { AcademicInsights } from '../components/dashboard/AcademicInsights/index.js';
 import { HeaderView } from '../components/layout/HeaderView.js';
 import { renderFatalErrorView } from '../components/common/FatalErrorView.js';
-// import { showOnboardingIfNeeded } from '../components/common/OnboardingModal.js';
+import { showOnboardingIfNeeded } from '../components/common/OnboardingModal.js';
 import { applyPageMetadata } from '../config/metadata.js';
 import { createExportJson } from '../services/DataPortabilityService.js';
 import { showToast } from '../utils/dom.js';
@@ -134,7 +134,7 @@ async function boot() {
     // Fires after all components are mounted and the router is initialised
     // so that navigation callbacks work correctly inside the modal.
     // Gated by localStorage — silently no-ops on all subsequent visits.
-    // showOnboardingIfNeeded({ onNavigateProfile, onAddSemester });
+    showOnboardingIfNeeded({ onNavigateProfile, onAddSemester });
   } catch (err) {
     log.error('[Dashboard] Fatal boot error:', err);
     const main = document.getElementById('app-main');
@@ -177,160 +177,3 @@ if (document.readyState === 'loading') {
 } else {
   boot();
 }
-
-// /**
-//  * @module dashboard
-//  * @description Entry point for index.html (Dashboard page).
-//  *
-//  * Boot sequence:
-//  * 1. Bootstrap           — IDB open + store hydration
-//  * 2. Mount GPARings      — hydrates hero-zone elements in-place
-//  * 3. Mount SemesterManager — renders into #semester-tabs / #semester-panel
-//  * 4. Mount AcademicInsights — renders into #desk-right
-//  * 5. Register lazy AnalyticsPanel / TranscriptView / WhatIfView routes
-//  * 8. Wire ViewRouter     — Dashboard / Analytics / Transcript / What-If nav
-//  * 9. Wire "Add Semester" buttons, Settings, Export
-//  */
-
-// import { initApp } from '../core/bootstrap.js';
-// import { ViewRouter } from '../core/ViewRouter.js';
-// import { GPARings } from '../components/dashboard/GPARings.js';
-// import { SemesterManager, openAddSemesterModal } from '../components/dashboard/SemesterManager.js';
-// import { AcademicInsights } from '../components/dashboard/AcademicInsights.js';
-// import { HeaderView } from '../components/layout/HeaderView.js';
-// import { renderFatalErrorView } from '../components/common/FatalErrorView.js';
-// import { applyPageMetadata } from '../config/metadata.js';
-// import { createExportJson } from '../services/DataPortabilityService.js';
-// import { showToast } from '../utils/dom.js';
-// import { createLogger } from '../utils/logger.js';
-// import { ProfileView } from '../components/profile/ProfileView.js';
-
-// const log = createLogger('dashboard');
-
-// const lazyViews = {
-//   analytics: null,
-//   transcript: null,
-//   whatif: null,
-// };
-
-// // ── Export ────────────────────────────────────────────────────────────────────
-
-// function exportData(store) {
-//   const json = createExportJson(store.getState());
-//   const blob = new Blob([json], { type: 'application/json' });
-//   const url = URL.createObjectURL(blob);
-//   const a = document.createElement('a');
-//   a.href = url;
-//   a.download = `gpa-pro-${new Date().toISOString().slice(0, 10)}.json`;
-//   a.click();
-//   URL.revokeObjectURL(url);
-//   showToast('Data exported.', 'success');
-// }
-
-// // ── Boot ──────────────────────────────────────────────────────────────────────
-
-// async function boot() {
-//   try {
-//     applyPageMetadata('dashboard');
-
-//     const store = await initApp();
-
-//     const headerEl = document.getElementById('app-header');
-//     if (headerEl) new HeaderView(headerEl, { store, variant: 'dashboard' }).mount();
-
-//     // ① GPARings
-//     const dashSection = document.getElementById('dashboard-section');
-//     if (dashSection) new GPARings(dashSection, store).mount();
-
-//     // ② SemesterManager
-//     const semWrapper =
-//       document.getElementById('semesters-section') ?? document.getElementById('app-main');
-//     if (semWrapper) new SemesterManager(semWrapper, store).mount();
-
-//     // ③ AcademicInsights
-//     const insightsEl = document.getElementById('desk-right');
-//     if (insightsEl) new AcademicInsights(insightsEl, store).mount();
-
-//     const analyticsView = document.getElementById('analytics-view');
-//     const transcriptView = document.getElementById('transcript-view');
-//     const whatifView = document.getElementById('whatif-view');
-
-//     // ⑦ ProfileView
-//     const profileEl = document.getElementById('profile-view');
-//     let profileView = null;
-//     if (profileEl) {
-//       profileView = new ProfileView(profileEl, store);
-//       profileView.mount();
-//     }
-
-//     // ⑧ ViewRouter
-//     const router = new ViewRouter();
-
-//     const dashView = document.getElementById('dashboard-view');
-//     if (dashView) router.register('dashboard', dashView);
-//     if (analyticsView)
-//       router.register('analytics', analyticsView, () => activateAnalytics(analyticsView, store));
-//     if (transcriptView)
-//       router.register('transcript', transcriptView, () => activateTranscript(transcriptView, store));
-//     if (whatifView)
-//       router.register('whatif', whatifView, () => activateWhatIf(whatifView, store));
-//     if (profileEl) router.register('profile', profileEl, () => profileView?.activate()); // NEW
-
-//     document.querySelectorAll('[data-view]').forEach((link) => {
-//       router.addNavLink(link, link.dataset.view);
-//     });
-
-//     router.init('dashboard');
-
-//     // ⑨ "Add Semester" buttons
-//     ['btn-add-semester', 'btn-add-semester-2', 'btn-add-semester-empty'].forEach((id) => {
-//       document.getElementById(id)?.addEventListener('click', () => openAddSemesterModal(store));
-//     });
-
-//     // ⑩ Settings → navigate to profile view  ← CHANGED
-//     document
-//       .getElementById('btn-settings')
-//       ?.addEventListener('click', () => router.navigate('profile'));
-
-//     // ⑪ Export
-//     document.getElementById('btn-export')?.addEventListener('click', () => exportData(store));
-//   } catch (err) {
-//     log.error('[Dashboard] Fatal boot error:', err);
-//     const main = document.getElementById('app-main');
-//     if (main) {
-//       renderFatalErrorView(main);
-//     }
-//   }
-// }
-
-// async function activateAnalytics(container, store) {
-//   if (!lazyViews.analytics) {
-//     const { AnalyticsPanel } = await import('../components/dashboard/AnalyticsPanel.js');
-//     lazyViews.analytics = new AnalyticsPanel(container, store);
-//     lazyViews.analytics.mount();
-//   }
-//   lazyViews.analytics.activate?.();
-// }
-
-// async function activateTranscript(container, store) {
-//   if (!lazyViews.transcript) {
-//     const { TranscriptView } = await import('../components/dashboard/TranscriptView.js');
-//     lazyViews.transcript = new TranscriptView(container, store);
-//     lazyViews.transcript.mount();
-//   }
-// }
-
-// async function activateWhatIf(container, store) {
-//   if (!lazyViews.whatif) {
-//     const { WhatIfView } = await import('../components/dashboard/WhatIfView.js');
-//     lazyViews.whatif = new WhatIfView(container, store);
-//     lazyViews.whatif.mount();
-//   }
-//   lazyViews.whatif.activate?.();
-// }
-
-// if (document.readyState === 'loading') {
-//   document.addEventListener('DOMContentLoaded', boot, { once: true });
-// } else {
-//   boot();
-// }

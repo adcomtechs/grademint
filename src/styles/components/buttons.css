@@ -1,0 +1,213 @@
+/* ═══════════════════════════════════════════════════════════════
+   COMPONENTS / BUTTONS
+   All button variants, sizes, and interaction states.
+   
+   Mobile-first priorities:
+   - Minimum 44px touch target height for all interactive buttons
+   - Touch-action manipulation for snappy response
+   - No hover-only states without focus-visible equivalents
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Base button ─────────────────────────────────────────────── */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    /* Mobile: comfortable touch target */
+    min-height: 40px;
+    padding: var(--space-2) var(--space-5);
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: 0.055em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    user-select: none;
+    touch-action: manipulation;
+    transition:
+        background var(--duration-fast) var(--ease-out),
+        color var(--duration-fast) var(--ease-out),
+        border-color var(--duration-fast) var(--ease-out),
+        box-shadow var(--duration-fast) var(--ease-out),
+        transform var(--duration-fast) var(--ease-out),
+        opacity var(--duration-fast) var(--ease-out);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn:disabled,
+.btn[aria-disabled='true'] {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ── Loading state ───────────────────────────────────────────── */
+.btn.is-loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.btn.is-loading::after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: btn-spin 0.6s linear infinite;
+}
+
+@keyframes btn-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ── Variants ────────────────────────────────────────────────── */
+
+/* Primary: gold fill */
+.btn--primary {
+    background: var(--color-gold);
+    color: var(--color-text-inverse);
+    border: 1px solid var(--color-gold);
+}
+
+.btn--primary:hover {
+    background: var(--color-gold-light);
+    border-color: var(--color-gold-light);
+    box-shadow: var(--shadow-gold);
+    color: var(--color-text-inverse);
+    text-decoration: none;
+}
+
+/* Ghost: outlined with muted text */
+.btn--ghost {
+    background: transparent;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+}
+
+.btn--ghost:hover {
+    background: var(--color-surface-2);
+    color: var(--color-text);
+    border-color: var(--color-border-light);
+    text-decoration: none;
+}
+
+/* Danger: red-tinted destructive actions */
+.btn--danger {
+    background: var(--color-danger-subtle);
+    color: var(--color-danger);
+    border: 1px solid var(--color-danger-border);
+}
+
+.btn--danger:hover {
+    background: rgba(245, 101, 101, 0.25);
+    border-color: var(--color-danger);
+    text-decoration: none;
+}
+
+/* Surface: surface-2 background, used for secondary actions in panels */
+.btn--surface {
+    background: var(--color-surface-2);
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+}
+
+.btn--surface:hover {
+    background: var(--color-surface-3);
+    color: var(--color-text);
+    border-color: var(--color-border-light);
+    text-decoration: none;
+}
+
+/* ── Icon-only button ────────────────────────────────────────── */
+.btn--icon {
+    min-height: 32px;
+    min-width: 32px;
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--text-md);
+    background: transparent;
+    color: var(--color-text-dim);
+    border-radius: var(--radius-sm);
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
+    border: none;
+}
+
+.btn--icon:hover {
+    color: var(--color-text);
+    background: var(--color-surface-2);
+    text-decoration: none;
+}
+
+.btn--danger-icon:hover {
+    color: var(--color-danger);
+    background: var(--color-danger-subtle);
+}
+
+/* ── Sizes ───────────────────────────────────────────────────── */
+
+/* Small — used in panels and table rows */
+.btn--sm {
+    min-height: 32px;
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+}
+
+/* Large — CTAs, prominent actions */
+.btn--lg {
+    min-height: 48px;
+    padding: var(--space-3) var(--space-8);
+    font-size: var(--text-md);
+    border-radius: var(--radius-lg);
+}
+
+/* Full-width on mobile */
+.btn--full {
+    width: 100%;
+}
+
+@media (min-width: 640px) {
+    .btn--full {
+        width: auto;
+    }
+}
+
+/* ── Icon slot inside button ─────────────────────────────────── */
+.btn-icon {
+    font-size: 0.95em;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+/* ── Button group ────────────────────────────────────────────── */
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: center;
+}
+
+.btn-group--full {
+    width: 100%;
+}
+
+.btn-group--full .btn {
+    flex: 1;
+}

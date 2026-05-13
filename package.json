@@ -1,8 +1,8 @@
 {
-  "name": "gpa-pro",
+  "name": "grademint",
   "version": "2.0.0",
   "private": true,
-  "description": "GPA Pro — a high-performance, framework-free GPA calculator web application with customizable grading systems, real-time computation, and persistent client-side storage built using modern JavaScript.",
+  "description": "GradeMint — a high-performance, framework-free grade calculator web application with customizable grading systems, real-time computation, and persistent client-side storage built using modern JavaScript.",
   "type": "module",
   "packageManager": "pnpm@10.19.0",
   "engines": {
