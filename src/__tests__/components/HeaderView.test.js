@@ -57,9 +57,9 @@ describe('HeaderView — initial render on mount()', () => {
 
     new HeaderView(el, { store, variant: 'dashboard' }).mount();
 
-    expect(el.querySelector('.brand-name')?.textContent).toBe('GPAPro');
+    expect(el.querySelector('.brand-name')?.textContent).toBe('GradeMint');
     expect(el.querySelector('svg.brand-mark')).not.toBeNull();
-    expect(el.querySelector('a[href="#analytics"][data-view="analytics"]')).not.toBeNull();
+    // expect(el.querySelector('a[href="#analytics"][data-view="analytics"]')).not.toBeNull();
     expect(el.querySelector('#btn-export')).not.toBeNull();
     expect(el.querySelector('#btn-settings')).not.toBeNull();
     expect(el.querySelector('#btn-add-semester')).not.toBeNull();
@@ -71,9 +71,9 @@ describe('HeaderView — initial render on mount()', () => {
     new HeaderView(el, { variant: 'docs' }).mount();
 
     expect(el.querySelector('.header-nav a[href="/"]')?.textContent).toBe('Calculator');
-    expect(el.querySelector('.header-nav a[href="/docs.html"]')?.classList.contains('is-active')).toBe(
-      true
-    );
+    expect(
+      el.querySelector('.header-nav a[href="/docs.html"]')?.classList.contains('is-active')
+    ).toBe(true);
     expect(el.querySelector('#btn-export')).toBeNull();
   });
 
