@@ -1,11 +1,11 @@
 /**
  * @module OnboardingModal
- * @description First-run onboarding prompt for new GPA Pro users.
+ * @description First-run onboarding prompt for new GradeMint users.
  *
  * ── PURPOSE ─────────────────────────────────────────────────────────────────
  *
  * Eliminates the "staring at zeroes and not knowing why" moment for users
- * who open GPA Pro for the first time. The modal fires once, explains what
+ * who open GradeMint for the first time. The modal fires once, explains what
  * the app does, and offers two immediate entry points:
  *
  *   1. "Set Up Profile" — navigate to Profile & Settings
@@ -93,7 +93,7 @@ export function showOnboardingIfNeeded({ onNavigateProfile, onAddSemester } = {}
 
   // openModal injects content into #modal-content and shows the overlay.
   // It also sets up focus-trap and Escape-key dismiss automatically.
-  openModal(content, { size: 'md' });
+  openModal('', content, { size: 'md' });
 }
 
 // ── Private helpers ───────────────────────────────────────────────────────────
@@ -114,13 +114,13 @@ function _buildContent({ onNavigateProfile, onAddSemester }) {
   root.innerHTML = `
     <div class="onboarding-header">
       <div class="onboarding-icon" aria-hidden="true">🎓</div>
-      <h2 class="onboarding-title" id="modal-heading">Welcome to GPA Pro</h2>
+      <h2 class="onboarding-title" id="modal-heading">Welcome to GradeMint</h2>
       <p class="onboarding-sub">
         Your local-first academic companion — no sign-up, no server, your data stays on your device.
       </p>
     </div>
 
-    <ul class="onboarding-features" aria-label="What GPA Pro does">
+    <ul class="onboarding-features" aria-label="What GradeMint does">
       <li class="onboarding-feature">
         <span class="feature-icon" aria-hidden="true">📊</span>
         <div>

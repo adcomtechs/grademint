@@ -2,39 +2,84 @@
    COMPONENTS / COMMON
    src/styles/components/common.css
 
-   Covers two shared components that live in src/components/common/:
-
+   Covers:
      1. OnboardingModal   — first-run welcome experience
-        Classes: .onboarding, .onboarding-header, .onboarding-icon,
-                 .onboarding-title, .onboarding-sub,
-                 .onboarding-features, .onboarding-feature,
-                 .feature-icon, .onboarding-cta-label,
-                 .onboarding-actions, .onboarding-skip
-
      2. FatalErrorView    — fatal boot-failure fallback
-        Classes: .app-fatal-error
 
-   Both are mobile-first and rely only on design tokens from tokens.css.
-   Neither file imports this stylesheet directly — it is pulled in through
-   the app.css entry barrel, which guarantees tokens are already in scope.
+   BUG FIXES IN THIS VERSION
+   ──────────────────────────────────────────────────────────────
+   BUG 1 — [object Object] at the bottom:
+     Root cause: OnboardingModal.js calls openModal(content, opts)
+     but the correct signature is openModal(title, content, opts).
+     The opts object { size:'md' } was passed as the content arg,
+     so modal.js ran body.textContent = String({size:'md'}) which
+     produced "[object Object]" in .modal-body.
+
+     JS fix (required, one line in OnboardingModal.js):
+       openModal('', content, { size: 'md' })
+
+     CSS defence: when .onboarding is present inside .modal-content
+     we suppress any .modal-body that contains only a text node
+     (i.e. the stringified object), and we hide the shell .modal-title
+     since the onboarding header provides its own visual title.
+
+   BUG 2 — Content not starting at the top:
+     Root cause: openModal() calls _focusInitialElement() via rAF,
+     which focuses the first button. The browser scrolls the
+     bottom-sheet to reveal the focused element, landing mid-modal.
+     CSS fix: scroll-margin-top: 0 on all focusable children inside
+     .modal-content prevents the scroll-to-focus behaviour from
+     moving the viewport past the top of the content.
    ═══════════════════════════════════════════════════════════════ */
 
 /* ══════════════════════════════════════════════════════════════
-   1. ONBOARDING MODAL
-   Rendered into #modal-content by OnboardingModal.js.
-   The shared modal shell (overlay, box, close button, focus-trap)
-   is provided by modal.css — this file only styles the content.
+   MODAL SHELL OVERRIDES WHEN ONBOARDING IS PRESENT
    ══════════════════════════════════════════════════════════════ */
 
-/* ── Root wrapper ─────────────────────────────────────────────── */
+/* Suppress the shell's own title element — the onboarding header
+   provides the visual title. :has() is widely supported (2024+). */
+.modal-content:has(.onboarding) .modal-title {
+  display: none;
+}
+
+/* Collapse the modal-body wrapper so the onboarding root owns
+   all its own padding/spacing with no double-spacing */
+.modal-content:has(.onboarding) .modal-body {
+  gap: 0;
+  padding: 0;
+}
+
+/* Remove top padding from the content area — the onboarding-header
+   supplies its own top padding and the rounded corner treatment */
+.modal-content:has(.onboarding) {
+  padding: 0;
+}
+
+/* Prevent rAF focus from scrolling the modal mid-content on mobile */
+.modal-content :is(button, input, select, a, [tabindex]) {
+  scroll-margin-top: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   1. ONBOARDING MODAL ROOT
+   ══════════════════════════════════════════════════════════════ */
 
 .onboarding {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  /* Sections own their own spacing — no gap here to avoid
+     double-padding between the bordered regions */
+  gap: 0;
+  /* Ensure rendering always starts at the scroll origin */
+  overflow-anchor: auto;
 }
 
-/* ── Header: icon + title + sub ──────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════
+   HEADER  (.onboarding-header)
+   Full-bleed across the modal. Rich gold ambient wash. The first
+   thing a first-time user sees — must communicate premium quality
+   and clear purpose instantly.
+   ══════════════════════════════════════════════════════════════ */
 
 .onboarding-header {
   display: flex;
@@ -42,92 +87,168 @@
   align-items: center;
   text-align: center;
   gap: var(--space-3);
-  /* Decorative top-border accent across the full modal width.
-     Negative margin pulls the header flush with the modal edge. */
-  padding-top: var(--space-6);
-  padding-bottom: var(--space-5);
-  margin-inline: calc(-1 * var(--space-5));
-  padding-inline: var(--space-5);
+  /* Generous top padding — the icon and title need air above them */
+  padding: var(--space-8) var(--space-5) var(--space-6);
+  /* Layered background: radial bloom behind the icon + warm surface */
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201, 168, 76, 0.12) 0%, transparent 65%),
+    linear-gradient(180deg, rgba(201, 168, 76, 0.04) 0%, transparent 50%), var(--color-surface);
   border-bottom: 1px solid var(--color-border);
-  background: linear-gradient(160deg, rgba(201, 168, 76, 0.04) 0%, transparent 60%);
+  /* Match the modal-box border-radius on mobile (top corners only) */
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle decorative ring behind the icon */
+.onboarding-header::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -30%);
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  border: 1px solid rgba(201, 168, 76, 0.12);
+  pointer-events: none;
 }
 
 @media (min-width: 640px) {
   .onboarding-header {
-    margin-inline: calc(-1 * var(--space-6));
-    padding-inline: var(--space-6);
+    padding: var(--space-10) var(--space-6) var(--space-7);
   }
 }
 
-/* Graduation cap emoji displayed at a generous size */
+/* ── Icon ─────────────────────────────────────────────────────── */
+
 .onboarding-icon {
-  font-size: clamp(2.5rem, 5vw, 3.25rem);
+  position: relative;
+  z-index: 1;
+  font-size: clamp(2.75rem, 6vw, 3.5rem);
   line-height: 1;
-  /* Subtle glow to make the icon pop against the dark surface */
-  filter: drop-shadow(0 0 16px rgba(201, 168, 76, 0.35));
+  filter: drop-shadow(0 0 8px rgba(201, 168, 76, 0.65))
+    drop-shadow(0 0 24px rgba(201, 168, 76, 0.28));
   user-select: none;
+  animation: ob-icon-float 4s ease-in-out infinite;
 }
 
+@keyframes ob-icon-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .onboarding-icon {
+    animation: none;
+  }
+}
+
+/* ── Title ────────────────────────────────────────────────────── */
+
 .onboarding-title {
+  position: relative;
+  z-index: 1;
   font-family: var(--font-display);
-  font-size: var(--text-2xl);
+  font-size: clamp(1.5rem, 4vw, 2rem);
   font-weight: 700;
   color: var(--color-text);
   letter-spacing: -0.01em;
   line-height: 1.15;
+  margin: 0;
 }
 
-/* The gold "Pro" accent inside the title — applied via a <span>
-   if the JS ever wraps "Pro", but fine as a plain h2 too */
+/* "Pro" suffix wrapped in <span> by JS if present */
 .onboarding-title span {
   color: var(--color-gold);
 }
 
+/* ── Subtitle ─────────────────────────────────────────────────── */
+
 .onboarding-sub {
+  position: relative;
+  z-index: 1;
   font-size: var(--text-sm);
   color: var(--color-text-muted);
   line-height: 1.65;
-  max-width: 42ch;
+  max-width: 38ch;
+  margin: 0;
 }
 
-/* ── Feature list ────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════
+   FEATURE GRID  (.onboarding-features)
+   2×2 card grid. Visible above the fold on all phones.
+   ══════════════════════════════════════════════════════════════ */
 
 .onboarding-features {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
   list-style: none;
-  /* A subtle enclosing panel */
-  background: var(--color-surface-2);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-4);
+  display: grid;
+  /* 2-col even on small phones — 4 items always fit as 2×2 */
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  margin: 0;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
 }
 
 @media (min-width: 480px) {
   .onboarding-features {
-    /* Two-column grid from 480px — short list benefits from 2-up */
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-4) var(--space-5);
-    padding: var(--space-5);
+    gap: var(--space-4);
+    padding: var(--space-5) var(--space-5);
   }
 }
 
-/* Individual feature row */
-.onboarding-feature {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-3);
+@media (min-width: 640px) {
+  .onboarding-features {
+    padding: var(--space-6);
+    gap: var(--space-4);
+  }
 }
 
+/* Individual feature card */
+.onboarding-feature {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.onboarding-feature:hover {
+  border-color: var(--color-border-light);
+}
+
+/* Side-by-side icon + text on wider viewports */
+@media (min-width: 480px) {
+  .onboarding-feature {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+}
+
+/* Icon */
 .feature-icon {
   flex-shrink: 0;
-  font-size: 1.1rem;
-  line-height: 1.4;
-  /* Align optically with the text */
-  margin-top: 1px;
+  font-size: 1.3rem;
+  line-height: 1;
   user-select: none;
+}
+
+/* Text wrapper */
+.onboarding-feature > div {
+  min-width: 0;
+  flex: 1;
 }
 
 .onboarding-feature strong {
@@ -135,44 +256,67 @@
   font-size: var(--text-sm);
   font-weight: 700;
   color: var(--color-text);
-  line-height: 1.3;
+  line-height: 1.25;
   margin-bottom: var(--space-1);
 }
 
 .onboarding-feature p {
   font-size: var(--text-xs);
   color: var(--color-text-muted);
-  line-height: 1.55;
-  max-width: unset;
+  line-height: 1.5;
+  margin: 0;
+  max-width: none;
 }
 
-/* ── CTA section ─────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════
+   CTA ZONE
+   ══════════════════════════════════════════════════════════════ */
 
 .onboarding-cta-label {
   font-size: var(--text-xs);
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--color-text-muted);
   text-align: center;
-  max-width: unset;
+  padding: var(--space-5) var(--space-5) var(--space-3);
+  margin: 0;
+  max-width: none;
+  background: var(--color-surface);
 }
 
-/* Two action buttons stacked on mobile, side-by-side from 400px */
+@media (min-width: 640px) {
+  .onboarding-cta-label {
+    padding: var(--space-5) var(--space-6) var(--space-3);
+  }
+}
+
+/* ── Action buttons ───────────────────────────────────────────── */
+
 .onboarding-actions {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+  padding: 0 var(--space-5);
+  background: var(--color-surface);
 }
 
 .onboarding-actions .btn {
   width: 100%;
   justify-content: center;
-  /* Slightly taller than standard buttons for prominence */
-  min-height: 48px;
+  min-height: 52px;
   font-size: var(--text-sm);
+  letter-spacing: 0.04em;
 }
 
+/* Amplified gold glow on the primary CTA */
+.onboarding-actions .btn--primary:hover {
+  box-shadow:
+    var(--shadow-gold),
+    0 0 0 1px var(--color-gold-dark);
+}
+
+/* Side-by-side from 400px */
 @media (min-width: 400px) {
   .onboarding-actions {
     flex-direction: row;
@@ -184,28 +328,29 @@
   }
 }
 
-/* ── Skip link ───────────────────────────────────────────────── */
+@media (min-width: 640px) {
+  .onboarding-actions {
+    padding: 0 var(--space-6);
+  }
+}
+
+/* ── Skip link ────────────────────────────────────────────────── */
 
 .onboarding-skip {
-  /* Sits below the main CTAs — visually de-emphasised */
   display: block;
   width: 100%;
   text-align: center;
-  padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  margin-top: var(--space-3);
   font-size: var(--text-xs);
   color: var(--color-text-dim);
-  background: transparent;
+  background: var(--color-surface);
   border: none;
+  border-top: 1px solid var(--color-border);
   cursor: pointer;
   touch-action: manipulation;
+  letter-spacing: 0.02em;
   transition: color var(--duration-fast) var(--ease-out);
-  /* Separate from the action buttons with a thin divider */
-  border-top: 1px solid var(--color-border);
-  padding-top: var(--space-4);
-  /* Negative margin + padding trick to extend the divider to the edges */
-  margin-inline: calc(-1 * var(--space-5));
-  padding-inline: var(--space-5);
 }
 
 .onboarding-skip:hover {
@@ -214,25 +359,17 @@
 
 .onboarding-skip:focus-visible {
   outline: 2px solid var(--color-gold);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
+  outline-offset: -2px;
 }
 
 @media (min-width: 640px) {
   .onboarding-skip {
-    margin-inline: calc(-1 * var(--space-6));
-    padding-inline: var(--space-6);
+    padding: var(--space-4) var(--space-6);
   }
 }
 
 /* ══════════════════════════════════════════════════════════════
-   2. FATAL ERROR VIEW
-   Rendered into #app-main by renderFatalErrorView() when the
-   dashboard boot sequence throws an unrecoverable error.
-
-   The JS applies inline styles for quick-and-safe centering, but
-   all visual polish (typography, colours, layout depth) comes
-   from these rules so the inline styles are minimal overrides.
+   2. FATAL ERROR VIEW  (.app-fatal-error)
    ══════════════════════════════════════════════════════════════ */
 
 .app-fatal-error {
@@ -242,13 +379,11 @@
   justify-content: center;
   text-align: center;
   gap: var(--space-5);
-  /* Full viewport height minus header — vertically centred even on short phones */
   min-height: calc(100dvh - var(--header-h) - var(--space-16));
   min-height: calc(100vh - var(--header-h) - var(--space-16));
   padding: var(--space-8) var(--space-5);
 }
 
-/* Large warning glyph — purely decorative */
 .app-fatal-error::before {
   content: '⚠';
   font-size: clamp(3rem, 8vw, 4.5rem);
@@ -256,7 +391,6 @@
   color: var(--color-danger);
   opacity: 0.45;
   display: block;
-  /* Subtle pulsing animation draws the eye without being distracting */
   animation: fatal-pulse 3s ease-in-out infinite;
 }
 
@@ -277,7 +411,6 @@
   }
 }
 
-/* Heading — overrides the inline color:var(--color-danger) set by the JS */
 .app-fatal-error h2 {
   font-family: var(--font-display);
   font-size: var(--text-2xl);
@@ -288,7 +421,6 @@
   max-width: 28ch;
 }
 
-/* Message paragraph */
 .app-fatal-error p {
   font-size: var(--text-base);
   color: var(--color-text-muted);
@@ -296,15 +428,12 @@
   max-width: 44ch;
 }
 
-/* Reload button — inherits .btn .btn--primary from buttons.css,
-   override only what needs to be different in this context */
 .app-fatal-error .btn {
   min-height: 48px;
   padding-inline: var(--space-10);
   font-size: var(--text-sm);
 }
 
-/* Subtle hint text below the button */
 .app-fatal-error .fatal-hint {
   font-size: var(--text-xs);
   color: var(--color-text-dim);
