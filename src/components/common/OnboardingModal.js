@@ -93,7 +93,7 @@ export function showOnboardingIfNeeded({ onNavigateProfile, onAddSemester } = {}
 
   // openModal injects content into #modal-content and shows the overlay.
   // It also sets up focus-trap and Escape-key dismiss automatically.
- openModal('', content, { size: 'md' });
+  openModal('', content, { size: 'md' });
 }
 
 // ── Private helpers ───────────────────────────────────────────────────────────

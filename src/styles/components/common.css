@@ -92,8 +92,7 @@
   /* Layered background: radial bloom behind the icon + warm surface */
   background:
     radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201, 168, 76, 0.12) 0%, transparent 65%),
-    linear-gradient(180deg, rgba(201, 168, 76, 0.04) 0%, transparent 50%),
-    var(--color-surface);
+    linear-gradient(180deg, rgba(201, 168, 76, 0.04) 0%, transparent 50%), var(--color-surface);
   border-bottom: 1px solid var(--color-border);
   /* Match the modal-box border-radius on mobile (top corners only) */
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
@@ -128,14 +127,13 @@
   z-index: 1;
   font-size: clamp(2.75rem, 6vw, 3.5rem);
   line-height: 1;
-  filter:
-    drop-shadow(0 0 8px rgba(201, 168, 76, 0.65)) drop-shadow(0 0 24px rgba(201, 168, 76, 0.28));
+  filter: drop-shadow(0 0 8px rgba(201, 168, 76, 0.65))
+    drop-shadow(0 0 24px rgba(201, 168, 76, 0.28));
   user-select: none;
   animation: ob-icon-float 4s ease-in-out infinite;
 }
 
 @keyframes ob-icon-float {
-
   0%,
   100% {
     transform: translateY(0);
@@ -248,7 +246,7 @@
 }
 
 /* Text wrapper */
-.onboarding-feature>div {
+.onboarding-feature > div {
   min-width: 0;
   flex: 1;
 }
@@ -313,7 +311,9 @@
 
 /* Amplified gold glow on the primary CTA */
 .onboarding-actions .btn--primary:hover {
-  box-shadow: var(--shadow-gold), 0 0 0 1px var(--color-gold-dark);
+  box-shadow:
+    var(--shadow-gold),
+    0 0 0 1px var(--color-gold-dark);
 }
 
 /* Side-by-side from 400px */
@@ -395,7 +395,6 @@
 }
 
 @keyframes fatal-pulse {
-
   0%,
   100% {
     opacity: 0.45;
