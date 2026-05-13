@@ -1,8 +1,8 @@
-# GPA Pro
+# GradeMint
 
-GPA Pro is a framework-free, local-first GPA and CGPA calculator for students. It supports multiple grading scales, semester/course tracking, academic insights, transcript output, what-if planning, import/export backups, and browser-only persistence with IndexedDB.
+GradeMint is a framework-free, local-first GPA and CGPA calculator for students. It supports multiple grading scales, semester/course tracking, academic insights, transcript output, what-if planning, import/export backups, and browser-only persistence with IndexedDB.
 
-The npm package/repo name is `grademint`, but the implemented product surface uses the `GPA Pro` brand.
+The npm package/repo name is `grademint`.
 
 ## Features
 
