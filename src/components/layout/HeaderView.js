@@ -135,7 +135,7 @@ export class HeaderView {
       'a',
       { href: '/', className: 'brand', 'aria-label': 'GradeMint home' },
       _buildLogoMark(),
-      createElement('span', { className: 'brand-name' }, 'GPA', createElement('span', {}, 'Pro'))
+      createElement('span', { className: 'brand-name' }, 'Grade', createElement('span', {}, 'Mint'))
     );
   }
 
