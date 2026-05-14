@@ -40,22 +40,23 @@ function makeStore(overrides = {}) {
 import { ProfileView } from '@/components/profile/ProfileView.js';
 
 describe('ProfileView', () => {
-  let container, store;
+  let container, store, onSave;
 
   beforeEach(() => {
     container = document.createElement('div');
     document.body.append(container);
     store = makeStore();
+    onSave = vi.fn();
   });
 
   it('renders the .pv-root wrapper', () => {
-    const view = new ProfileView(container, store);
+    const view = new ProfileView(container, store, { onSave });
     view.mount();
     expect(container.querySelector('.pv-root')).not.toBeNull();
   });
 
   it('renders the page heading', () => {
-    const view = new ProfileView(container, store);
+    const view = new ProfileView(container, store, { onSave });
     view.mount();
     expect(container.querySelector('.pv-heading-title')?.textContent).toContain(
       'Profile & Settings'
@@ -155,23 +156,24 @@ describe('StudentSection', () => {
 import { PreviousRecordSection } from '@/components/profile/sections/PreviousRecordSection.js';
 
 describe('PreviousRecordSection', () => {
-  let container, store;
+  let container, store, onSave;
 
   beforeEach(() => {
     container = document.createElement('div');
     document.body.append(container);
     store = makeStore();
+    onSave = vi.fn();
   });
 
   it('renders CU and QP inputs', () => {
-    const section = new PreviousRecordSection(container, store);
+    const section = new PreviousRecordSection(container, store, { onSave });
     section.mount();
     expect(container.querySelector('#pv-prev-cu')).not.toBeNull();
     expect(container.querySelector('#pv-prev-qp')).not.toBeNull();
   });
 
   it('shows no Clear button when previousRecord is empty', () => {
-    const section = new PreviousRecordSection(container, store);
+    const section = new PreviousRecordSection(container, store, { onSave });
     section.mount();
     const buttons = [...container.querySelectorAll('.btn')];
     const clearBtn = buttons.find((b) => b.textContent.includes('Clear'));
@@ -180,7 +182,7 @@ describe('PreviousRecordSection', () => {
 
   it('shows Clear button when previousRecord has data', () => {
     store = makeStore({ previousRecord: { creditUnits: 45, qualityPoints: 171 } });
-    const section = new PreviousRecordSection(container, store);
+    const section = new PreviousRecordSection(container, store, { onSave });
     section.mount();
     const buttons = [...container.querySelectorAll('.btn')];
     const clearBtn = buttons.find((b) => b.textContent.includes('Clear'));
@@ -188,7 +190,7 @@ describe('PreviousRecordSection', () => {
   });
 
   it('dispatches SET_PREVIOUS_RECORD on save with valid numbers', () => {
-    const section = new PreviousRecordSection(container, store);
+    const section = new PreviousRecordSection(container, store, { onSave });
     section.mount();
     container.querySelector('#pv-prev-cu').value = '45';
     container.querySelector('#pv-prev-qp').value = '171';

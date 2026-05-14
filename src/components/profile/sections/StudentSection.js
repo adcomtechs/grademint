@@ -21,7 +21,7 @@
  *   in early semesters may not yet know their department assignment.
  */
 
-import { BaseComponent } from '@/components/common/BaseComponent.js';
+import { BaseComponent } from '../../common/BaseComponent.js';
 import { createElement, showToast } from '@/utils/dom.js';
 import { validateStudentName } from '@/utils/validators.js';
 import { DEFAULT_SCALE_ID } from '@/utils/constants.js';
@@ -29,8 +29,9 @@ import { getAvailableScales } from '@/utils/helpers.js';
 import { watchState } from '@/utils/selector.js';
 
 export class StudentSection extends BaseComponent {
-  constructor(container, store) {
+  constructor(container, store, options = {}) {
     super(container, store);
+    this._onSave = options.onSave ?? null;
   }
 
   // ── Lifecycle ──────────────────────────────────────────────────────────────
@@ -200,6 +201,7 @@ export class StudentSection extends BaseComponent {
     });
 
     showToast('Profile saved.', 'success');
+    this._onSave?.(); // ← navigate back to dashboard
   }
 }
 

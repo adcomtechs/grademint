@@ -23,7 +23,7 @@
  *   Reset failures are recorded at ERROR level with the full Error object.
  */
 
-import { BaseComponent } from '@/components/common/BaseComponent.js';
+import { BaseComponent } from '../../common/BaseComponent.js';
 import { createElement, openModal, showToast } from '@/utils/dom.js';
 import { watchState } from '@/utils/selector.js';
 import { resetApp } from '@/services/ResetService.js';
@@ -33,8 +33,9 @@ import { createLogger } from '@/utils/logger.js';
 const log = createLogger('DangerZoneSection');
 
 export class DangerZoneSection extends BaseComponent {
-  constructor(container, store) {
+  constructor(container, store, options = {}) {
     super(container, store);
+    this._onSave = options.onSave ?? null;
   }
 
   // ── Lifecycle ──────────────────────────────────────────────────────────────
@@ -205,6 +206,7 @@ export class DangerZoneSection extends BaseComponent {
       await resetApp(this.store, getIdb());
       closeModal();
       showToast('All data has been deleted. Starting fresh.', 'info', 5000);
+      this._onSave?.(); // ← navigate back to dashboard
     } catch (err) {
       log.error('Reset failed — IndexedDB could not be cleared', err);
       confirmBtn.disabled = false;

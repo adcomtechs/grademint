@@ -19,7 +19,7 @@
  * user typing. The combined CGPA hint updates reactively via the subscription.
  */
 
-import { BaseComponent } from '@/components/common/BaseComponent.js';
+import { BaseComponent } from '../../common/BaseComponent.js';
 import { GPACalculatorService } from '@/services/GPACalculatorService.js';
 import { Semester } from '@/domain/Semester.js';
 import { createElement, showToast } from '@/utils/dom.js';
@@ -27,8 +27,9 @@ import { formatGPA } from '@/utils/formatters.js';
 import { watchState } from '@/utils/selector.js';
 
 export class PreviousRecordSection extends BaseComponent {
-  constructor(container, store) {
+  constructor(container, store, options = {}) {
     super(container, store);
+    this._onSave = options.onSave ?? null;
   }
 
   // ── Lifecycle ──────────────────────────────────────────────────────────────
@@ -175,6 +176,7 @@ export class PreviousRecordSection extends BaseComponent {
       payload: { creditUnits: cu, qualityPoints: qp },
     });
     showToast('Previous record updated.', 'success');
+    this._onSave?.(); // ← navigate back
   }
 
   _handleClear() {
@@ -183,5 +185,6 @@ export class PreviousRecordSection extends BaseComponent {
       payload: { creditUnits: 0, qualityPoints: 0 },
     });
     showToast('Previous record cleared.', 'info');
+    this._onSave?.(); // ← navigate back
   }
 }
