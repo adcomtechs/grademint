@@ -40,7 +40,6 @@
      CSS gap on the flex container — no JS position arithmetic.
    ═══════════════════════════════════════════════════════════════ */
 
-
 /* ══════════════════════════════════════════════════════════════
    VARIANT TOKENS
    Defined once here; consumed by icon, border, accent bar,
@@ -83,7 +82,6 @@
   --toast-progress-bg: var(--color-info);
 }
 
-
 /* ══════════════════════════════════════════════════════════════
    CONTAINER
    ══════════════════════════════════════════════════════════════ */
@@ -115,7 +113,6 @@
   }
 }
 
-
 /* ══════════════════════════════════════════════════════════════
    TOAST CARD
    ══════════════════════════════════════════════════════════════ */
@@ -143,7 +140,7 @@
   /* Depth */
   box-shadow:
     0 4px 24px rgba(0, 0, 0, 0.55),
-    0 1px 4px rgba(0, 0, 0, 0.30),
+    0 1px 4px rgba(0, 0, 0, 0.3),
     0 0 0 1px rgba(255, 255, 255, 0.03) inset;
 
   /* Toasts need pointer events */
@@ -184,7 +181,7 @@
 .toast.toast--paused {
   background: color-mix(in srgb, var(--color-surface-3) 92%, var(--toast-accent, transparent) 8%);
   box-shadow:
-    0 6px 32px rgba(0, 0, 0, 0.60),
+    0 6px 32px rgba(0, 0, 0, 0.6),
     0 2px 8px rgba(0, 0, 0, 0.35),
     0 0 0 1px rgba(255, 255, 255, 0.04) inset;
 }
@@ -203,7 +200,6 @@
     transform: translateY(8px) scale(0.96);
   }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    ICON CIRCLE
@@ -231,7 +227,6 @@
   transition: box-shadow var(--duration-normal) var(--ease-out);
 }
 
-
 /* ══════════════════════════════════════════════════════════════
    BODY (text area)
    ══════════════════════════════════════════════════════════════ */
@@ -255,7 +250,6 @@
   /* Reset the global p max-width */
   max-width: none;
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    DISMISS BUTTON
@@ -294,7 +288,6 @@
   outline: 2px solid var(--toast-accent, var(--color-gold));
   outline-offset: 2px;
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    PROGRESS BAR
@@ -348,7 +341,6 @@
   }
 }
 
-
 /* ══════════════════════════════════════════════════════════════
    RESPONSIVE SCALING
    ══════════════════════════════════════════════════════════════ */
@@ -370,7 +362,6 @@
     height: 30px;
   }
 }
-
 
 /* ══════════════════════════════════════════════════════════════
    REDUCED MOTION

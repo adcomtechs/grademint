@@ -101,7 +101,7 @@ async function boot() {
       const onNavigateDashboard = () => router.navigate('dashboard');
 
       profileView = new ProfileView(profileEl, store, { onSave: onNavigateDashboard });
-      
+
       profileView.mount();
     }
 
