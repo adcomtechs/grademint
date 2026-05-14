@@ -171,9 +171,7 @@
   }
 
   .desk-right::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg,
-        var(--color-border-light),
-        var(--color-text-dim));
+    background: linear-gradient(180deg, var(--color-border-light), var(--color-text-dim));
 
     border-radius: var(--radius-full);
     border: 2px solid transparent;
@@ -183,9 +181,7 @@
   }
 
   .desk-right::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg,
-        var(--color-primary),
-        var(--color-text));
+    background: linear-gradient(180deg, var(--color-primary), var(--color-text));
 
     background-clip: padding-box;
   }
@@ -781,7 +777,6 @@
    ══════════════════════════════════════════════════════════════ */
 
 @media (prefers-reduced-motion: reduce) {
-
   .tabs-level-btn,
   .tabs-sem-btn,
   .tab-action,
@@ -1475,12 +1470,14 @@
   width: 0%;
   border-radius: var(--radius-full);
   /* Gradient that maps score level to colour intuitively */
-  background: linear-gradient(to right,
-      var(--color-fail) 0%,
-      var(--color-third) 40%,
-      var(--color-second-lower) 55%,
-      var(--color-second-upper) 65%,
-      var(--color-first) 80%);
+  background: linear-gradient(
+    to right,
+    var(--color-fail) 0%,
+    var(--color-third) 40%,
+    var(--color-second-lower) 55%,
+    var(--color-second-upper) 65%,
+    var(--color-first) 80%
+  );
   transition: width 220ms var(--ease-out);
 }
 
@@ -1516,7 +1513,6 @@
 }
 
 @keyframes cf2-override-pulse {
-
   0%,
   100% {
     box-shadow: 0 0 0 0px var(--grade-border, transparent);
@@ -1935,12 +1931,14 @@
   height: 100%;
   width: 0%;
   border-radius: var(--radius-full);
-  background: linear-gradient(to right,
-      var(--color-fail) 0%,
-      var(--color-third) 40%,
-      var(--color-second-lower) 55%,
-      var(--color-second-upper) 65%,
-      var(--color-first) 80%);
+  background: linear-gradient(
+    to right,
+    var(--color-fail) 0%,
+    var(--color-third) 40%,
+    var(--color-second-lower) 55%,
+    var(--color-second-upper) 65%,
+    var(--color-first) 80%
+  );
   transition: width 220ms var(--ease-out);
 }
 
@@ -2146,7 +2144,6 @@
 
 /* ── 1024 px ────────────────────────────────────────────────── */
 @media (min-width: 1024px) {
-
   /* The course table column expands gracefully in the wider left panel */
   .course-table {
     min-width: 0;
@@ -2404,7 +2401,6 @@
 }
 
 @media (min-width: 560px) {
-
   .overview-table th:nth-child(6),
   .overview-table td:nth-child(6) {
     display: table-cell;
