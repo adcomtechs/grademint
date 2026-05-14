@@ -27,6 +27,7 @@ import { validateStudentName } from '@/utils/validators.js';
 import { DEFAULT_SCALE_ID } from '@/utils/constants.js';
 import { getAvailableScales } from '@/utils/helpers.js';
 import { watchState } from '@/utils/selector.js';
+import { scrollToHero } from '../../../utils/scroll.js';
 
 export class StudentSection extends BaseComponent {
   constructor(container, store, options = {}) {
@@ -201,6 +202,7 @@ export class StudentSection extends BaseComponent {
     });
 
     showToast('Profile saved.', 'success');
+    scrollToHero('instant'); // instant here — router.navigate() already does a visual transition
     this._onSave?.(); // ← navigate back to dashboard
   }
 }
