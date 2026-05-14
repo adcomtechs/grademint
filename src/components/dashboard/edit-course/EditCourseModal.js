@@ -32,6 +32,7 @@ import {
   IdentitySection,
   ScoreSection,
 } from '../course-form/index.js';
+import { scrollToHero } from '@/utils/scroll.js';
 
 export class EditCourseModal {
   /**
@@ -184,6 +185,7 @@ export class EditCourseModal {
 
     showToast(`${snap.code.toUpperCase()} updated.`, 'success');
     this._modal.close();
+    scrollToHero(); // ← scroll after modal closes
   }
 
   // ── Cleanup ────────────────────────────────────────────────────────────────

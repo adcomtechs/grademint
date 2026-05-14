@@ -34,6 +34,7 @@ import { validateCourseFormSnapshot } from './CourseFormValidator.js';
 import { IdentitySection } from './sections/IdentitySection.js';
 import { ScoreSection } from './sections/ScoreSection.js';
 import { FormFooter } from './sections/FormFooter.js';
+import { scrollToHero } from '@/utils/scroll.js';
 
 export class CourseForm {
   /**
@@ -247,6 +248,7 @@ export class CourseForm {
 
     showToast(`${snap.code.toUpperCase()} added.`, 'success');
     this.close();
+    scrollToHero(); // ← scroll after course added
   }
 
   // ── State helpers ──────────────────────────────────────────────────────────

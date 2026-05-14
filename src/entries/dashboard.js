@@ -96,8 +96,12 @@ async function boot() {
     // ── ProfileView ────────────────────────────────────────────────────────
     const profileEl = document.getElementById('profile-view');
     let profileView = null;
+
     if (profileEl) {
-      profileView = new ProfileView(profileEl, store);
+      const onNavigateDashboard = () => router.navigate('dashboard');
+
+      profileView = new ProfileView(profileEl, store, { onSave: onNavigateDashboard });
+
       profileView.mount();
     }
 

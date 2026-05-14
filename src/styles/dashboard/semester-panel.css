@@ -111,7 +111,8 @@
 }
 
 .desk-left {
-  min-width: 0; /* prevent grid blowout */
+  min-width: 0;
+  /* prevent grid blowout */
   flex: 1;
 }
 
@@ -130,15 +131,59 @@
     gap: var(--space-8);
   }
 
-  .desk-right {
-    /* Stick the insights panel as the user scrolls the course table */
-    position: sticky;
-    top: calc(var(--header-h) + var(--space-5));
-    /* Cap height and scroll internally when content overflows */
-    max-height: calc(100dvh - var(--header-h) - var(--space-10));
+  /* .desk-right { */
+  /* Stick the insights panel as the user scrolls the course table */
+  /* position: sticky;
+    top: calc(var(--header-h) + var(--space-5)); */
+  /* Cap height and scroll internally when content overflows */
+  /* max-height: calc(100dvh - var(--header-h) - var(--space-10));
     overflow-y: auto;
     overscroll-behavior: contain;
     scrollbar-width: thin;
+  } */
+
+  .desk-right {
+    /* Sticky positioning */
+    position: sticky;
+    top: calc(var(--header-h) + var(--space-5));
+
+    /* Internal scroll area */
+    max-height: calc(100dvh - var(--header-h) - var(--space-10));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+
+    /* Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border-light) transparent;
+  }
+
+  /* ─────────────────────────────────────────────
+     WebKit scrollbar (Chrome, Edge, Safari)
+  ───────────────────────────────────────────── */
+
+  .desk-right::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .desk-right::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: var(--radius-full);
+  }
+
+  .desk-right::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--color-border-light), var(--color-text-dim));
+
+    border-radius: var(--radius-full);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+
+    transition: background 160ms ease;
+  }
+
+  .desk-right::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--color-primary), var(--color-text));
+
+    background-clip: padding-box;
   }
 }
 
@@ -892,7 +937,8 @@
 .semester-card {
   /* background:    var(--color-surface);
     border:        1px solid var(--color-border); */
-  border-top: none; /* merges visually with the tab strip */
+  border-top: none;
+  /* merges visually with the tab strip */
   /* border-radius: 0 0 var(--radius-lg) var(--radius-lg);
     overflow:      hidden; */
 }
@@ -941,44 +987,52 @@
 
 .course-table {
   width: 100%;
-  min-width: 540px; /* prevents column collapse before scroll kicks in */
+  min-width: 540px;
+  /* prevents column collapse before scroll kicks in */
   border-collapse: collapse;
   font-size: var(--text-sm);
   table-layout: fixed;
 }
 
 /* ── Column widths ─────────────────────────────────────────── */
-.course-table th:nth-child(1),  /* Code */
+.course-table th:nth-child(1),
+/* Code */
 .course-table td:nth-child(1) {
   width: 90px;
 }
 
-.course-table th:nth-child(2),  /* Title */
+.course-table th:nth-child(2),
+/* Title */
 .course-table td:nth-child(2) {
   width: auto;
 }
 
-.course-table th:nth-child(3),  /* Score */
+.course-table th:nth-child(3),
+/* Score */
 .course-table td:nth-child(3) {
   width: 54px;
 }
 
-.course-table th:nth-child(4),  /* Units */
+.course-table th:nth-child(4),
+/* Units */
 .course-table td:nth-child(4) {
   width: 48px;
 }
 
-.course-table th:nth-child(5),  /* Grade */
+.course-table th:nth-child(5),
+/* Grade */
 .course-table td:nth-child(5) {
   width: 56px;
 }
 
-.course-table th:nth-child(6),  /* QP */
+.course-table th:nth-child(6),
+/* QP */
 .course-table td:nth-child(6) {
   width: 52px;
 }
 
-.course-table th:nth-child(7),  /* Actions */
+.course-table th:nth-child(7),
+/* Actions */
 .course-table td:nth-child(7) {
   width: 72px;
 }
@@ -1071,7 +1125,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 0; /* forces ellipsis in fixed-layout table */
+  max-width: 0;
+  /* forces ellipsis in fixed-layout table */
 }
 
 /* ── Action buttons cluster ────────────────────────────────── */
@@ -1155,6 +1210,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1237,7 +1293,8 @@
 }
 
 .cf2-form-body.is-open {
-  max-height: 1200px; /* generous ceiling — accommodates override panel */
+  max-height: 1200px;
+  /* generous ceiling — accommodates override panel */
   opacity: 1;
   transition:
     max-height 380ms var(--ease-out),
@@ -1460,6 +1517,7 @@
   100% {
     box-shadow: 0 0 0 0px var(--grade-border, transparent);
   }
+
   50% {
     box-shadow: 0 0 0 3px var(--grade-border, transparent);
   }
@@ -1740,6 +1798,7 @@
     opacity: 0;
     transform: translateY(-4px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -2087,7 +2146,8 @@
 @media (min-width: 1024px) {
   /* The course table column expands gracefully in the wider left panel */
   .course-table {
-    min-width: 0; /* reset — table has full width */
+    min-width: 0;
+    /* reset — table has full width */
   }
 
   /* Action buttons visible by default on desktop (always reachable) */
@@ -2395,7 +2455,9 @@
   font-weight: 500;
   color: var(--color-text);
   flex-wrap: wrap;
-} /* Specific td styling */
+}
+
+/* Specific td styling */
 .overview-index {
   color: var(--color-text-dim);
   font-family: var(--font-mono);

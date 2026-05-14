@@ -1,32 +1,91 @@
 /* ═══════════════════════════════════════════════════════════════
-   COMPONENTS / TOAST
-   Rebuilt against the exact DOM showToast() produces.
+   COMPONENTS / TOAST  —  v2 (production upgrade)
+   ───────────────────────────────────────────────────────────────
+   Fully replaces toast.css.
 
-   showToast() renders into #toast-container:
+   DOM produced by the upgraded toast.js:
    ┌ .toast.toast--{type}
-   ├─ div.toast-icon          ← icon character (✓ ✕ ! i)
-   ├─ p.toast-message         ← message string
-   └─ button.toast-dismiss    ← dismiss button (✕)
+   ├─ div.toast-icon          ← semantic icon circle
+   ├─ div.toast-body
+   │  └─ p.toast-message      ← notification text
+   ├─ button.toast-dismiss    ← manual × button
+   └─ div.toast-progress      ← auto-drain timer bar
 
-   Lifecycle classes applied by showToast():
-   - .toast--visible    added via rAF after append  → enters
-   - .toast--hiding     added before removal        → exits
+   Lifecycle classes:
+     .toast--visible   → enter (added via double-rAF after append)
+     .toast--hiding    → exit  (added before removal)
+     .toast--paused    → hover/focus pause (freezes progress bar)
 
    Variants:
-   - .toast--success
-   - .toast--error
-   - .toast--warning
-   - .toast--info
+     .toast--success   .toast--error   .toast--warning   .toast--info
 
-   Responsive:
-   - Mobile  (<640px): full-width stack anchored below the header,
-                       slides down from the top.
-   - Tablet+ (≥640px): constrained-width stack at bottom-right,
-                       slides up from the bottom.
+   RESPONSIVE STRATEGY
+   ───────────────────
+   Mobile  (< 640 px): full-width banner below the sticky header.
+                       Slides down from top. Stacks vertically.
+   Tablet+ (≥ 640 px): constrained card at bottom-right corner.
+                       Slides up from bottom. Max 360 px wide.
+
+   DESIGN DECISIONS
+   ────────────────
+   • Frosted-glass surface: backdrop-filter + solid fallback.
+   • Left accent bar per variant type (4 px solid strip).
+   • Icon circle sized to match the text cap height optically.
+   • Progress bar at the very bottom of the card, full-width,
+     draining left-to-right using a CSS animation keyed to the
+     --toast-duration custom property written by JS.
+   • Pause state freezes progress animation and slightly deepens
+     the card surface to communicate the paused state.
+   • Stack stagger: each new toast pushes older ones upward via
+     CSS gap on the flex container — no JS position arithmetic.
    ═══════════════════════════════════════════════════════════════ */
 
-/* ── Container ───────────────────────────────────────────────── */
-/* #toast-container — static in index.html and docs.html */
+/* ══════════════════════════════════════════════════════════════
+   VARIANT TOKENS
+   Defined once here; consumed by icon, border, accent bar,
+   progress bar, and background tint via var().
+   ══════════════════════════════════════════════════════════════ */
+
+.toast--success {
+  --toast-accent: var(--color-success);
+  --toast-icon-bg: rgba(62, 207, 142, 0.15);
+  --toast-icon-color: var(--color-success);
+  --toast-border: rgba(62, 207, 142, 0.22);
+  --toast-tint: rgba(62, 207, 142, 0.04);
+  --toast-progress-bg: var(--color-success);
+}
+
+.toast--error {
+  --toast-accent: var(--color-danger);
+  --toast-icon-bg: rgba(245, 101, 101, 0.15);
+  --toast-icon-color: var(--color-danger);
+  --toast-border: var(--color-danger-border);
+  --toast-tint: var(--color-danger-faint);
+  --toast-progress-bg: var(--color-danger);
+}
+
+.toast--warning {
+  --toast-accent: var(--color-warning);
+  --toast-icon-bg: rgba(246, 173, 85, 0.15);
+  --toast-icon-color: var(--color-warning);
+  --toast-border: rgba(246, 173, 85, 0.28);
+  --toast-tint: rgba(246, 173, 85, 0.04);
+  --toast-progress-bg: var(--color-warning);
+}
+
+.toast--info {
+  --toast-accent: var(--color-info);
+  --toast-icon-bg: rgba(99, 179, 237, 0.15);
+  --toast-icon-color: var(--color-info);
+  --toast-border: rgba(99, 179, 237, 0.25);
+  --toast-tint: rgba(99, 179, 237, 0.04);
+  --toast-progress-bg: var(--color-info);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CONTAINER
+   ══════════════════════════════════════════════════════════════ */
+
 .toast-container {
   position: fixed;
   /* Mobile: top of viewport, just below the sticky header */
@@ -37,185 +96,285 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  /* Container itself never captures pointer events */
+  /* Container never intercepts pointer events — only toasts do */
   pointer-events: none;
   align-items: stretch;
 }
 
 @media (min-width: 640px) {
   .toast-container {
-    /* Tablet+: bottom-right corner */
+    /* Tablet+: fixed bottom-right stack */
     top: auto;
     bottom: var(--space-6);
     right: var(--space-5);
     left: auto;
-    /* Clamp to a readable width, never wider than the viewport */
-    width: min(360px, calc(100vw - 2 * var(--space-5)));
+    width: min(380px, calc(100vw - 2 * var(--space-5)));
     align-items: flex-end;
   }
 }
 
-/* ── Individual toast ────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════
+   TOAST CARD
+   ══════════════════════════════════════════════════════════════ */
+
 .toast {
+  /* Layout */
   display: flex;
   align-items: flex-start;
   gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  /* Solid surface so content behind never bleeds through */
-  background: var(--color-surface-2);
-  border: 1px solid var(--color-border-light);
+  /* Padding: right side is tighter to accommodate the dismiss button */
+  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-4);
+
+  /* Surface */
+  background: var(--toast-tint, rgba(14, 20, 34, 0.92));
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  /* Solid fallback for browsers without backdrop-filter */
+  background: color-mix(in srgb, var(--color-surface-2) 94%, var(--toast-accent, transparent) 6%);
+
+  /* Border: outer ring + left accent bar */
+  border: 1px solid var(--toast-border, var(--color-border-light));
+  border-left: 4px solid var(--toast-accent, var(--color-border-light));
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  /* Toasts can be dismissed — they need pointer events */
+
+  /* Depth */
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.55),
+    0 1px 4px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+
+  /* Toasts need pointer events */
   pointer-events: auto;
   width: 100%;
-  /* ── Initial hidden state ─────────────────────────────────── */
-  /* Mobile: start above its final position */
+  /* Keep progress bar flush with bottom — clip overflow */
+  overflow: hidden;
+  position: relative;
+
+  /* ── Initial hidden state (mobile: slide from top) ──────── */
   opacity: 0;
-  transform: translateY(-10px) scale(0.97);
+  transform: translateY(-12px) scale(0.97);
   transition:
     opacity var(--duration-normal) var(--ease-out),
-    transform var(--duration-normal) var(--ease-out);
+    transform var(--duration-normal) var(--ease-out),
+    box-shadow var(--duration-normal) var(--ease-out);
+
+  /* Stagger future toasts in the stack */
+  will-change: opacity, transform;
 }
 
-/* Enter: .toast--visible is added by rAF in showToast() */
+/* ── Enter state ─────────────────────────────────────────────── */
 .toast.toast--visible {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
 
-/* Exit: .toast--hiding is added before removal */
+/* ── Exit state ──────────────────────────────────────────────── */
 .toast.toast--hiding {
   opacity: 0;
-  transform: scale(0.95);
+  transform: translateY(-6px) scale(0.96);
   transition:
     opacity var(--duration-fast) var(--ease-in-out),
     transform var(--duration-fast) var(--ease-in-out);
 }
 
+/* ── Paused state (hover / focus) ────────────────────────────── */
+.toast.toast--paused {
+  background: color-mix(in srgb, var(--color-surface-3) 92%, var(--toast-accent, transparent) 8%);
+  box-shadow:
+    0 6px 32px rgba(0, 0, 0, 0.6),
+    0 2px 8px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+}
+
 /* Tablet+: slide up instead of down */
 @media (min-width: 640px) {
   .toast {
-    transform: translateY(10px) scale(0.97);
+    transform: translateY(12px) scale(0.97);
   }
 
   .toast.toast--visible {
     transform: translateY(0) scale(1);
   }
+
+  .toast.toast--hiding {
+    transform: translateY(8px) scale(0.96);
+  }
 }
 
-/* ── Icon ────────────────────────────────────────────────────── */
-/* div.toast-icon — contains a single character (✓ ✕ ! i) */
+/* ══════════════════════════════════════════════════════════════
+   ICON CIRCLE
+   ══════════════════════════════════════════════════════════════ */
+
 .toast-icon {
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Fixed circle so all icon chars sit on the same baseline */
-  width: 22px;
-  height: 22px;
+  /* 28 px circle — optically matches the text body cap height */
+  width: 28px;
+  height: 28px;
   border-radius: var(--radius-full);
-  font-size: 0.72rem;
+  background: var(--toast-icon-bg, var(--color-surface-3));
+  color: var(--toast-icon-color, var(--color-text-muted));
+  font-size: 0.7rem;
   font-weight: 900;
   line-height: 1;
-  /* Colour overridden per-variant below */
-  background: var(--color-surface-3);
-  color: var(--color-text-muted);
+  /* Align icon baseline with the first line of message text */
   margin-top: 1px;
+  flex-shrink: 0;
+  /* Subtle inner glow matching the accent */
+  box-shadow: 0 0 0 1px var(--toast-border, transparent);
+  transition: box-shadow var(--duration-normal) var(--ease-out);
 }
 
-/* ── Message ─────────────────────────────────────────────────── */
-/* p.toast-message */
-.toast-message {
+/* ══════════════════════════════════════════════════════════════
+   BODY (text area)
+   ══════════════════════════════════════════════════════════════ */
+
+.toast-body {
   flex: 1;
   min-width: 0;
-  font-size: var(--text-sm);
-  color: var(--color-text);
-  line-height: 1.5;
-  /* Prevent overly long messages from causing layout issues */
-  word-break: break-word;
-  max-width: unset;
+  /* Vertically centre single-line messages against the 28 px icon */
+  display: flex;
+  align-items: flex-start;
+  padding-top: 5px;
+  /* nudge text baseline to align with icon centre */
 }
 
-/* ── Dismiss button ──────────────────────────────────────────── */
-/* button.toast-dismiss */
+.toast-message {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text);
+  line-height: 1.5;
+  word-break: break-word;
+  /* Reset the global p max-width */
+  max-width: none;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   DISMISS BUTTON
+   ══════════════════════════════════════════════════════════════ */
+
 .toast-dismiss {
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Touch target */
-  min-width: 24px;
-  min-height: 24px;
+  /* 28 × 28 touch target */
+  width: 28px;
+  height: 28px;
   border-radius: var(--radius-sm);
-  font-size: 0.72rem;
+  font-size: 0.65rem;
+  font-weight: 700;
   color: var(--color-text-dim);
   background: transparent;
+  border: none;
   cursor: pointer;
   touch-action: manipulation;
+  /* Align with the icon row */
+  align-self: flex-start;
+  margin-top: 1px;
   transition:
     color var(--duration-fast) var(--ease-out),
     background var(--duration-fast) var(--ease-out);
-  /* Align to start so it doesn't stretch on tall toasts */
-  align-self: flex-start;
-  margin-top: 0;
 }
 
 .toast-dismiss:hover {
   color: var(--color-text);
-  background: var(--color-surface-3);
+  background: rgba(255, 255, 255, 0.07);
 }
 
 .toast-dismiss:focus-visible {
-  outline: 2px solid var(--color-gold);
+  outline: 2px solid var(--toast-accent, var(--color-gold));
   outline-offset: 2px;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   VARIANTS
-   Border + icon background tinted per semantic meaning.
-   ═══════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════
+   PROGRESS BAR
+   ──────────────────────────────────────────────────────────────
+   Positioned at the absolute bottom of the card.
+   Drains from full-width to 0 over --toast-duration ms.
+   Animation is paused when .toast--paused is on the parent.
 
-/* Success ✓ */
-.toast--success {
-  border-color: rgba(62, 207, 142, 0.3);
-  background: rgba(62, 207, 142, 0.05);
+   The JS writes --toast-duration as an inline style on the
+   .toast-progress element, so the keyframe animation's duration
+   is driven by the JS-specified dismiss timeout — no hardcoding.
+   ══════════════════════════════════════════════════════════════ */
+
+.toast-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  /* start from the accent bar edge */
+  right: 0;
+  height: 3px;
+  background: var(--toast-progress-bg, var(--color-border-light));
+  opacity: 0.55;
+  border-radius: 0;
+  transform-origin: left center;
+  /* Animation starts when .toast--visible is added */
+  animation-name: toast-drain;
+  animation-duration: var(--toast-duration, 4000ms);
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  /* Animation only runs when the toast is visible and not paused */
+  animation-play-state: paused;
 }
 
-.toast--success .toast-icon {
-  background: rgba(62, 207, 142, 0.15);
-  color: var(--color-success);
+/* Start animation when visible */
+.toast.toast--visible .toast-progress {
+  animation-play-state: running;
 }
 
-/* Error ✕ */
-.toast--error {
-  border-color: var(--color-danger-border);
-  background: var(--color-danger-faint);
+/* Freeze animation while paused */
+.toast.toast--paused .toast-progress {
+  animation-play-state: paused;
 }
 
-.toast--error .toast-icon {
-  background: var(--color-danger-subtle);
-  color: var(--color-danger);
+@keyframes toast-drain {
+  from {
+    transform: scaleX(1);
+  }
+
+  to {
+    transform: scaleX(0);
+  }
 }
 
-/* Warning ! */
-.toast--warning {
-  border-color: rgba(246, 173, 85, 0.3);
-  background: rgba(246, 173, 85, 0.05);
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE SCALING
+   ══════════════════════════════════════════════════════════════ */
+
+/* 640 px — toast cards get slightly more padding */
+@media (min-width: 640px) {
+  .toast {
+    padding: var(--space-4) var(--space-5) var(--space-4) var(--space-5);
+    gap: var(--space-4);
+  }
+
+  .toast-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .toast-dismiss {
+    width: 30px;
+    height: 30px;
+  }
 }
 
-.toast--warning .toast-icon {
-  background: rgba(246, 173, 85, 0.15);
-  color: var(--color-warning);
-}
+/* ══════════════════════════════════════════════════════════════
+   REDUCED MOTION
+   ══════════════════════════════════════════════════════════════ */
 
-/* Info i */
-.toast--info {
-  border-color: rgba(99, 179, 237, 0.3);
-  background: rgba(99, 179, 237, 0.05);
-}
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    /* No slide — instant opacity only */
+    transform: none !important;
+    transition: opacity var(--duration-fast) linear !important;
+  }
 
-.toast--info .toast-icon {
-  background: rgba(99, 179, 237, 0.15);
-  color: var(--color-info);
+  .toast-progress {
+    animation: none !important;
+  }
 }

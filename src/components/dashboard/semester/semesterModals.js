@@ -17,14 +17,15 @@
  *   confirmDeleteCourse(store, course, semId) — confirm course deletion
  */
 
-import { openModal, confirmDialog, showToast, createElement } from '../../../utils/dom.js';
-import { validateSemesterLabel } from '../../../utils/validators.js';
+import { openModal, confirmDialog, showToast, createElement } from '@/utils/dom.js';
+import { scrollToHero } from '@/utils/scroll.js';
+import { validateSemesterLabel } from '@/utils/validators.js';
 import { openEditCourseModal as _openEditCourseModal } from '../edit-course/index.js';
 
 // ── Add Semester ───────────────────────────────────────────────────────────────
 
 /**
- * @param {ReturnType<import('../../../core/Store.js').createStore>} store
+ * @param {ReturnType<import('@/core/Store.js').createStore>} store
  */
 export function openAddSemesterModal(store) {
   const input = createElement('input', {
@@ -75,6 +76,7 @@ export function openAddSemesterModal(store) {
     store.dispatch({ type: 'ADD_SEMESTER', payload: { label } });
     showToast(`"${label}" added.`, 'success');
     modal.close();
+    scrollToHero(); // ← scroll after modal closes
   };
 
   submitBtn.addEventListener('click', submit);
@@ -87,7 +89,7 @@ export function openAddSemesterModal(store) {
 // ── Rename Semester ────────────────────────────────────────────────────────────
 
 /**
- * @param {ReturnType<import('../../../core/Store.js').createStore>} store
+ * @param {ReturnType<import('@/core/Store.js').createStore>} store
  * @param {string} id
  * @param {string} currentLabel
  */
@@ -132,6 +134,7 @@ export function openRenameModal(store, id, currentLabel) {
     store.dispatch({ type: 'UPDATE_SEMESTER_LABEL', payload: { id, label } });
     showToast('Semester renamed.', 'success');
     modal.close();
+    scrollToHero(); // ← scroll after modal closes
   });
 
   requestAnimationFrame(() => input.focus());
@@ -144,8 +147,8 @@ export function openRenameModal(store, id, currentLabel) {
  * Signature is identical to the old inline implementation so call sites need
  * no changes.
  *
- * @param {ReturnType<import('../../../core/Store.js').createStore>} store
- * @param {import('../../../domain/Course.js').Course}               course
+ * @param {ReturnType<import('@/core/Store.js').createStore>} store
+ * @param {import('@/domain/Course.js').Course}               course
  * @param {string}                                                    semId
  */
 export function openEditCourseModal(store, course, semId) {
@@ -158,7 +161,7 @@ export function openEditCourseModal(store, course, semId) {
  * NOTE: The confirmDialog deletion bug has been fixed in modal.js — not here.
  * These functions are correct as-is once the Promise settling race is patched.
  *
- * @param {ReturnType<import('../../../core/Store.js').createStore>} store
+ * @param {ReturnType<import('@/core/Store.js').createStore>} store
  * @param {string} id
  * @param {string} label
  */
@@ -170,13 +173,14 @@ export async function confirmDeleteSemester(store, id, label) {
   if (!ok) return;
   store.dispatch({ type: 'DELETE_SEMESTER', payload: { id } });
   showToast(`"${label}" deleted.`, 'info');
+  scrollToHero(); // ← scroll after modal closes
 }
 
 // ── Confirm Delete Course ──────────────────────────────────────────────────────
 
 /**
- * @param {ReturnType<import('../../../core/Store.js').createStore>} store
- * @param {import('../../../domain/Course.js').Course}               course
+ * @param {ReturnType<import('@/core/Store.js').createStore>} store
+ * @param {import('@/domain/Course.js').Course}               course
  * @param {string}                                                    semId
  */
 export async function confirmDeleteCourse(store, course, semId) {
@@ -187,4 +191,5 @@ export async function confirmDeleteCourse(store, course, semId) {
     payload: { semesterId: semId, courseId: course.id },
   });
   showToast(`${course.code} removed.`, 'info');
+  scrollToHero(); // ← scroll after modal closes
 }

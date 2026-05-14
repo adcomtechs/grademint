@@ -26,20 +26,21 @@
  *   ProfileView scrolls the content area to the top on each activation.
  */
 
-import { BaseComponent } from '@/components/common/BaseComponent.js';
-import { StudentSection } from '@/components/profile/sections/StudentSection.js';
-import { PreviousRecordSection } from '@/components/profile/sections/PreviousRecordSection.js';
-import { DangerZoneSection } from '@/components/profile/sections/DangerZoneSection.js';
+import { BaseComponent } from '../common/BaseComponent.js';
+import { StudentSection } from '../profile/sections/StudentSection.js';
+import { PreviousRecordSection } from '../profile/sections/PreviousRecordSection.js';
+import { DangerZoneSection } from '../profile/sections/DangerZoneSection.js';
 import { createElement, clearElement } from '@/utils/dom.js';
 import { createLogger } from '@/utils/logger.js';
 
 const log = createLogger('ProfileView');
 
 export class ProfileView extends BaseComponent {
-  constructor(container, store) {
+  constructor(container, store, options = {}) {
     super(container, store);
     /** @type {BaseComponent[]} Active section components */
     this._sections = [];
+    this._onSave = options.onSave ?? null;
   }
 
   // ── Lifecycle ──────────────────────────────────────────────────────────────
@@ -96,9 +97,13 @@ export class ProfileView extends BaseComponent {
     this.container.append(root);
 
     // Mount all three sections now that their containers are in the document
-    this._mountSection(new StudentSection(studentContainer, this.store));
-    this._mountSection(new PreviousRecordSection(prevContainer, this.store));
-    this._mountSection(new DangerZoneSection(dangerContainer, this.store));
+    this._mountSection(new StudentSection(studentContainer, this.store, { onSave: this._onSave }));
+    this._mountSection(
+      new PreviousRecordSection(prevContainer, this.store, { onSave: this._onSave })
+    );
+    this._mountSection(
+      new DangerZoneSection(dangerContainer, this.store, { onSave: this._onSave })
+    );
   }
 
   // ── Helpers ────────────────────────────────────────────────────────────────
